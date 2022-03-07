@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+
+
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.tohugo.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="服务端API调用说明请求所有的请求方式（Method）均与动词相关：  GET：获取资源 POST：创建资源  参数传入方式如无特别说明，GET 请求参数需要放到 Url Query String 中： 1GET https:&#x2F;&#x2F;petstore.com&#x2F;api&#x2F;v1&#x2F;pets?pagesize&#x3D;20 POST 请求参数建议使用 JSON">
+<meta property="og:type" content="article">
+<meta property="og:title" content="服务端API调用说明">
+<meta property="og:url" content="https://www.tohugo.com/2021/09/03/web/%E6%9C%8D%E5%8A%A1%E7%AB%AFAPI%E8%B0%83%E7%94%A8%E8%AF%B4%E6%98%8E/index.html">
+<meta property="og:site_name" content="风不停息">
+<meta property="og:description" content="服务端API调用说明请求所有的请求方式（Method）均与动词相关：  GET：获取资源 POST：创建资源  参数传入方式如无特别说明，GET 请求参数需要放到 Url Query String 中： 1GET https:&#x2F;&#x2F;petstore.com&#x2F;api&#x2F;v1&#x2F;pets?pagesize&#x3D;20 POST 请求参数建议使用 JSON">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-09-03T05:22:30.000Z">
+<meta property="article:modified_time" content="2021-09-03T05:22:30.000Z">
+<meta property="article:author" content="李炳华">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="api">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.tohugo.com/2021/09/03/web/%E6%9C%8D%E5%8A%A1%E7%AB%AFAPI%E8%B0%83%E7%94%A8%E8%AF%B4%E6%98%8E/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>服务端API调用说明 | 风不停息</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"><a href="https://github.com/tao111222333444" target="_blank" rel="noopener" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">风不停息</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">凡是过往，皆为序章</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">20</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">31</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.tohugo.com/2021/09/03/web/%E6%9C%8D%E5%8A%A1%E7%AB%AFAPI%E8%B0%83%E7%94%A8%E8%AF%B4%E6%98%8E/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="李炳华">
+      <meta itemprop="description" content="博学而笃志,切问而近思。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风不停息">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          服务端API调用说明
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-09-03 13:22:30" itemprop="dateCreated datePublished" datetime="2021-09-03T13:22:30+08:00">2021-09-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%8D%E5%8A%A1%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">服务端</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="服务端API调用说明"><a href="#服务端API调用说明" class="headerlink" title="服务端API调用说明"></a>服务端API调用说明</h1><h2 id="请求"><a href="#请求" class="headerlink" title="请求"></a>请求</h2><p>所有的请求方式（Method）均与动词相关：</p>
+<ul>
+<li><code>GET</code>：获取资源</li>
+<li><code>POST</code>：创建资源</li>
+</ul>
+<h3 id="参数传入方式"><a href="#参数传入方式" class="headerlink" title="参数传入方式"></a>参数传入方式</h3><p>如无特别说明，<code>GET</code> 请求参数需要放到 Url Query String 中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET https:&#x2F;&#x2F;petstore.com&#x2F;api&#x2F;v1&#x2F;pets?pagesize&#x3D;20</span><br></pre></td></tr></table></figure>
+<p><code>POST</code> 请求参数建议使用 JSON 格式将参数放到请求体中：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">POST http://60.205.177.220:8181/student/study/queryWrongQuestionStatistics</span><br><span class="line">Content-Type: application/json  </span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">"gradeId"</span>:<span class="number">1</span>,</span><br><span class="line">    <span class="attr">"queryType"</span>:<span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="响应"><a href="#响应" class="headerlink" title="响应"></a>响应</h2><p>成功响应中包含实体资源内容，如：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"code"</span>: <span class="string">"8000"</span>,</span><br><span class="line">    <span class="attr">"msg"</span>: <span class="string">"SUCCESS"</span>,</span><br><span class="line">    <span class="attr">"success"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">"result"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"title"</span>: <span class="string">"科目"</span>,</span><br><span class="line">            <span class="attr">"typeModelList"</span>: [</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="attr">"name"</span>: <span class="string">"语文"</span>,</span><br><span class="line">                    <span class="attr">"count"</span>: <span class="number">2</span></span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h1 id="认证"><a href="#认证" class="headerlink" title="认证"></a>认证</h1><p>本 API 使用 JWT 作为授权方式，JWT 是一种授权协议，可让您的应用程序获取到当前登陆用户的各种详细信息，而无需明文在参数里传递。</p>
+<p>您的应用程序在用户授权时会询问特定的<a href="">授权范围</a>，并在用户批准后获得访问权限。</p>
+<p>在您访问服务API之前，需要先进行用户登陆获取Token令牌，才能进行API访问，否者会收到一个如下错误</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"timestamp"</span>: <span class="number">1597566472747</span>,</span><br><span class="line">    <span class="attr">"status"</span>: <span class="number">401</span>,</span><br><span class="line">    <span class="attr">"error"</span>: <span class="string">"Unauthorized"</span>,</span><br><span class="line">    <span class="attr">"message"</span>: <span class="string">"Unauthorized"</span>,</span><br><span class="line">    <span class="attr">"path"</span>: <span class="string">"/student/study/queryWrongQuestionStatistics"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="登陆授权流程"><a href="#登陆授权流程" class="headerlink" title="登陆授权流程"></a>登陆授权流程</h2><p>本 API 使用 Spring Secuity 的 JWT 模式作为获取 <code>Access Token</code> 方式<br>在没有用户登陆授权的情况下，接口访问方是无法获取任何服务资源的。</p>
+<h3 id="第-1-步-跳转用户登陆授权"><a href="#第-1-步-跳转用户登陆授权" class="headerlink" title="第 1 步 - 跳转用户登陆授权"></a>第 1 步 - 跳转用户登陆授权</h3><p>应用程序在收到服务端返回特定错误码时，跳转到登陆接口</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"code"</span>: <span class="string">"9001"</span>,</span><br><span class="line">    <span class="attr">"msg"</span>: <span class="string">"令牌已过期，请重新获取令牌"</span>,</span><br><span class="line">    <span class="attr">"success"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">"result"</span>: <span class="literal">null</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="学生APP端登陆"><a href="#学生APP端登陆" class="headerlink" title="学生APP端登陆"></a>学生APP端登陆</h4><p><code>POST /student/login</code><br>以下值应作为 <code>POST</code> 参数传递：</p>
+<ul>
+<li><code>phone</code> 当前登陆用户手机号</li>
+<li><code>verifyCode</code> 验证码</li>
+</ul>
+<p>请求范例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST \</span><br><span class="line">  http:&#x2F;&#x2F;60.205.177.220:8181&#x2F;student&#x2F;login \</span><br><span class="line">  -H &#39;Content-Type: application&#x2F;json&#39; \</span><br><span class="line">  -d &#39;&#123;</span><br><span class="line">    &quot;phone&quot;:&quot;15221232312&quot;,</span><br><span class="line">    &quot;verifyCode&quot;:&quot;123321&quot;</span><br><span class="line">&#125;&#39;</span><br></pre></td></tr></table></figure>
+<p>执行上述请求后，您将接收到一个包含访问令牌  <code>Access Token</code>（以及其他详细信息）的 JSON 响应，客服端需要将token和expire保存在本地，范例如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Content-Type: application/json;charset=UTF-8</span><br><span class="line">Cache-Control: no-store</span><br><span class="line">Pragma: no-cache</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">"code"</span>: <span class="string">"8000"</span>,</span><br><span class="line">    <span class="attr">"msg"</span>: <span class="string">"SUCCESS"</span>,</span><br><span class="line">    <span class="attr">"success"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">"result"</span>: &#123;</span><br><span class="line">        <span class="attr">"studentId"</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="attr">"token"</span>: <span class="string">"eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl90eXBlIjoiU1RVREVOVCIsInVzZXJfaWQiOiIxIiwicGhvbmUiOiIxNTIyMTIzMjMxMiIsInVzZXJfbmFtZSI6Iua1i-ivlei0puWPtyIsImV4cGlyZSI6MTYwMDE1OTEzNjUwMiwiZXhwIjoxNjAwMTU5MTM2LCJ2ZXJzaW9uIjoiMS4wIn0.-98ym1JWmG0_rduxTnyRn1GlKbJqhGrSixY9IajiFywryTvvQfWzaqxCwQnpimrOl29LMvzM0Z0y5VIhRC9zew"</span>,</span><br><span class="line">        <span class="attr">"expire"</span>: <span class="number">1600159136502</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="教师IPAD端登陆"><a href="#教师IPAD端登陆" class="headerlink" title="教师IPAD端登陆"></a>教师IPAD端登陆</h4><blockquote>
+<p>教师端略有不同，因为一个教师可能有多个身份，可以既是语文老师也是数据老师，token需要区分教师身份，对于只有一个学科身份的教师，登陆流程同学生app端登陆，有多个学科身份的登陆成功响应会返回一个Code=8020-选择身份，客户端以此区分，走分支流程</p>
+</blockquote>
+<p>以下仅描述多学科身份的手机号登陆获取token流程<br><code>POST /teacher/login</code><br>1.验证码登陆，以下值应作为 <code>POST</code> 参数传递：</p>
+<ul>
+<li><code>phone</code> 当前登陆用户手机号</li>
+<li><code>verifyCode</code> 验证码</li>
+</ul>
+<p>请求范例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST \</span><br><span class="line">  http:&#x2F;&#x2F;60.205.177.220:8181&#x2F;teacher&#x2F;login \</span><br><span class="line">  -H &#39;Content-Type: application&#x2F;json&#39; \</span><br><span class="line">  -d &#39;&#123;</span><br><span class="line">    &quot;phone&quot;:&quot;15221232312&quot;,</span><br><span class="line">    &quot;verifyCode&quot;:&quot;123321&quot;</span><br><span class="line">&#125;&#39;</span><br></pre></td></tr></table></figure>
+<p>responseBody</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;code&quot;: &quot;8020&quot;,</span><br><span class="line">    &quot;msg&quot;: &quot;待选择身份&quot;,</span><br><span class="line">    &quot;success&quot;: false,</span><br><span class="line">    &quot;result&quot;: &#123;</span><br><span class="line">        &quot;teacherId&quot;: null,</span><br><span class="line">        &quot;phone&quot;: &quot;15212345678&quot;,</span><br><span class="line">        &quot;name&quot;: &quot;王雪莲&quot;,</span><br><span class="line">        &quot;subjectName&quot;: null,</span><br><span class="line">        &quot;subjectId&quot;: null,</span><br><span class="line">        &quot;headImage&quot;: &quot;test&quot;,</span><br><span class="line">        &quot;nickName&quot;: &quot;雪莲&quot;,</span><br><span class="line">        &quot;gender&quot;: 1,</span><br><span class="line">        &quot;birthday&quot;: 1591286400000,</span><br><span class="line">        &quot;region&quot;: &quot;上海徐汇校区&quot;,</span><br><span class="line">        &quot;token&quot;: null,</span><br><span class="line">        &quot;expire&quot;: null</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意：有多个学科身份的手机号登陆验证码校验通过后，将返回一个Code=8020,表示还需要用户继续操作才能登陆成功。</p>
+<p>2.获取学科身份列表<br><code>GET /teacher/querySubjectRoleList/${phone}</code><br>请求范例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl http:&#x2F;&#x2F;60.205.177.220:8181&#x2F;teacher&#x2F;querySubjectRoleList&#x2F;15212345678</span><br></pre></td></tr></table></figure>
+
+<p>3.确定教师学科身份<br><code>POST /teacher/changeSubjectRole</code><br>请求范例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST \</span><br><span class="line">  http:&#x2F;&#x2F;60.205.177.220:8181&#x2F;teacher&#x2F;changeSubjectRole \</span><br><span class="line">  -H &#39;Content-Type: application&#x2F;json&#39; \</span><br><span class="line">  -d &#39;&#123;</span><br><span class="line">    &quot;phone&quot;:&quot;15212345678&quot;,</span><br><span class="line">    &quot;subjectId&quot;:2</span><br><span class="line">&#125;&#39;</span><br></pre></td></tr></table></figure>
+
+<p>执行上述请求后，您将接收到一个包含访问令牌  <code>Access Token</code>（以及其他详细信息）的 JSON 响应，客服端需要将token和expire保存在本地，范例如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Content-Type: application/json;charset=UTF-8</span><br><span class="line">Cache-Control: no-store</span><br><span class="line">Pragma: no-cache</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">"code"</span>: <span class="string">"8000"</span>,</span><br><span class="line">    <span class="attr">"msg"</span>: <span class="string">"SUCCESS"</span>,</span><br><span class="line">    <span class="attr">"success"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">"result"</span>: &#123;</span><br><span class="line">        <span class="attr">"teacherId"</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="attr">"token"</span>: <span class="string">"eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl90eXBlIjoiU1RVREVOVCIsInVzZXJfaWQiOiIxIiwicGhvbmUiOiIxNTIyMTIzMjMxMiIsInVzZXJfbmFtZSI6Iua1i-ivlei0puWPtyIsImV4cGlyZSI6MTYwMDE1OTEzNjUwMiwiZXhwIjoxNjAwMTU5MTM2LCJ2ZXJzaW9uIjoiMS4wIn0.-98ym1JWmG0_rduxTnyRn1GlKbJqhGrSixY9IajiFywryTvvQfWzaqxCwQnpimrOl29LMvzM0Z0y5VIhRC9zew"</span>,</span><br><span class="line">        <span class="attr">"expire"</span>: <span class="number">1600159136502</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="后台登陆"><a href="#后台登陆" class="headerlink" title="后台登陆"></a>后台登陆</h4><blockquote>
+<p>后台登陆需要兼容管理员和教师登陆的场景，教师端略有不同，因为一个教师可能有多个身份，可以既是语文老师也是数据老师，token需要区分教师身份，对于只有一个学科身份的教师，登陆流程同学生app端登陆，有多个学科身份的登陆成功响应会返回一个Code=8020-选择身份，客户端以此区分，走分支流程</p>
+</blockquote>
+<p><code>POST /admin/login</code><br>以下值应作为 <code>POST</code> 参数传递：</p>
+<ul>
+<li><code>loginName</code> 用户名</li>
+<li><code>pasword</code> 密码</li>
+<li><code>phone</code> 手机号（教师登陆使用）</li>
+<li><code>subjectId</code> 学科id（教师登陆使用）</li>
+<li><code>identityType</code> 登陆身份 1=教师登陆 2=管理员</li>
+</ul>
+<h4 id="管理员以及后台运营人员（非教师）登陆请求范例："><a href="#管理员以及后台运营人员（非教师）登陆请求范例：" class="headerlink" title="管理员以及后台运营人员（非教师）登陆请求范例："></a>管理员以及后台运营人员（非教师）登陆请求范例：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST \</span><br><span class="line">  http:&#x2F;&#x2F;60.205.177.220:8181&#x2F;admin&#x2F;login \</span><br><span class="line">  -H &#39;Content-Type: application&#x2F;json&#39; \</span><br><span class="line">  -d &#39;&#123;</span><br><span class="line">    &quot;loginName&quot;:&quot;superAdmin&quot;,</span><br><span class="line">    &quot;pasword&quot;:&quot;123456&quot;,</span><br><span class="line">    &quot;identityType&quot;:2</span><br><span class="line">&#125;&#39;</span><br></pre></td></tr></table></figure>
+<p>执行上述请求后，您将接收到一个包含访问令牌  <code>Access Token</code>（以及其他详细信息）的 JSON 响应，客户端需要将token和expire保存在本地，同时会返回当前用户可以访问的菜单权限列表，范例如下</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Content-Type: application/json;charset=UTF-8</span><br><span class="line">Cache-Control: no-store</span><br><span class="line">Pragma: no-cache</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">"code"</span>: <span class="string">"8000"</span>,</span><br><span class="line">    <span class="attr">"msg"</span>: <span class="string">"SUCCESS"</span>,</span><br><span class="line">    <span class="attr">"success"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">"result"</span>: &#123;</span><br><span class="line">        <span class="attr">"id"</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="attr">"menuList"</span>: [</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"id"</span>: <span class="number">1</span>,</span><br><span class="line">                <span class="attr">"name"</span>: <span class="string">"基础管理"</span>,</span><br><span class="line">                <span class="attr">"url"</span>: <span class="string">""</span>,</span><br><span class="line">                <span class="attr">"path"</span>: <span class="string">"/1"</span>,</span><br><span class="line">                <span class="attr">"parentId"</span>: <span class="number">0</span>,</span><br><span class="line">                <span class="attr">"childMenuList"</span>: [</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"id"</span>: <span class="number">2</span>,</span><br><span class="line">                        <span class="attr">"name"</span>: <span class="string">"轮播管理"</span>,</span><br><span class="line">                        <span class="attr">"url"</span>: <span class="string">"/admin/ad/queryList"</span>,</span><br><span class="line">                        <span class="attr">"path"</span>: <span class="string">"/1/2"</span>,</span><br><span class="line">                        <span class="attr">"parentId"</span>: <span class="number">1</span>,</span><br><span class="line">                        <span class="attr">"childMenuList"</span>: <span class="literal">null</span>,</span><br><span class="line">                        <span class="attr">"icon"</span>: <span class="literal">null</span>,</span><br><span class="line">                        <span class="attr">"type"</span>: <span class="number">1</span></span><br><span class="line">                    &#125;</span><br><span class="line">                ],</span><br><span class="line">                <span class="attr">"icon"</span>: <span class="literal">null</span>,</span><br><span class="line">                <span class="attr">"type"</span>: <span class="number">1</span></span><br><span class="line">            &#125;</span><br><span class="line">        ],</span><br><span class="line">        <span class="attr">"token"</span>: <span class="string">"eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl90eXBlIjoiQURNSU4iLCJ1c2VyX2lkIjoiMSIsInBob25lIjoiMTgyOTY2NDA3MTIiLCJ1c2VyX25hbWUiOiLnjovlhpsiLCJleHBpcmUiOjE2MDI0NzkxNDIzOTgsImV4cCI6MTYwMjQ3OTE0MiwidmVyc2lvbiI6IjEuMCJ9.c592PW0rcSDzMfZb3Qkq2DafCF5JzGLXPz0lmL8fers8vOyDK0wrXO9F_rZ7doZD29HGhGdVXZIYqjM7DFlztg"</span>,</span><br><span class="line">        <span class="attr">"expire"</span>: <span class="number">1600159136502</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="后台教师登陆请求范例：仅演示教师有多学科登陆的场景"><a href="#后台教师登陆请求范例：仅演示教师有多学科登陆的场景" class="headerlink" title="后台教师登陆请求范例：仅演示教师有多学科登陆的场景"></a>后台教师登陆请求范例：仅演示教师有多学科登陆的场景</h4><p>1.请求登陆</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST \</span><br><span class="line">  http:&#x2F;&#x2F;60.205.177.220:8181&#x2F;admin&#x2F;login \</span><br><span class="line">  -H &#39;Content-Type: application&#x2F;json&#39; \</span><br><span class="line">  -d &#39;&#123;</span><br><span class="line">    &quot;phone&quot;:&quot;15212345677&quot;,</span><br><span class="line">    &quot;pasword&quot;:&quot;123456&quot;,</span><br><span class="line">    &quot;identityType&quot;:1</span><br><span class="line">&#125;&#39;</span><br></pre></td></tr></table></figure>
+<p>responseBody</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;code&quot;:&quot;8020&quot;,</span><br><span class="line">    &quot;msg&quot;:&quot;待选择身份&quot;,</span><br><span class="line">    &quot;success&quot;:false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意：有多个学科身份的手机号登陆验证码校验通过后，将返回一个Code=8020,表示还需要用户继续操作才能登陆成功。</p>
+<p>2.获取学科身份列表</p>
+<p><code>GET /admin/querySubjectRoleList/${phone}</code><br>请求范例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl http:&#x2F;&#x2F;60.205.177.220:8181&#x2F;admin&#x2F;querySubjectRoleList&#x2F;15212345678</span><br></pre></td></tr></table></figure>
+
+<p>3.确定后台教师学科身份<br><code>POST /admin/login</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST \</span><br><span class="line">  http:&#x2F;&#x2F;60.205.177.220:8181&#x2F;admin&#x2F;login \</span><br><span class="line">  -H &#39;Content-Type: application&#x2F;json&#39; \</span><br><span class="line">  -d &#39;&#123;</span><br><span class="line">    &quot;phone&quot;:&quot;15212345677&quot;,</span><br><span class="line">    &quot;pasword&quot;:&quot;123456&quot;,</span><br><span class="line">    &quot;subjectId&quot;:12,</span><br><span class="line">    &quot;identityType&quot;:1</span><br><span class="line">&#125;&#39;</span><br></pre></td></tr></table></figure>
+
+<p>执行上述请求后，您将接收到一个包含访问令牌  <code>Access Token</code>（以及其他详细信息）的 JSON 响应，客服端需要将token和expire保存在本地，范例如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Content-Type: application/json;charset=UTF-8</span><br><span class="line">Cache-Control: no-store</span><br><span class="line">Pragma: no-cache</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">"code"</span>:<span class="string">"8000"</span>,</span><br><span class="line">    <span class="attr">"msg"</span>:<span class="string">"SUCCESS"</span>,</span><br><span class="line">    <span class="attr">"result"</span>:&#123;</span><br><span class="line">        <span class="attr">"delFlag"</span>:<span class="number">0</span>,</span><br><span class="line">        <span class="attr">"expire"</span>:<span class="string">"1610430511997"</span>,</span><br><span class="line">        <span class="attr">"id"</span>:<span class="number">33</span>,</span><br><span class="line">        <span class="attr">"loginName"</span>:<span class="string">"雪莲"</span>,</span><br><span class="line">        <span class="attr">"menuList"</span>:[</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"childMenuList"</span>:[</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"id"</span>:<span class="number">23</span>,</span><br><span class="line">                        <span class="attr">"name"</span>:<span class="string">"教案管理"</span>,</span><br><span class="line">                        <span class="attr">"parentId"</span>:<span class="number">21</span>,</span><br><span class="line">                        <span class="attr">"path"</span>:<span class="string">"/21/23"</span>,</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="number">1</span>,</span><br><span class="line">                        <span class="attr">"url"</span>:<span class="string">"/courseList"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"id"</span>:<span class="number">22</span>,</span><br><span class="line">                        <span class="attr">"name"</span>:<span class="string">"微课堂视频管理"</span>,</span><br><span class="line">                        <span class="attr">"parentId"</span>:<span class="number">21</span>,</span><br><span class="line">                        <span class="attr">"path"</span>:<span class="string">"/21/22"</span>,</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="number">1</span>,</span><br><span class="line">                        <span class="attr">"url"</span>:<span class="string">"/courseVideo"</span></span><br><span class="line">                    &#125;</span><br><span class="line">                ],</span><br><span class="line">                <span class="attr">"icon"</span>:<span class="string">"el-icon-lx-read"</span>,</span><br><span class="line">                <span class="attr">"id"</span>:<span class="number">21</span>,</span><br><span class="line">                <span class="attr">"name"</span>:<span class="string">"教案管理"</span>,</span><br><span class="line">                <span class="attr">"parentId"</span>:<span class="number">0</span>,</span><br><span class="line">                <span class="attr">"path"</span>:<span class="string">"/21"</span>,</span><br><span class="line">                <span class="attr">"type"</span>:<span class="number">1</span></span><br><span class="line">            &#125;</span><br><span class="line">        ],</span><br><span class="line">        <span class="attr">"mobile"</span>:<span class="string">"15212345677"</span>,</span><br><span class="line">        <span class="attr">"name"</span>:<span class="string">"王雪莲"</span>,</span><br><span class="line">        <span class="attr">"subjectId"</span>:<span class="number">12</span>,</span><br><span class="line">        <span class="attr">"subjectName"</span>:<span class="string">"高中英语"</span>,</span><br><span class="line">        <span class="attr">"superFlag"</span>:<span class="number">0</span>,</span><br><span class="line">        <span class="attr">"token"</span>:<span class="string">"eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl90eXBlIjoiQURNSU5fVEVBQ0hFUiIsInVzZXJfaWQiOiIzMyIsInBob25lIjoiMTUyMTIzNDU2NzciLCJ1c2VyX25hbWUiOiLnjovpm6rojrIiLCJleHBpcmUiOjE2MTA0MzA1MTE5OTcsInRlYWNoZXJfc3ViamVjdF9pZCI6IjEyIiwiZXhwIjoxNjEwNDMwNTExLCJ2ZXJzaW9uIjoiMS4wIn0.HPuwAfGrxQFLladZSba2BOeWhruabRH3IphEQu1cBCd2H-v8fvuzGndDNWOe8fNtD4kOSUX7RS6vu2ltACMByw"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"success"</span>:<span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第-2-步-使用令牌（token）访问api资源"><a href="#第-2-步-使用令牌（token）访问api资源" class="headerlink" title="第 2 步 - 使用令牌（token）访问api资源"></a>第 2 步 - 使用令牌（token）访问api资源</h3><ul>
+<li><code>Authorization</code>：是登陆成功返回的令牌token，保存在客服端本地，以后每次请求服务api时必传，value格式为 <code>Bearer token</code></li>
+</ul>
+<p>请求范例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST \</span><br><span class="line">  http:&#x2F;&#x2F;60.205.177.220:8181&#x2F;student&#x2F;study&#x2F;queryWrongQuestionStatistics \</span><br><span class="line">  -H &#39;Content-Type: application&#x2F;json&#39; \</span><br><span class="line">  -H &#39;Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl90eXBlIjoiVEVBQ0hFUiIsInVzZXJfaWQiOiIyIiwicGhvbmUiOiIxNTIxMjM0NTY3OCIsInVzZXJfbmFtZSI6IueOi-mbquiOsiIsImV4cGlyZSI6MTYwMDE2NTMyODY2OSwidGVhY2hlcl9zdWJqZWN0X2lkIjoiMiIsImV4cCI6MTYwMDE2NTMyOCwidmVyc2lvbiI6IjEuMCJ9.VTDcPLtj58rIka1aX1G8ZJ_uFC0K8jB5kd5_1GMfZSgOz2UzCeaP_PkTQ8NzWtE6xHdtsRVYrHtg-Rmn8KTNyQ&#39; \</span><br><span class="line">  -d &#39;&#123;</span><br><span class="line">    &quot;gradeId&quot;:1,</span><br><span class="line">    &quot;queryType&quot;:true</span><br><span class="line">&#125;&#39;</span><br></pre></td></tr></table></figure>
+<h3 id="第-3-步-刷新token-可选"><a href="#第-3-步-刷新token-可选" class="headerlink" title="第 3 步 - 刷新token - 可选"></a>第 3 步 - 刷新token - 可选</h3><blockquote>
+<p>访问令牌默认 30 天过期，过期后一天内您可继续使用刷新令牌（Refresh Token），通过刷新访问令牌接口</p>
+</blockquote>
+<p>请求范例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -X GET \</span><br><span class="line">  http:&#x2F;&#x2F;http:&#x2F;&#x2F;60.205.177.220:8181&#x2F;student&#x2F;refreshToken \</span><br><span class="line">  -H &#39;Authorization: Bearer token&#39;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -X GET \</span><br><span class="line">  http:&#x2F;&#x2F;http:&#x2F;&#x2F;60.205.177.220:8181&#x2F;teacher&#x2F;refreshToken \</span><br><span class="line">  -H &#39;Authorization: Bearer token&#39;</span><br></pre></td></tr></table></figure>
+<p>responseBody</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"code"</span>: <span class="string">"8000"</span>,</span><br><span class="line">    <span class="attr">"msg"</span>: <span class="string">"SUCCESS"</span>,</span><br><span class="line">    <span class="attr">"success"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">"result"</span>: &#123;</span><br><span class="line">        <span class="attr">"token"</span>: <span class="string">"eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl90eXBlIjoiU1RVREVOVCIsInVzZXJfaWQiOiIxIiwicGhvbmUiOiIxNTIyMTIzMjMxMjIiLCJ1c2VyX25hbWUiOiLmtYvor5XotKblj7ciLCJleHBpcmUiOjE2MDAxNjAwMDg0ODAsImV4cCI6MTYwMDE2MDAwOCwidmVyc2lvbiI6IjEuMCIsImNyZWF0ZWQiOjE1OTc1NjgwMDg0ODB9.yqzCvpwQbzBGOiHYBPO_G4kuB-amY12j1x_Jeil_QMVNqJWRGnGCrXpKrOmWG3Dpe1v6qzoCpLgK2q7oByiTJw"</span>,</span><br><span class="line">        <span class="attr">"oldToken"</span>: <span class="string">"eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl90eXBlIjoiU1RVREVOVCIsInVzZXJfaWQiOiIxIiwicGhvbmUiOiIxNTIyMTIzMjMxMjIiLCJ1c2VyX25hbWUiOiLmtYvor5XotKblj7ciLCJleHBpcmUiOjE2MDAwODMwMTMxNzAsImV4cCI6MTYwMDA4MzAxMywidmVyc2lvbiI6IjEuMCJ9.v8hiiNn9866OMYDXT7T8cVoMkHM1tFHqladsB299r49Dt5Z4nB8CoscPHlyXjLObOrl-BiZq7SkhJMxpn_4Akw"</span>,</span><br><span class="line">        <span class="attr">"expire"</span>: <span class="number">1600160008480</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="错误"><a href="#错误" class="headerlink" title="错误"></a>错误</h1><p>点学 API 使用标准 HTTP 响应码（Status Code）来表示 API 请求。</p>
+<p>通常，状态码：</p>
+<ul>
+<li><code>2xx</code> 代表成功响应</li>
+<li><code>4xx</code> 代表失败响应，并给出失败原因</li>
+<li><code>5xx</code> 代表宠物商店服务端内部错误</li>
+</ul>
+<h2 id="状态码说明"><a href="#状态码说明" class="headerlink" title="状态码说明"></a>状态码说明</h2><table>
+<thead>
+<tr>
+<th>状态码</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>200</td>
+<td>更新/获取资源成功</td>
+</tr>
+<tr>
+<td>201</td>
+<td>创建资源成功</td>
+</tr>
+<tr>
+<td>204</td>
+<td>删除资源成功</td>
+</tr>
+<tr>
+<td>400</td>
+<td>业务错误，具体参见下放业务错误代码</td>
+</tr>
+<tr>
+<td>401</td>
+<td>认证失败，请返回 <a href="#认证">认证</a> 检查参数是否有误</td>
+</tr>
+<tr>
+<td>403</td>
+<td>无权限调用接口，如：未开通 API 功能</td>
+</tr>
+<tr>
+<td>404</td>
+<td>资源不存在</td>
+</tr>
+<tr>
+<td>405</td>
+<td>接口请求方式 <code>Method</code> 有误</td>
+</tr>
+<tr>
+<td>422</td>
+<td>请求参数校验失败</td>
+</tr>
+<tr>
+<td>429</td>
+<td>触达限流限制</td>
+</tr>
+<tr>
+<td>500</td>
+<td>服务器应用发生了错误</td>
+</tr>
+<tr>
+<td>502</td>
+<td>服务器无法连接</td>
+</tr>
+<tr>
+<td>503</td>
+<td>服务器暂不可用</td>
+</tr>
+<tr>
+<td>504</td>
+<td>服务器连接超时</td>
+</tr>
+</tbody></table>
+<h2 id="业务错误说明"><a href="#业务错误说明" class="headerlink" title="业务错误说明"></a>业务错误说明</h2><p>状态码 <code>8xx</code> 的业务错误可通过编码来分别处理不同的处理逻辑，响应将通过 JSON 形式返回，其中包括业务错误码 <code>code</code> 和错误原因 <code>msg</code>，例如：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"code"</span>: <span class="string">"8001"</span>,</span><br><span class="line">    <span class="attr">"msg"</span>: <span class="string">"验证码错误"</span>,</span><br><span class="line">    <span class="attr">"success"</span>: <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>业务状态码 <code>code</code> 说明如下：</p>
+<ul>
+<li>状态码 400</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>业务状态码</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>8000</td>
+<td>SUCCESS</td>
+</tr>
+<tr>
+<td>8001</td>
+<td>通用的弹窗错误Code</td>
+</tr>
+<tr>
+<td>8010</td>
+<td>参数不正确</td>
+</tr>
+<tr>
+<td>8020</td>
+<td>待选择身份</td>
+</tr>
+<tr>
+<td>9001</td>
+<td>令牌已过期，请重新获取令牌</td>
+</tr>
+</tbody></table>
+<h1 id="字段类型"><a href="#字段类型" class="headerlink" title="字段类型"></a>字段类型</h1><p>在文档中，我们将使用许多不同类型的数据。您可以在下方的说明列表找到它们的解释及含义。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>定义</th>
+<th>范例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>int</td>
+<td>整数，不带小数的数字。</td>
+<td>1234</td>
+</tr>
+<tr>
+<td>float</td>
+<td>浮点数，带小数的数字。</td>
+<td>1234.12</td>
+</tr>
+<tr>
+<td>string</td>
+<td>字符串是用于表示文本的字符序列。</td>
+<td>“DIANXUE”</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>布尔值，是 <code>true</code> 或 <code>false</code> 中的一个，所对应的关系就是真与假的概念。</td>
+<td>true</td>
+</tr>
+<tr>
+<td>time</td>
+<td>表示日期和时间的字符串。</td>
+<td>“2017-09-10 12:23:01”</td>
+</tr>
+<tr>
+<td>array</td>
+<td>列表，该列表为数组，数组中的每一项的类型由中括号内的字段类型决定。</td>
+<td>[“DIANXUE”, “VERY”, “GOOD”]</td>
+</tr>
+<tr>
+<td>object</td>
+<td>资源，可从对应的资源 XX 对象中找到。</td>
+<td>{“id”: 1,”name”: “NPC小明”}</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/api/" rel="tag"># api</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/01/%E5%B7%A5%E5%85%B7%E9%85%8D%E7%BD%AE/git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E9%80%9F%E6%9F%A5%E8%A1%A8/" rel="prev" title="git常用命令速查表">
+      <i class="fa fa-chevron-left"></i> git常用命令速查表
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/09/03/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E%E7%AC%94%E8%AE%B0/" rel="next" title="数据结构与算法之美笔记">
+      数据结构与算法之美笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#服务端API调用说明"><span class="nav-text">服务端API调用说明</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#请求"><span class="nav-text">请求</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参数传入方式"><span class="nav-text">参数传入方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#响应"><span class="nav-text">响应</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#认证"><span class="nav-text">认证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#登陆授权流程"><span class="nav-text">登陆授权流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第-1-步-跳转用户登陆授权"><span class="nav-text">第 1 步 - 跳转用户登陆授权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第-2-步-使用令牌（token）访问api资源"><span class="nav-text">第 2 步 - 使用令牌（token）访问api资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第-3-步-刷新token-可选"><span class="nav-text">第 3 步 - 刷新token - 可选</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#错误"><span class="nav-text">错误</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#状态码说明"><span class="nav-text">状态码说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#业务错误说明"><span class="nav-text">业务错误说明</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字段类型"><span class="nav-text">字段类型</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="李炳华"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">李炳华</p>
+  <div class="site-description" itemprop="description">博学而笃志,切问而近思。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wind-never-stop" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wind-never-stop" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://wind-never-stop.github.io/" title="https:&#x2F;&#x2F;wind-never-stop.github.io&#x2F;" rel="noopener" target="_blank">风不停息</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李炳华</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='65,105,225' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+  
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+</body>
+</html>

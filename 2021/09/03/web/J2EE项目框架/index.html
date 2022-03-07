@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+
+
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.tohugo.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="项目功能点目录 基建安装centos7 shell自动安装 mysql+redis+nginx  springboot项目模块化拆分 swager&#x2F;knife4j 集成在线接口文档，接口调试 shiro+jwt+redis+rbac实现菜单+按钮权限控制: spring-acuator-集成服务监控，日志中心 coding+jenkins+shell+git+maven实现自动化发布：ci-dep">
+<meta property="og:type" content="article">
+<meta property="og:title" content="J2EE项目框架">
+<meta property="og:url" content="https://www.tohugo.com/2021/09/03/web/J2EE%E9%A1%B9%E7%9B%AE%E6%A1%86%E6%9E%B6/index.html">
+<meta property="og:site_name" content="风不停息">
+<meta property="og:description" content="项目功能点目录 基建安装centos7 shell自动安装 mysql+redis+nginx  springboot项目模块化拆分 swager&#x2F;knife4j 集成在线接口文档，接口调试 shiro+jwt+redis+rbac实现菜单+按钮权限控制: spring-acuator-集成服务监控，日志中心 coding+jenkins+shell+git+maven实现自动化发布：ci-dep">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-09-03T06:06:39.000Z">
+<meta property="article:modified_time" content="2021-09-03T06:06:39.000Z">
+<meta property="article:author" content="李炳华">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.tohugo.com/2021/09/03/web/J2EE%E9%A1%B9%E7%9B%AE%E6%A1%86%E6%9E%B6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>J2EE项目框架 | 风不停息</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"><a href="https://github.com/tao111222333444" target="_blank" rel="noopener" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">风不停息</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">凡是过往，皆为序章</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">20</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">31</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.tohugo.com/2021/09/03/web/J2EE%E9%A1%B9%E7%9B%AE%E6%A1%86%E6%9E%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="李炳华">
+      <meta itemprop="description" content="博学而笃志,切问而近思。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风不停息">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          J2EE项目框架
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-09-03 14:06:39" itemprop="dateCreated datePublished" datetime="2021-09-03T14:06:39+08:00">2021-09-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%8D%E5%8A%A1%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">服务端</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="项目功能点目录"><a href="#项目功能点目录" class="headerlink" title="项目功能点目录"></a>项目功能点目录</h3><ol>
+<li>基建安装centos7 shell自动安装 mysql+redis+nginx </li>
+<li>springboot项目模块化拆分</li>
+<li>swager/knife4j 集成在线接口文档，接口调试</li>
+<li>shiro+jwt+redis+rbac实现菜单+按钮权限控制:</li>
+<li>spring-acuator-集成服务监控，日志中心</li>
+<li>coding+jenkins+shell+git+maven实现自动化发布：ci-deploy</li>
+<li>easy-code template/ generator 自动生成基本功能的增删改查：</li>
+</ol>
+<ul>
+<li>mapper.xml/mapper.java/entity.java/service.java/serviceImpl.java/controller.java</li>
+</ul>
+<ol start="8">
+<li>oss技术实现 图片、视频文件存取</li>
+<li>ocr实现图文解析</li>
+<li>apache-poi实现office导入导出</li>
+<li>solr+mongo 搭建题库搜索引擎</li>
+<li>图片短信验证登陆能力</li>
+<li>提现转账能力</li>
+</ol>
+<a id="more"></a>
+
+<h3 id="一、centos7-shell自动安装-mysql-redis-nginx"><a href="#一、centos7-shell自动安装-mysql-redis-nginx" class="headerlink" title="一、centos7 shell自动安装 mysql+redis+nginx"></a>一、centos7 shell自动安装 mysql+redis+nginx</h3><blockquote>
+<p>参考：<a href="https://springboot.plus/guide/centos-deploy.html" target="_blank" rel="noopener">https://springboot.plus/guide/centos-deploy.html</a></p>
+</blockquote>
+<ul>
+<li>1.yum安装mysql8：初始化root密码、修改密码授权规则为 never expire模式、开启外网访问、云主机安全组配置端口暴露</li>
+<li>2.yum安装redis：requierpass 设置密码 、bind 暴露外网、服务起停、测试连接</li>
+<li>3.yum安装nginx：单独配置yum源、nginx-config配置web资源、接口转发、负载均衡、shell+linux<br>定时任务实现access.log文件滚动切分</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">常用语法：定位安装软件配置位置</span><br><span class="line">find &#x2F; -name &quot;redis*&quot;</span><br><span class="line">1.首先查看进程ID</span><br><span class="line">ps -ef|grep redis</span><br><span class="line">2.然后通过进程ID查找目录，xxxx代表进程ID</span><br><span class="line">ls -l &#x2F;proc&#x2F;xxxx&#x2F;cwd</span><br><span class="line">redis 服务器密码查看：</span><br><span class="line">vim redis.config</span><br><span class="line">&#x2F;-&gt;requirepass 按n键一路向下搜索</span><br></pre></td></tr></table></figure>
+
+<h3 id="二、springboot项目模块化拆分"><a href="#二、springboot项目模块化拆分" class="headerlink" title="二、springboot项目模块化拆分"></a>二、springboot项目模块化拆分</h3><ul>
+<li>common 放一些公用代码：<ul>
+<li>restapi 公用出入参数：分页入参、返回值父类、令牌对象Response/</li>
+<li>服务错约定Code、ServiceException</li>
+<li>枚举字典定义：Enum</li>
+<li>工具类</li>
+</ul>
+</li>
+<li>dao 资源访问层<ul>
+<li>mysql：mapper.java/mapper.xml</li>
+<li>mongodb：spring-mongo-data/jpa实现</li>
+<li>ocr：百度图片解析</li>
+<li>oss：文件对象存储</li>
+<li>poi：office文件导入导出<ul>
+<li>student-api/student-service</li>
+</ul>
+</li>
+<li>app学生端接口定义</li>
+<li>app学生端接口实现<ul>
+<li>teacher-api/teacher-service</li>
+</ul>
+</li>
+<li>ipad教师端接口定义</li>
+<li>ipad教师端接口实现<ul>
+<li>admin-api/admin-service</li>
+</ul>
+</li>
+<li>管理端接口定义</li>
+<li>管理端接口实现<ul>
+<li>web</li>
+</ul>
+</li>
+<li>http 请求处理转发层</li>
+<li>shiro+jwt+rbac 权限控制</li>
+<li>在线接口调试文档</li>
+<li>spring-acutor-健康检查模块<ul>
+<li>ci-deploy 项目部署</li>
+</ul>
+</li>
+<li>Jenkinsfile 定义</li>
+<li>自动部署需要的shell脚本</li>
+</ul>
+</li>
+</ul>
+<h3 id="三、swager-knife4j-集成在线接口文档，接口调试"><a href="#三、swager-knife4j-集成在线接口文档，接口调试" class="headerlink" title="三、swager/knife4j 集成在线接口文档，接口调试"></a>三、swager/knife4j 集成在线接口文档，接口调试</h3><blockquote>
+<p>访问链接：<a href="http://211.95.75.188:8181/doc.html#/home" target="_blank" rel="noopener">http://211.95.75.188:8181/doc.html#/home</a></p>
+</blockquote>
+<ul>
+<li>1.引入pom</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;io.springfox&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;springfox-swagger2&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.6.1&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;io.springfox&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;springfox-swagger-ui&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.6.1&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;com.github.xiaoymin&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;knife4j-spring-boot-starter&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.0.2&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>2.编写Spring configuration类启用swagger+Knife4j<blockquote>
+<p>com.dianxue.web.config.Swagger2Config</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="四、shiro-jwt-redis-rbac实现菜单-按钮权限控制"><a href="#四、shiro-jwt-redis-rbac实现菜单-按钮权限控制" class="headerlink" title="四、shiro+jwt+redis+rbac实现菜单+按钮权限控制"></a>四、shiro+jwt+redis+rbac实现菜单+按钮权限控制</h3><blockquote>
+<p>访问链接：<a href="http://60.205.177.220:8081/#/roleauth" target="_blank" rel="noopener">http://60.205.177.220:8081/#/roleauth</a><br>服务端调用说明：<a href="https://maqi.coding.net/p/dianxue-admin/wiki/4" target="_blank" rel="noopener">https://maqi.coding.net/p/dianxue-admin/wiki/4</a></p>
+</blockquote>
+<ul>
+<li><ol>
+<li>rbac（role base access controll）基于角色的权限控制，5张表</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sys_user&#x2F;sys_role&#x2F;sys_user_role&#x2F;sys_permission&#x2F;sys_role_permission</span><br></pre></td></tr></table></figure>
+<ul>
+<li>2.jwt（java web token） 基于令牌的身份识别<ul>
+<li>登陆信息验证通过：计算生成带有效期的token令牌，客户端保存</li>
+<li>发起资源请求时携带token令牌，服务在filter中进行过滤验证</li>
+</ul>
+</li>
+<li>3.shiro 在通过token识别出用户身份基础上，做细粒度权限控制<ul>
+<li>登陆信息验证通过：将用户拥有的权限返回给前端，控制菜单按钮的展示</li>
+<li>发起资源请求时通过携带token令牌，识别出用户身份，校验用户是否对该url有访问权限</li>
+</ul>
+</li>
+<li>4.redis<ul>
+<li>缓存用户权限信息</li>
+<li>做单点登陆控制</li>
+</ul>
+</li>
+</ul>
+<h3 id="五、spring-acuator-集成服务监控"><a href="#五、spring-acuator-集成服务监控" class="headerlink" title="五、spring-acuator-集成服务监控"></a>五、spring-acuator-集成服务监控</h3><blockquote>
+<p>访问链接：<a href="http://211.95.75.188:8082/applications" target="_blank" rel="noopener">http://211.95.75.188:8082/applications</a></p>
+</blockquote>
+<ul>
+<li>1.服务端监控中心，参考spring-boot-plus/admin项目部署，</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">引入pom</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-web&lt;&#x2F;artifactId&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;de.codecentric&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-admin-starter-server&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;$&#123;spring-boot-admin.version&#125;&lt;&#x2F;version&gt;</span><br><span class="line">    &lt;exclusions&gt;</span><br><span class="line">        &lt;exclusion&gt;</span><br><span class="line">            &lt;groupId&gt;de.codecentric&lt;&#x2F;groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;spring-boot-admin-server-cloud&lt;&#x2F;artifactId&gt;</span><br><span class="line">        &lt;&#x2F;exclusion&gt;</span><br><span class="line">    &lt;&#x2F;exclusions&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-actuator&lt;&#x2F;artifactId&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-security&lt;&#x2F;artifactId&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>配置application.yml</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">server:</span><br><span class="line">  port: 8082</span><br><span class="line"># Spring Boot Admin Server配置</span><br><span class="line">spring:</span><br><span class="line">  boot:</span><br><span class="line">    admin:</span><br><span class="line">      monitor:</span><br><span class="line">        period: 100000</span><br><span class="line">        status-lifetime: 100000</span><br><span class="line">        connect-timeout: 100000</span><br><span class="line">        read-timeout: 100000</span><br><span class="line">      ui:</span><br><span class="line">        external-views:</span><br><span class="line">          - label: &quot;&quot;</span><br><span class="line">            url: https:&#x2F;&#x2F;springboot.plus</span><br><span class="line">            order: 2000</span><br><span class="line"></span><br><span class="line"># Spring Boot Admin 登录账号密码</span><br><span class="line">spring-boot-plus:</span><br><span class="line">  admin:</span><br><span class="line">    username: admin</span><br><span class="line">    password: admin</span><br></pre></td></tr></table></figure>
+<p>编写配置类启动</p>
+<ul>
+<li>2.业务服务上报心跳结果</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">引入pom</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;de.codecentric&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-admin-starter-client&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.2.2&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="六、coding-jenkins-shell-git-maven实现自动化发布：ci-deploy"><a href="#六、coding-jenkins-shell-git-maven实现自动化发布：ci-deploy" class="headerlink" title="六、coding+jenkins+shell+git+maven实现自动化发布：ci-deploy"></a>六、coding+jenkins+shell+git+maven实现自动化发布：ci-deploy</h3><blockquote>
+<p>访问链接：<a href="https://maqi.coding.net/p/dianxue-admin/ci/job" target="_blank" rel="noopener">https://maqi.coding.net/p/dianxue-admin/ci/job</a></p>
+</blockquote>
+<ul>
+<li>1.maven服务器打包的仓库镜像配置</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;settings xmlns&#x3D;&quot;http:&#x2F;&#x2F;maven.apache.org&#x2F;SETTINGS&#x2F;1.0.0&quot;</span><br><span class="line">          xmlns:xsi&#x3D;&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2001&#x2F;XMLSchema-instance&quot;</span><br><span class="line">          xsi:schemaLocation&#x3D;&quot;http:&#x2F;&#x2F;maven.apache.org&#x2F;SETTINGS&#x2F;1.0.0 http:&#x2F;&#x2F;maven.apache.org&#x2F;xsd&#x2F;settings-1.0.0.xsd&quot;&gt;</span><br><span class="line">    &lt;interactiveMode&gt;false&lt;&#x2F;interactiveMode&gt;</span><br><span class="line">    &lt;mirrors&gt;</span><br><span class="line">      &lt;mirror&gt;</span><br><span class="line">           &lt;id&gt;alimaven&lt;&#x2F;id&gt;</span><br><span class="line">           &lt;mirrorOf&gt;central&lt;&#x2F;mirrorOf&gt;</span><br><span class="line">           &lt;name&gt;aliyun maven&lt;&#x2F;name&gt;</span><br><span class="line">          &lt;url&gt;http:&#x2F;&#x2F;maven.aliyun.com&#x2F;nexus&#x2F;content&#x2F;repositories&#x2F;central&#x2F;&lt;&#x2F;url&gt;</span><br><span class="line">      &lt;&#x2F;mirror&gt;</span><br><span class="line">    &lt;&#x2F;mirrors&gt;</span><br><span class="line">    &lt;profiles&gt;</span><br><span class="line">       &lt;profile&gt;</span><br><span class="line">        &lt;id&gt;jdk-1.8&lt;&#x2F;id&gt;</span><br><span class="line">        </span><br><span class="line">        &lt;activation&gt;</span><br><span class="line">            &lt;jdk&gt;1.8&lt;&#x2F;jdk&gt;</span><br><span class="line">        &lt;&#x2F;activation&gt;</span><br><span class="line">        </span><br><span class="line">        &lt;repositories&gt;</span><br><span class="line">            &lt;repository&gt;</span><br><span class="line">                &lt;id&gt;nexus&lt;&#x2F;id&gt;</span><br><span class="line">                &lt;name&gt;local private nexus&lt;&#x2F;name&gt;</span><br><span class="line">                &lt;url&gt;http:&#x2F;&#x2F;maven.aliyun.com&#x2F;nexus&#x2F;content&#x2F;repositories&#x2F;central&#x2F;&lt;&#x2F;url&gt;</span><br><span class="line">                &lt;releases&gt;</span><br><span class="line">                    &lt;enabled&gt;true&lt;&#x2F;enabled&gt;</span><br><span class="line">                &lt;&#x2F;releases&gt;</span><br><span class="line">                &lt;snapshots&gt;</span><br><span class="line">                    &lt;enabled&gt;false&lt;&#x2F;enabled&gt;</span><br><span class="line">                &lt;&#x2F;snapshots&gt;</span><br><span class="line">            &lt;&#x2F;repository&gt;</span><br><span class="line">        &lt;&#x2F;repositories&gt;</span><br><span class="line">        </span><br><span class="line">        &lt;pluginRepositories&gt;</span><br><span class="line">            &lt;pluginRepository&gt;</span><br><span class="line">            &lt;id&gt;nexus&lt;&#x2F;id&gt;</span><br><span class="line">            &lt;name&gt;local private nexus&lt;&#x2F;name&gt;</span><br><span class="line">            &lt;url&gt;http:&#x2F;&#x2F;maven.aliyun.com&#x2F;nexus&#x2F;content&#x2F;repositories&#x2F;central&#x2F;&lt;&#x2F;url&gt;</span><br><span class="line">            &lt;releases&gt;</span><br><span class="line">                &lt;enabled&gt;true&lt;&#x2F;enabled&gt;</span><br><span class="line">            &lt;&#x2F;releases&gt;</span><br><span class="line">            &lt;snapshots&gt;</span><br><span class="line">                &lt;enabled&gt;false&lt;&#x2F;enabled&gt;</span><br><span class="line">            &lt;&#x2F;snapshots&gt;</span><br><span class="line">            &lt;&#x2F;pluginRepository&gt;</span><br><span class="line">        &lt;&#x2F;pluginRepositories&gt;</span><br><span class="line">    &lt;&#x2F;profile&gt;</span><br><span class="line">    &lt;&#x2F;profiles&gt;</span><br><span class="line">    &lt;activeProfiles&gt;</span><br><span class="line">        &lt;activeProfile&gt;jdk-1.8&lt;&#x2F;activeProfile&gt;</span><br><span class="line">    &lt;&#x2F;activeProfiles&gt;</span><br><span class="line">&lt;&#x2F;settings&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>2.服务起停shell脚本</p>
+<blockquote>
+<p>ci-deploy/start.sh</p>
+</blockquote>
+</li>
+<li><p>3.Jenkinsfile定义</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line">pipeline &#123;</span><br><span class="line">  agent any</span><br><span class="line">  stages &#123;</span><br><span class="line">    stage(&#39;检出&#39;) &#123;</span><br><span class="line">      steps &#123;</span><br><span class="line">        checkout([</span><br><span class="line">          $class: &#39;GitSCM&#39;,</span><br><span class="line">          branches: [[name: env.GIT_BUILD_REF]],</span><br><span class="line">          userRemoteConfigs: [[</span><br><span class="line">            url: env.GIT_REPO_URL,</span><br><span class="line">            credentialsId: env.CREDENTIALS_ID</span><br><span class="line">          ]]])</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      stage(&#39;构建&#39;) &#123;</span><br><span class="line">        steps &#123;</span><br><span class="line">          echo &#39;构建中...&#39;</span><br><span class="line">          sh &#39;mvn clean install -DskipTests -s ci-deploy&#x2F;settings.xml&#39;</span><br><span class="line">          archiveArtifacts(artifacts: &#39;web&#x2F;target&#x2F;dianxue-web.jar&#39;, fingerprint: true, onlyIfSuccessful: false)</span><br><span class="line">          sh &#39;ls -all web&#x2F;target&#39;</span><br><span class="line">          echo &#39;构建完成.&#39;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      stage(&#39;部署&#39;) &#123;</span><br><span class="line">        steps &#123;</span><br><span class="line">          echo &#39;部署中...&#39;</span><br><span class="line">          script &#123;</span><br><span class="line">            def remote &#x3D; [:]</span><br><span class="line">            remote.name &#x3D; &#39;web-server&#39;</span><br><span class="line">            remote.allowAnyHosts &#x3D; true</span><br><span class="line">            remote.host &#x3D; &#39;60.205.177.220&#39;</span><br><span class="line">            remote.port &#x3D; 22</span><br><span class="line">            remote.user &#x3D; &#39;root&#39;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F; 把「CODING 凭据管理」中的「凭据 ID」填入 credentialsId，而 id_rsa 无需修改</span><br><span class="line">            withCredentials([sshUserPrivateKey(credentialsId: &quot;d86c3fda-9826-4a71-a7b7-259903eeae4f&quot;, keyFileVariable: &#39;id_rsa&#39;)]) &#123;</span><br><span class="line">              remote.identityFile &#x3D; id_rsa</span><br><span class="line"></span><br><span class="line">              &#x2F;&#x2F; SSH 查看服务端目录</span><br><span class="line">              sshCommand remote: remote, sudo: true, command: &#39;ls -all &#x2F;data&#x2F;dianxue&#39;</span><br><span class="line">              &#x2F;&#x2F; SSH 上传文件到服务器</span><br><span class="line">              sshPut remote: remote, from: &#39;web&#x2F;target&#x2F;dianxue-web.jar&#39;, into: &#39;&#x2F;data&#x2F;dianxue&#x2F;dianxue-web.jar&#39;</span><br><span class="line">              &#x2F;&#x2F; SSH 查看服务端上传结果</span><br><span class="line">              sshCommand remote: remote, sudo: true, command: &#39;ls -all &#x2F;data&#x2F;dianxue&#39;</span><br><span class="line">              &#x2F;&#x2F; SSH 服务关停</span><br><span class="line">              sshCommand remote: remote, sudo: true, command: &#39;bash &#x2F;data&#x2F;dianxue&#x2F;start.sh dianxue-web.jar prod stop&#39;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          sleep 5</span><br><span class="line">          script &#123;</span><br><span class="line">            def remote &#x3D; [:]</span><br><span class="line">            remote.name &#x3D; &#39;web-server&#39;</span><br><span class="line">            remote.allowAnyHosts &#x3D; true</span><br><span class="line">            remote.host &#x3D; &#39;60.205.177.220&#39;</span><br><span class="line">            remote.port &#x3D; 22</span><br><span class="line">            remote.user &#x3D; &#39;root&#39;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F; 把「CODING 凭据管理」中的「凭据 ID」填入 credentialsId，而 id_rsa 无需修改</span><br><span class="line">            withCredentials([sshUserPrivateKey(credentialsId: &quot;d86c3fda-9826-4a71-a7b7-259903eeae4f&quot;, keyFileVariable: &#39;id_rsa&#39;)]) &#123;</span><br><span class="line">              remote.identityFile &#x3D; id_rsa</span><br><span class="line"></span><br><span class="line">              &#x2F;&#x2F; SSH 服务是否正常关停</span><br><span class="line">              sshCommand remote: remote, sudo: true, command: &#39;bash &#x2F;data&#x2F;dianxue&#x2F;start.sh dianxue-web.jar prod status&#39;</span><br><span class="line">              &#x2F;&#x2F; SSH 服务启动</span><br><span class="line">              sshCommand remote: remote, sudo: true, command: &#39;bash &#x2F;data&#x2F;dianxue&#x2F;start.sh dianxue-web.jar prod start&#39;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          sh &#39;bash ci-deploy&#x2F;start.sh dianxue-web.jar prod healthCheck&#39;</span><br><span class="line">          echo &#39;服务启动成功.&#39;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      stage(&#39;更新接口文档&#39;) &#123;</span><br><span class="line">        steps &#123;</span><br><span class="line">          echo &#39;更新接口文档中...&#39;</span><br><span class="line">          sh &#39;bash ci-deploy&#x2F;start.sh dianxue-web.jar prod generateApiDoc&#39;</span><br><span class="line">          codingReleaseApiDoc(apiDocType: &#39;springfox&#39;, apiDocId: &#39;1&#39;, resultFile: &#39;ci-deploy&#x2F;dianxue-api-doc.json&#39;, cmd: &#39;ls -all ci-deploy&#39;)</span><br><span class="line">          echo &#39;接口文档已更新，发布完毕&#39;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>4.coding持续发布配置<ul>
+<li>git代码仓库关联</li>
+<li>服务器ssh rsa私钥生成，保存在coding中</li>
+<li>触发器配置</li>
+</ul>
+</li>
+</ul>
+<h3 id="七、easy-code-template-generator-自动生成基本功能的增删改查："><a href="#七、easy-code-template-generator-自动生成基本功能的增删改查：" class="headerlink" title="七、easy-code template/ generator 自动生成基本功能的增删改查："></a>七、easy-code template/ generator 自动生成基本功能的增删改查：</h3><ul>
+<li><p>1.idea plugin easy-code生成代码</p>
+<ul>
+<li>参考：<a href="https://gitee.com/makejava/EasyCode/wikis/pages" target="_blank" rel="noopener">https://gitee.com/makejava/EasyCode/wikis/pages</a></li>
+<li>原理：使用Velocity模版生成代码，可自定义修改代码生成模版</li>
+<li>使用<ul>
+<li>配置idea database 数据源</li>
+<li>配置table column 映射java bean规则</li>
+<li>编写修改调试Easy  Template:Velocity模板</li>
+<li>选择要生成的模板组，package、file路径，点击OK生成</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>2.generator</p>
+<ul>
+<li>原理：采用mapper.java 模板类的形式，读取db table info，对模板类中的占位符进行replace，逐个替换内容生成</li>
+<li>使用时，需要配置db，模板类、位置java类输出文件位置、package路径、java业务类后缀</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">db.url&#x3D;jdbc:mysql:&#x2F;&#x2F;60.205.177.220:3306&#x2F;information_schema?useUnicode&#x3D;true&amp;characterEncoding&#x3D;UTF-8</span><br><span class="line">db.username&#x3D;root</span><br><span class="line">db.pwd&#x3D;E989ce65b350</span><br><span class="line"></span><br><span class="line">#生成 entity | mapper | request | response | service 相关类时指定的包名</span><br><span class="line">class.entity_package_name&#x3D;com.dianxue.dao.entity</span><br><span class="line">class.mapper_package_name&#x3D;com.dianxue.dao.mapper</span><br><span class="line">class.request_package_name&#x3D;com.dianxue.teacher.api.admin</span><br><span class="line">class.response_package_name&#x3D;com.dianxue.teacher.api.admin</span><br><span class="line">class.service_package_name&#x3D;com.dianxue.teacher.core.service</span><br><span class="line"></span><br><span class="line">#生成 entity | mapper | request | response | service 相关类时类名的前后缀</span><br><span class="line">class.entity_class_name_prefix&#x3D;</span><br><span class="line">class.entity_class_name_suffix&#x3D;DO</span><br><span class="line">class.mapper_class_name_prefix&#x3D;</span><br><span class="line">class.mapper_class_name_suffix&#x3D;Mapper</span><br><span class="line">class.request_class_name_prefix&#x3D;</span><br><span class="line">class.request_class_name_suffix&#x3D;Request</span><br><span class="line">class.response_class_name_prefix&#x3D;</span><br><span class="line">class.response_class_name_suffix&#x3D;DTO</span><br><span class="line">class.service_class_name_prefix&#x3D;</span><br><span class="line">class.service_class_name_suffix&#x3D;ServiceImpl</span><br><span class="line">#暂未实现</span><br><span class="line">class.service_api_class_name_suffix&#x3D;Service</span><br><span class="line"></span><br><span class="line">#将生成的 entity | mapper | request | response | service 相关类写入到指定路径中</span><br><span class="line">file.entity_file_path&#x3D;&#x2F;Users&#x2F;libinghua&#x2F;Documents&#x2F;outsource&#x2F;student&#x2F;dao&#x2F;src&#x2F;main&#x2F;java&#x2F;com&#x2F;dianxue&#x2F;dao&#x2F;entity&#x2F;</span><br><span class="line">file.mapper_file_path&#x3D;&#x2F;Users&#x2F;libinghua&#x2F;Documents&#x2F;outsource&#x2F;student&#x2F;dao&#x2F;src&#x2F;main&#x2F;java&#x2F;com&#x2F;dianxue&#x2F;dao&#x2F;mapper&#x2F;</span><br><span class="line">file.request_file_path&#x3D;&#x2F;Users&#x2F;libinghua&#x2F;Documents&#x2F;outsource&#x2F;student&#x2F;teacher-api&#x2F;src&#x2F;main&#x2F;java&#x2F;com&#x2F;dianxue&#x2F;teacher&#x2F;api&#x2F;admin&#x2F;</span><br><span class="line">file.response_file_path&#x3D;&#x2F;Users&#x2F;libinghua&#x2F;Documents&#x2F;outsource&#x2F;student&#x2F;teacher-api&#x2F;src&#x2F;main&#x2F;java&#x2F;com&#x2F;dianxue&#x2F;teacher&#x2F;api&#x2F;admin&#x2F;</span><br><span class="line">file.service_file_path&#x3D;&#x2F;Users&#x2F;libinghua&#x2F;Documents&#x2F;outsource&#x2F;student&#x2F;teacher-service&#x2F;src&#x2F;main&#x2F;java&#x2F;com&#x2F;dianxue&#x2F;teacher&#x2F;core&#x2F;service&#x2F;</span><br><span class="line">#暂未实现</span><br><span class="line">file.service_api_file_path&#x3D;&#x2F;Users&#x2F;libinghua&#x2F;Documents&#x2F;outsource&#x2F;student&#x2F;teacher-service&#x2F;src&#x2F;main&#x2F;java&#x2F;com&#x2F;dianxue&#x2F;teacher&#x2F;core&#x2F;service&#x2F;</span><br><span class="line"></span><br><span class="line">#关联关系表后缀</span><br><span class="line">#rule.relation_table_suffix&#x3D;_relation</span><br><span class="line">rule.relation_table_suffix&#x3D;</span><br><span class="line">#外键字段后缀（如：订单商品表中有订单表的id ---&gt; order_id）</span><br><span class="line">rule.foreign_key_cloumn_suffix&#x3D;_id</span><br><span class="line"></span><br><span class="line">#mapper 类的模板文件</span><br><span class="line">file.generator_mapper_model_file_name&#x3D;generator_mapper_model.java</span><br></pre></td></tr></table></figure>
+<ul>
+<li>备注：目前还有很多地方不完善</li>
+</ul>
+<h3 id="八、-oss技术实现-图片、视频文件存取"><a href="#八、-oss技术实现-图片、视频文件存取" class="headerlink" title="八、 oss技术实现 图片、视频文件存取"></a>八、 oss技术实现 图片、视频文件存取</h3><blockquote>
+<p><a href="https://maqi.coding.net/p/dianxue-admin/wiki/11" target="_blank" rel="noopener">https://maqi.coding.net/p/dianxue-admin/wiki/11</a></p>
+</blockquote>
+<h3 id="九、-ocr实现图文解析"><a href="#九、-ocr实现图文解析" class="headerlink" title="九、 ocr实现图文解析"></a>九、 ocr实现图文解析</h3><blockquote>
+<p><a href="https://maqi.coding.net/p/dianxue-admin/wiki/9" target="_blank" rel="noopener">https://maqi.coding.net/p/dianxue-admin/wiki/9</a></p>
+</blockquote>
+<h3 id="十、-apache-poi实现office导入导出"><a href="#十、-apache-poi实现office导入导出" class="headerlink" title="十、 apache-poi实现office导入导出"></a>十、 apache-poi实现office导入导出</h3><blockquote>
+<p><a href="https://maqi.coding.net/p/dianxue-admin/wiki/13" target="_blank" rel="noopener">https://maqi.coding.net/p/dianxue-admin/wiki/13</a></p>
+</blockquote>
+<h3 id="十一、-solr-mongo-搭建题库搜索引擎"><a href="#十一、-solr-mongo-搭建题库搜索引擎" class="headerlink" title="十一、 solr+mongo 搭建题库搜索引擎"></a>十一、 solr+mongo 搭建题库搜索引擎</h3><blockquote>
+<p>solr后台：<a href="http://211.95.75.188:8081/solr/index.html#/dianxue_core/query" target="_blank" rel="noopener">http://211.95.75.188:8081/solr/index.html#/dianxue_core/query</a></p>
+</blockquote>
+<h3 id="十二、图片短信验证登陆能力"><a href="#十二、图片短信验证登陆能力" class="headerlink" title="十二、图片短信验证登陆能力"></a>十二、图片短信验证登陆能力</h3><blockquote>
+<p>待完善<br>接入文档：这是阿里云demo，使用验证码类型短信<br><a href="https://api.aliyun.com/new#/?product=Dysmsapi&amp;api=SendSms&amp;params=%7B%22RegionId%22%3A%22cn-hangzhou%22%2C%22PhoneNumbers%22%3A%22%22%2C%22SignName%22%3A%22%22%2C%22TemplateCode%22%3A%22%22%7D&amp;tab=DEMO&amp;lang=JAVA" target="_blank" rel="noopener">https://api.aliyun.com/new#/?product=Dysmsapi&amp;api=SendSms&amp;params=%7B%22RegionId%22%3A%22cn-hangzhou%22%2C%22PhoneNumbers%22%3A%22%22%2C%22SignName%22%3A%22%22%2C%22TemplateCode%22%3A%22%22%7D&amp;tab=DEMO&amp;lang=JAVA</a></p>
+</blockquote>
+<h3 id="十三、提现转账能力"><a href="#十三、提现转账能力" class="headerlink" title="十三、提现转账能力"></a>十三、提现转账能力</h3><blockquote>
+<p>待完善<br>接入文档：<a href="https://opendocs.alipay.com/open/270/105899" target="_blank" rel="noopener">https://opendocs.alipay.com/open/270/105899</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/09/03/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E%E7%AC%94%E8%AE%B0/" rel="prev" title="数据结构与算法之美笔记">
+      <i class="fa fa-chevron-left"></i> 数据结构与算法之美笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/09/13/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E6%89%B9%E5%88%A4%E6%80%A7%E6%80%9D%E7%BB%B4%E7%AC%94%E8%AE%B0/" rel="next" title="批判性思维笔记">
+      批判性思维笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#项目功能点目录"><span class="nav-text">项目功能点目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一、centos7-shell自动安装-mysql-redis-nginx"><span class="nav-text">一、centos7 shell自动安装 mysql+redis+nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、springboot项目模块化拆分"><span class="nav-text">二、springboot项目模块化拆分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、swager-knife4j-集成在线接口文档，接口调试"><span class="nav-text">三、swager&#x2F;knife4j 集成在线接口文档，接口调试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、shiro-jwt-redis-rbac实现菜单-按钮权限控制"><span class="nav-text">四、shiro+jwt+redis+rbac实现菜单+按钮权限控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、spring-acuator-集成服务监控"><span class="nav-text">五、spring-acuator-集成服务监控</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、coding-jenkins-shell-git-maven实现自动化发布：ci-deploy"><span class="nav-text">六、coding+jenkins+shell+git+maven实现自动化发布：ci-deploy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七、easy-code-template-generator-自动生成基本功能的增删改查："><span class="nav-text">七、easy-code template&#x2F; generator 自动生成基本功能的增删改查：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#八、-oss技术实现-图片、视频文件存取"><span class="nav-text">八、 oss技术实现 图片、视频文件存取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#九、-ocr实现图文解析"><span class="nav-text">九、 ocr实现图文解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#十、-apache-poi实现office导入导出"><span class="nav-text">十、 apache-poi实现office导入导出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#十一、-solr-mongo-搭建题库搜索引擎"><span class="nav-text">十一、 solr+mongo 搭建题库搜索引擎</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#十二、图片短信验证登陆能力"><span class="nav-text">十二、图片短信验证登陆能力</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#十三、提现转账能力"><span class="nav-text">十三、提现转账能力</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="李炳华"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">李炳华</p>
+  <div class="site-description" itemprop="description">博学而笃志,切问而近思。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wind-never-stop" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wind-never-stop" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://wind-never-stop.github.io/" title="https:&#x2F;&#x2F;wind-never-stop.github.io&#x2F;" rel="noopener" target="_blank">风不停息</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李炳华</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='65,105,225' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+  
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+
+
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.tohugo.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="匹配能力模型精简文字版   职级 后台开发知识 业务领域知识 开发能力 架构能力 业务运维 技术规划 执行力 沟通合作 方法论建设 知识传播 人才培养    P1.3 掌握基础知识 0 能开发 0 掌握基础运维知识 0 按时保质 团队中的个人贡献 0 0 0   P2.1 掌握基础知识 体验产品业务和流程 能开发 0 掌握基础运维知识 了解并执行规划能力 按时保质 团队中的个人贡献 总结归纳 部门">
+<meta property="og:type" content="article">
+<meta property="og:title" content="研发工程师能力定级模型">
+<meta property="og:url" content="https://www.tohugo.com/2021/11/19/%E7%A0%94%E5%8F%91%E5%B7%A5%E7%A8%8B%E5%B8%88%E8%83%BD%E5%8A%9B%E5%AE%9A%E7%BA%A7%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="风不停息">
+<meta property="og:description" content="匹配能力模型精简文字版   职级 后台开发知识 业务领域知识 开发能力 架构能力 业务运维 技术规划 执行力 沟通合作 方法论建设 知识传播 人才培养    P1.3 掌握基础知识 0 能开发 0 掌握基础运维知识 0 按时保质 团队中的个人贡献 0 0 0   P2.1 掌握基础知识 体验产品业务和流程 能开发 0 掌握基础运维知识 了解并执行规划能力 按时保质 团队中的个人贡献 总结归纳 部门">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-19T14:08:36.000Z">
+<meta property="article:modified_time" content="2021-11-19T14:08:36.000Z">
+<meta property="article:author" content="李炳华">
+<meta property="article:tag" content="技术成长">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.tohugo.com/2021/11/19/%E7%A0%94%E5%8F%91%E5%B7%A5%E7%A8%8B%E5%B8%88%E8%83%BD%E5%8A%9B%E5%AE%9A%E7%BA%A7%E6%A8%A1%E5%9E%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>研发工程师能力定级模型 | 风不停息</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"><a href="https://github.com/tao111222333444" target="_blank" rel="noopener" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">风不停息</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">凡是过往，皆为序章</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">20</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">31</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.tohugo.com/2021/11/19/%E7%A0%94%E5%8F%91%E5%B7%A5%E7%A8%8B%E5%B8%88%E8%83%BD%E5%8A%9B%E5%AE%9A%E7%BA%A7%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="李炳华">
+      <meta itemprop="description" content="博学而笃志,切问而近思。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风不停息">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          研发工程师能力定级模型
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-19 22:08:36" itemprop="dateCreated datePublished" datetime="2021-11-19T22:08:36+08:00">2021-11-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="匹配能力模型精简文字版"><a href="#匹配能力模型精简文字版" class="headerlink" title="匹配能力模型精简文字版"></a>匹配能力模型精简文字版</h3><table>
+<thead>
+<tr>
+<th>职级</th>
+<th>后台开发知识</th>
+<th>业务领域知识</th>
+<th>开发能力</th>
+<th>架构能力</th>
+<th>业务运维</th>
+<th>技术规划</th>
+<th>执行力</th>
+<th>沟通合作</th>
+<th>方法论建设</th>
+<th>知识传播</th>
+<th>人才培养</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P1.3</td>
+<td>掌握基础知识</td>
+<td>0</td>
+<td>能开发</td>
+<td>0</td>
+<td>掌握基础运维知识</td>
+<td>0</td>
+<td>按时保质</td>
+<td>团队中的个人贡献</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>P2.1</td>
+<td>掌握基础知识</td>
+<td>体验产品业务和流程</td>
+<td>能开发</td>
+<td>0</td>
+<td>掌握基础运维知识</td>
+<td>了解并执行规划能力</td>
+<td>按时保质</td>
+<td>团队中的个人贡献</td>
+<td>总结归纳</td>
+<td>部门内分享</td>
+<td>0</td>
+</tr>
+<tr>
+<td>P2.2</td>
+<td>精通开发语言熟知基础库</td>
+<td>体验产品业务和流程</td>
+<td>能独立负责复杂模块的研发工作</td>
+<td>记录整理</td>
+<td>具备容错容灾意识</td>
+<td>了解并执行规划能力</td>
+<td>主动思考灵活应变</td>
+<td>团队中的个人贡献</td>
+<td>总结归纳</td>
+<td>部门内分享</td>
+<td>帮助新员工</td>
+</tr>
+<tr>
+<td>P2.3</td>
+<td>精通开发语言熟知基础库</td>
+<td>熟悉对应产品的特性、需求等</td>
+<td>能独立负责复杂模块的研发工作</td>
+<td>记录整理</td>
+<td>具备容错容灾意识</td>
+<td>单模块级别的中短期规划能力</td>
+<td>主动思考灵活应变</td>
+<td>参与团队的组织和分工</td>
+<td>提炼规律</td>
+<td>跨部门或平台内经验与知识的分享</td>
+<td>辅导初级员工</td>
+</tr>
+<tr>
+<td>P3.1</td>
+<td>理解原理</td>
+<td>理解产品核心体验</td>
+<td>能主导或核心参与中大型项目</td>
+<td>模块设计</td>
+<td>主导系统容灾容错设计实施</td>
+<td>单模块级别的中短期规划能力</td>
+<td>目标拆解资源协调</td>
+<td>团队的核心</td>
+<td>提炼规律</td>
+<td>跨部门或平台内经验与知识的分享</td>
+<td>辅导初级员工</td>
+</tr>
+<tr>
+<td>P3.2</td>
+<td>理解原理</td>
+<td>理解产品核心体验</td>
+<td>能主导或核心参与中大型项目</td>
+<td>子系统设计</td>
+<td>主导系统容灾容错设计实施</td>
+<td>单系统级别的中长期规划能力</td>
+<td>目标拆解资源协调</td>
+<td>团队的核心</td>
+<td>方法论沉淀</td>
+<td>主导开发BG级课程</td>
+<td>资深导师，专业辅导</td>
+</tr>
+<tr>
+<td>P3.3</td>
+<td>熟练掌握后台架构设计方法论</td>
+<td>理解产品核心体验</td>
+<td>能担任大型项目的技术负责人</td>
+<td>完整系统设计</td>
+<td>主导系统容灾容错设计实施</td>
+<td>单个领域复杂业务多系统的中长期规划与落地</td>
+<td>确定目标勇于担当</td>
+<td>把握团队的方向</td>
+<td>方法论沉淀</td>
+<td>主导开发公司级课程</td>
+<td>资深导师，专业辅导</td>
+</tr>
+<tr>
+<td>P4.1</td>
+<td>行业领先</td>
+<td>对业界多个业务有深入理解</td>
+<td>能担任大型项目的技术负责人</td>
+<td>完整系统设计</td>
+<td>业务可用性保障</td>
+<td>单个领域复杂业务多系统的中长期规划与落地</td>
+<td>确定目标勇于担当</td>
+<td>把握团队的方向</td>
+<td>创新性方法论与工具的开发</td>
+<td>主导开发公司级课程</td>
+<td>有意识培养骨干人才</td>
+</tr>
+</tbody></table>
+<a id="more"></a>
+
+<h3 id="匹配能力模型数字版"><a href="#匹配能力模型数字版" class="headerlink" title="匹配能力模型数字版"></a>匹配能力模型数字版</h3><table>
+<thead>
+<tr>
+<th>职级</th>
+<th>后台开发知识</th>
+<th>业务领域知识</th>
+<th>开发能力</th>
+<th>架构能力</th>
+<th>业务运维</th>
+<th>技术规划</th>
+<th>执行力</th>
+<th>沟通合作</th>
+<th>方法论建设</th>
+<th>知识传播</th>
+<th>人才培养</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P1.3</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>P2.1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>P2.2</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>P2.3</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>P3.1</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>P3.2</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>P3.3</td>
+<td>4</td>
+<td>3</td>
+<td>4</td>
+<td>4</td>
+<td>3</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>3</td>
+<td>4</td>
+<td>3</td>
+</tr>
+<tr>
+<td>P4.1</td>
+<td>5</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+</tr>
+</tbody></table>
+<h3 id="匹配能力模型完整文字版"><a href="#匹配能力模型完整文字版" class="headerlink" title="匹配能力模型完整文字版"></a>匹配能力模型完整文字版</h3><table>
+<thead>
+<tr>
+<th>职级</th>
+<th>后台开发知识</th>
+<th>业务领域知识</th>
+<th>开发能力</th>
+<th>架构能力</th>
+<th>业务运维</th>
+<th>技术规划</th>
+<th>执行力</th>
+<th>沟通合作</th>
+<th>方法论建设</th>
+<th>知识传播</th>
+<th>人才培养</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P1.3</td>
+<td>关键词：掌握基础知识行为标准：了解Linux操作系统基本原理，熟悉常用的Linux命令及工具，熟悉Shell脚本编写掌握C/C++/Java/PHP编程，熟悉开发语言SDK和API了解TCP/IP、HTTP协议，了解网络编程知识，了解常见的数据序列化方案掌握进程及线程开发模式，能够清晰判断进程线程的使用场景了解常用数据结构和算法，能够知道不同场景下的最优方案掌握MySQL的基本操作命令，了解MySQL的配置参数意义和存储引擎特性了解常用的Web服务器如Nginx、Apache的基本配置</td>
+<td>0</td>
+<td>关键词：能开发行为标准：* 掌握一门主流的开发语言，具备扎实的CS基础；* 了解常用的测试、诊断调优工具，能够独立解决分析某个模块的具体问题；* 会用常用的开发工具，能够书写模块级别的开发文档；* 了解基本的开发流程，并应用在日常项目开发中</td>
+<td>0</td>
+<td>关键词：掌握基础运维知识行为标准：· 理解系统层次，了解业务系统架构，掌握基础运维知识和工具· 遵守各种运维标准操作，能快速响应监控告警处理</td>
+<td>0</td>
+<td>关键词：按时保质行为标准：能够严格按开发范围要求及预定计划保证质量完成所接手的工作任务。</td>
+<td>关键词：团队中的个人贡献行为标准：能够理解自己在团队中的职责，融入团队善于聆听他人，并能清晰的表达自己的想法完成在团队中的任务，成为可靠的团队一员。</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>P2.1</td>
+<td>关键词：掌握基础知识行为标准：了解Linux操作系统基本原理，熟悉常用的Linux命令及工具，熟悉Shell脚本编写掌握C/C++/Java/PHP编程，熟悉开发语言SDK和API了解TCP/IP、HTTP协议，了解网络编程知识，了解常见的数据序列化方案掌握进程及线程开发模式，能够清晰判断进程线程的使用场景了解常用数据结构和算法，能够知道不同场景下的最优方案掌握MySQL的基本操作命令，了解MySQL的配置参数意义和存储引擎特性了解常用的Web服务器如Nginx、Apache的基本配置</td>
+<td>关键词：体验产品业务和流程行为标准：主动体验所参与研发的产品，了解产品所提供的服务和典型业务流程和触发场景</td>
+<td>关键词：能开发行为标准：* 掌握一门主流的开发语言，具备扎实的CS基础；* 了解常用的测试、诊断调优工具，能够独立解决分析某个模块的具体问题；* 会用常用的开发工具，能够书写模块级别的开发文档；* 了解基本的开发流程，并应用在日常项目开发中</td>
+<td>0</td>
+<td>关键词：掌握基础运维知识行为标准：· 理解系统层次，了解业务系统架构，掌握基础运维知识和工具· 遵守各种运维标准操作，能快速响应监控告警处理</td>
+<td>关键词：了解并执行规划能力行为标准：对所参与的模块，了解近期的系统规划，并能够做出相应的开发计划</td>
+<td>关键词：按时保质行为标准：能够严格按开发范围要求及预定计划保证质量完成所接手的工作任务。</td>
+<td>关键词：团队中的个人贡献行为标准：能够理解自己在团队中的职责，融入团队善于聆听他人，并能清晰的表达自己的想法完成在团队中的任务，成为可靠的团队一员。</td>
+<td>关键词：总结归纳行为标准：能够定期进行个人工作总结，不断优化工作</td>
+<td>关键词：部门内分享行为标准：能在部门内部进行经验与知识的分享与交流</td>
+<td>0</td>
+</tr>
+<tr>
+<td>P2.2</td>
+<td>关键词：精通开发语言&amp;熟知基础库行为标准：熟练掌握所使用的开发语言，熟悉开发语言的sdk源码及sdk api设计思路熟练掌握各类设计模式，能够根据不同场景选择最优的设计方案熟知各类常见框架中间件的优缺点、适用场景并能切实运用熟练掌握基于tcp/ip、http等协议的高性能网络编程知识和方法熟练掌握常用缓存系统的设计原理，能够准确选择缓存方案熟练掌握MySQL配置优化策略，以及分库分表、主从同步等等设计方法</td>
+<td>关键词：体验产品业务和流程行为标准：主动体验所参与研发的产品，了解产品所提供的服务和典型业务流程和触发场景</td>
+<td>关键词：能独立负责复杂模块的研发工作行为标准：* 熟练掌握1~2门主流开发语言，具备良好的编码风格和代码注释；* 熟练掌握常用的测试、诊断调优工具，有过项目级别问题追查、分析和解决经验；* 熟练使用常用开发工具，书写系统级别的开发文档, 能够指导低级别工程师完成开发文档的书写和review； * 熟悉并实践基本的开发流程, 能够指导低级别工程师遵守相应的开发流程；* 熟悉常用的项目管理和协作工具，能够对项目进行拆分，并使用管理工具进行管理，推动项目按时完成交付。</td>
+<td>关键词：记录整理行为标准：*能够记录整理会议或者沟通中模块实现的方法、流程、算法等，并且据此完成相关设计文档的编写</td>
+<td>关键词：具备容错容灾意识行为标准：· 了解有损、柔性、灰度等可用性保障原则，掌握各类常用的容错容灾原则与方法· 主动完善监控，能够从运维角度对业务架构设计提出意见</td>
+<td>关键词：了解并执行规划能力行为标准：对所参与的模块，了解近期的系统规划，并能够做出相应的开发计划</td>
+<td>关键词：主动思考&amp;灵活应变行为标准：能够积极接受一定难度的工作任务，并按要求完成；针对给定的任务，能够准确理解上级所交代的工作，主动思考如何完成任务，并找到最优解决方案；灵活应变以保证任务的执行，并能不断改进积极寻找办法提高工作成果或工作效率;积极拥抱变化。</td>
+<td>关键词：团队中的个人贡献行为标准：能够理解自己在团队中的职责，融入团队善于聆听他人，并能清晰的表达自己的想法完成在团队中的任务，成为可靠的团队一员。</td>
+<td>关键词：总结归纳行为标准：能够定期进行个人工作总结，不断优化工作</td>
+<td>关键词：部门内分享行为标准：能在部门内部进行经验与知识的分享与交流</td>
+<td>关键词：帮助新员工行为标准：能够指导或帮助新同事完成工作任务</td>
+</tr>
+<tr>
+<td>P2.3</td>
+<td>关键词：精通开发语言&amp;熟知基础库行为标准：熟练掌握所使用的开发语言，熟悉开发语言的sdk源码及sdk api设计思路熟练掌握各类设计模式，能够根据不同场景选择最优的设计方案熟知各类常见框架中间件的优缺点、适用场景并能切实运用熟练掌握基于tcp/ip、http等协议的高性能网络编程知识和方法熟练掌握常用缓存系统的设计原理，能够准确选择缓存方案熟练掌握MySQL配置优化策略，以及分库分表、主从同步等等设计方法</td>
+<td>关键词：熟悉对应产品的特性、需求等行为标准：熟悉对应产品的特性、需求，有一些理解，对产品、架构的未来发展有一定的了解</td>
+<td>关键词：能独立负责复杂模块的研发工作行为标准：* 熟练掌握1~2门主流开发语言，具备良好的编码风格和代码注释；* 熟练掌握常用的测试、诊断调优工具，有过项目级别问题追查、分析和解决经验；* 熟练使用常用开发工具，书写系统级别的开发文档, 能够指导低级别工程师完成开发文档的书写和review； * 熟悉并实践基本的开发流程, 能够指导低级别工程师遵守相应的开发流程；* 熟悉常用的项目管理和协作工具，能够对项目进行拆分，并使用管理工具进行管理，推动项目按时完成交付。</td>
+<td>关键词：记录整理行为标准：*能够记录整理会议或者沟通中模块实现的方法、流程、算法等，并且据此完成相关设计文档的编写</td>
+<td>关键词：具备容错容灾意识行为标准：· 了解有损、柔性、灰度等可用性保障原则，掌握各类常用的容错容灾原则与方法· 主动完善监控，能够从运维角度对业务架构设计提出意见</td>
+<td>关键词：单模块级别的中短期规划能力行为标准：能够对所负责的事情做中短期的规划</td>
+<td>关键词：主动思考&amp;灵活应变行为标准：能够积极接受一定难度的工作任务，并按要求完成；针对给定的任务，能够准确理解上级所交代的工作，主动思考如何完成任务，并找到最优解决方案；灵活应变以保证任务的执行，并能不断改进积极寻找办法提高工作成果或工作效率;积极拥抱变化。</td>
+<td>关键词：参与团队的组织和分工 行为标准：能够在BU范围内组织小的团队在团队中可以明确团队及个人的目标辅助其他团员达成目标对于团队的事务，能够积极和团队内成员或合作团队沟通协调，并有效推进同理心，在沟通中能够换位思考在团队内进行知识的分享和交流</td>
+<td>关键词：提炼规律行为标准：能从工作中总结与提炼共性的规律，把岗位的工作心得或案例沉淀总结并输出成果，形成可复制的经验与模式，提升工作效率</td>
+<td>关键词：跨部门或平台内经验与知识的分享行为标准：积极参加部门间或平台内工作相关的交流和研讨，并进行经验与知识的分享及学习</td>
+<td>关键词：辅导初级员工行为标准：能够辅导1-2个初级员工，进行随时辅导，帮助改进工作效率，提升能力发展</td>
+</tr>
+<tr>
+<td>P3.1</td>
+<td>关键词：理解原理行为标准：深刻理解系统服务在实际运行过程中所经过各环节的相关知识、原理，如硬件（CPU、内存、存储架构等）、内核（进程调度、内存管理等）、应用（设计模式、进程模型、同步异步设计）、网络（协议栈、拓扑结构、收敛比等），清楚各个部分对实际系统服务的影响，对性能优化和系统扩展有清晰的思路</td>
+<td>关键词：理解产品核心体验行为标准：对个人负责业务的未来发展（包括产品、技术架构等）有一定了解，并能指导平时工作。深入理解产品核心体验上，在技术方案和产品体验上，能和产品团队一起进行trade off。</td>
+<td>关键词：能主导或核心参与中大型项目行为标准：* 精通1~2门主流开发语言；* 熟悉1-2种常见的软件工程开发模式，领会其要领，并在具体项目中实践过；* 主导或深入参与过一个中型项目研发工作，或者在一个大型项目中研发其中的核心子项目，担任其中研发负责人；* 能够协同团队完成简单系统的研发工作，包括需求调研，设计，开发，文档，测试，上线等；能够协调系统各模块的研发进度，推动系统的按时交付。</td>
+<td>关键词：模块设计行为标准：<em>能够组织会议，沟通需求，并且在此基础上完成模块的架构设计以及相关文档的输出</em>能够进行合理的内存、CPU和网络等资源预估<em>能够根据相关资源的限制设计合理的架构</em>在架构设计中能够合理的考虑到数据一致性、容灾以及备份的问题*在设计中考虑到系统的可运维性</td>
+<td>关键词：主导系统容灾容错设计实施行为标准：· 能够根据系统架构、资源状况进行系统容错容灾设计并主导实施· 能够设计系统的柔性、有损和灰度机制，推动系统监控准确度、覆盖度的完善· 能对问题进行快速定位、分析解决</td>
+<td>关键词：单模块级别的中短期规划能力行为标准：能够对所负责的事情做中短期的规划</td>
+<td>关键词：目标拆解&amp;资源协调行为标准：能够承担有挑战性项目或工作任务，并按要求高质量完成；针对给定的问题目标，能够全面分析抓住任务关键因素；灵活应变以保证任务的执行，并能不断改进积极寻找办法提高工作成果或工作效率;能协调多方资源确保完成。</td>
+<td>关键词：团队的核心 行为标准：能够组织跨BG的合作团队能够从多赢的角度制定团队目标，并合理分工能够有效的化解团队中的矛盾，维持和提升团队的凝聚力创建平等、开放的沟通渠道和环境能够为团队争取充分的资源激励团队对团队的目标达成负责</td>
+<td>关键词：提炼规律行为标准：能从工作中总结与提炼共性的规律，把岗位的工作心得或案例沉淀总结并输出成果，形成可复制的经验与模式，提升工作效率</td>
+<td>关键词：跨部门或平台内经验与知识的分享行为标准：积极参加部门间或平台内工作相关的交流和研讨，并进行经验与知识的分享及学习</td>
+<td>关键词：辅导初级员工行为标准：能够辅导1-2个初级员工，进行随时辅导，帮助改进工作效率，提升能力发展</td>
+</tr>
+<tr>
+<td>关键词：跨部门或平台内经验与知识的分享行为标准：积极参加部门间或平台内工作相关的交流和研讨，并进行经验与知识的分享及学习P3.2</td>
+<td>关键词：理解原理行为标准：深刻理解系统服务在实际运行过程中所经过各环节的相关知识、原理，如硬件（CPU、内存、存储架构等）、内核（进程调度、内存管理等）、应用（设计模式、进程模型、同步异步设计）、网络（协议栈、拓扑结构、收敛比等），清楚各个部分对实际系统服务的影响，对性能优化和系统扩展有清晰的思路</td>
+<td>关键词：理解产品核心体验行为标准：对个人负责业务的未来发展（包括产品、技术架构等）有一定了解，并能指导平时工作。深入理解产品核心体验上，在技术方案和产品体验上，能和产品团队一起进行trade off。</td>
+<td>关键词：能主导或核心参与中大型项目行为标准：* 精通1~2门主流开发语言；* 熟悉1-2种常见的软件工程开发模式，领会其要领，并在具体项目中实践过；* 主导或深入参与过一个中型项目研发工作，或者在一个大型项目中研发其中的核心子项目，担任其中研发负责人；* 能够协同团队完成简单系统的研发工作，包括需求调研，设计，开发，文档，测试，上线等；能够协调系统各模块的研发进度，推动系统的按时交付。</td>
+<td>关键词：子系统设计行为标准：<em>能够完成多方需求的收集，形成技术需求文档</em>能够选择合理的架构完成中型以上项目的架构设计(多进程，多模块，多服务器）<em>能够预估项目所用的所有资源以及项目的工作量，并且估计项目的瓶颈和风险，选择最合理的方案</em>能够把项目分解的层次分明，具有清晰的接口定义，可实现，同时能够给出测试方案<em>考虑合理的地域或者机房分布，系统的灾备能力，运维发布以及扩展性</em>能够充分的估算出系统可达的性能，能够设计出高性能、高并发、海量数据处理的系统<em>能够对公司内部系统的架构有一定深度的认识和了解</em>掌握海量服务的思想理念，能够权衡技术方案、研发节奏和产品体验，做出合理取舍</td>
+<td>关键词：主导系统容灾容错设计实施行为标准：· 能够根据系统架构、资源状况进行系统容错容灾设计并主导实施· 能够设计系统的柔性、有损和灰度机制，推动系统监控准确度、覆盖度的完善· 能对问题进行快速定位、分析解决</td>
+<td>关键词：单系统级别的中长期规划能力行为标准：在所负责的方向上能够结合业务做中长期的技术规划，同时能够给出切实的落地计划并带领团队实施规划</td>
+<td>关键词：目标拆解&amp;资源协调行为标准：能够承担有挑战性项目或工作任务，并按要求高质量完成；针对给定的问题目标，能够全面分析抓住任务关键因素；灵活应变以保证任务的执行，并能不断改进积极寻找办法提高工作成果或工作效率;能协调多方资源确保完成。</td>
+<td>关键词：团队的核心 行为标准：能够组织跨BG的合作团队能够从多赢的角度制定团队目标，并合理分工能够有效的化解团队中的矛盾，维持和提升团队的凝聚力创建平等、开放的沟通渠道和环境能够为团队争取充分的资源激励团队对团队的目标达成负责</td>
+<td>关键词：方法论沉淀行为标准：通过标杆研究及内部实践，在本专业领域内沉淀出切实有效的方法论,并推广应用</td>
+<td>关键词：主导开发BG级课程行为标准：主动引导团队成员一起进行知识分享，营造主动学习、分享和共同进步的团队氛围主导开发部门内或BG级课程，参与公司级课程开发</td>
+<td>关键词：资深导师，专业辅导行为标准：资深导师，能够结合人员的不同特质和经历，采取不同的辅导策略，在指导过程中注重传授思维理念和工作技巧</td>
+</tr>
+<tr>
+<td>P3.3</td>
+<td>关键词：熟练掌握后台架构设计方法论行为标准：深刻理解高并发高可用系统设计方法理论，并且能够在实际场景中灵活运用熟练掌握IO、多线程、网络协议、数据存储、分布式相关框架中间件的设计原理，并且能够根据业务场景做定制开发熟练掌握柔性可用、过载保护、灰度升级等各类海量用户访问的架构设计方法和适用场景</td>
+<td>关键词：理解产品核心体验行为标准：对个人负责业务的未来发展（包括产品、技术架构等）有一定了解，并能指导平时工作。深入理解产品核心体验上，在技术方案和产品体验上，能和产品团队一起进行trade off。</td>
+<td>关键词：能担任大型项目的技术负责人行为标准：* 具备良好的业界技术视野，精通软件工程方法论，能对现有工作方法，所用系统和工具在流程、使用方法等层面提出建设性意见；* 担任过大型项目的技术负责人。有完整的从立项到上线的项目经验；* 能够带领团队完成复杂系统的研发工作，包括需求调研，设计，开发，文档，测试，上线等；能够主导项目的进度和交付。</td>
+<td>关键词：完整系统设计行为标准：* 能够对业界架构有深入了解, 技术视野宽* 能够跟踪业务对架构的需求, 能够前瞻地改进架构.* 能够完成完整系统的架构设计，并且能够在业界处于领先地位.* 设计的系统有足够的可扩展性</td>
+<td>关键词：主导系统容灾容错设计实施行为标准：· 能够根据系统架构、资源状况进行系统容错容灾设计并主导实施· 能够设计系统的柔性、有损和灰度机制，推动系统监控准确度、覆盖度的完善· 能对问题进行快速定位、分析解决</td>
+<td>关键词：单个领域复杂业务多系统的中长期规划与落地行为标准：能理解技术知识的原理；理解和体验核心产品的意图；主导中大型项目，负责系统的设计实施，具备中长期的系统规划能力；能对目标进行分解协调各方资源，积累经验并沉淀方法论；主导BG级课程，对员工进行专业的辅导；</td>
+<td>关键词：确定目标&amp;勇于担当行为标准：勇于承担难度大、有挑战性的工作任务，并能够直面问题敢于承担风险和责任；针对某一个业务领域，能迅速抓住关键目标对于工作上的困难，能够协调各方采取有效办法解决技术或设计问题，推动工作计划按要求前进直到完成最终目标。</td>
+<td>关键词：把握团队的方向 行为标准：能够组织、领导公司级的团队为团队制定发展方向具有较好的领导力</td>
+<td>关键词：方法论沉淀行为标准：通过标杆研究及内部实践，在本专业领域内沉淀出切实有效的方法论,并推广应用</td>
+<td>关键词：主导开发公司级课程行为标准：积极策划、组织、推动跨平台工作相关的交流和研讨，建立信息共享平台主导开发跨部门或公司级课程并进行授课培训</td>
+<td>关键词：资深导师，专业辅导行为标准：资深导师，能够结合人员的不同特质和经历，采取不同的辅导策略，在指导过程中注重传授思维理念和工作技巧</td>
+</tr>
+<tr>
+<td>P4.1</td>
+<td>关键词：行业领先行为标准：掌握业内在高并发高可用高性能方面的优秀做法和经验，并能根据部门业务实际特点和需求采取积极措施，达到行业领先水平</td>
+<td>关键词：对业界多个业务有深入理解行为标准：对业界相关多个行业方向有深入了解，在整体上可以和产品团队一起沟通并推动产品持续正向发展</td>
+<td>关键词：能担任大型项目的技术负责人行为标准：* 具备良好的业界技术视野，精通软件工程方法论，能对现有工作方法，所用系统和工具在流程、使用方法等层面提出建设性意见；* 担任过大型项目的技术负责人。有完整的从立项到上线的项目经验；* 能够带领团队完成复杂系统的研发工作，包括需求调研，设计，开发，文档，测试，上线等；能够主导项目的进度和交付。</td>
+<td>关键词：完整系统设计行为标准：* 能够对业界架构有深入了解, 技术视野宽* 能够跟踪业务对架构的需求, 能够前瞻地改进架构.* 能够完成完整系统的架构设计，并且能够在业界处于领先地位.* 设计的系统有足够的可扩展性</td>
+<td>关键词：业务可用性保障行为标准：· 针对某业务领域，主导建立完整的可用性保障机制和相应的流程· 能够主导业务架构设计，根据业务发展、资源条件进行架构演进设计</td>
+<td>关键词：单个领域复杂业务多系统的中长期规划与落地行为标准：能理解技术知识的原理；理解和体验核心产品的意图；主导中大型项目，负责系统的设计实施，具备中长期的系统规划能力；能对目标进行分解协调各方资源，积累经验并沉淀方法论；主导BG级课程，对员工进行专业的辅导；</td>
+<td>关键词：确定目标&amp;勇于担当行为标准：勇于承担难度大、有挑战性的工作任务，并能够直面问题敢于承担风险和责任；针对某一个业务领域，能迅速抓住关键目标对于工作上的困难，能够协调各方采取有效办法解决技术或设计问题，推动工作计划按要求前进直到完成最终目标。</td>
+<td>关键词：把握团队的方向 行为标准：能够组织、领导公司级的团队为团队制定发展方向具有较好的领导力</td>
+<td>关键词：创新性方法论与工具的开发行为标准：具备对某个领域发展最前沿的了解和分析见解，掌握最前沿的方法论与工具能够开创性地进行一些创新性方法论与工具的研究与开发，对公司相关专业领域提升起到积极作用</td>
+<td>关键词：主导开发公司级课程行为标准：积极策划、组织、推动跨平台工作相关的交流和研讨，建立信息共享平台主导开发跨部门或公司级课程并进行授课培训</td>
+<td>关键词：有意识培养骨干人才行为标准：有人才培养的意识，主动关注后备人才的识别与发展，并采取相应行动</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>能力框架</th>
+<th>能力项</th>
+<th>关键词</th>
+<th>行为标准</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>专业知识</td>
+<td>后台开发知识</td>
+<td>理解原理</td>
+<td>深刻理解系统服务在实际运行过程中所经过各环节的相关知识、原理，如硬件（CPU、内存、存储架构等）、内核（进程调度、内存管理等）、应用（设计模式、进程模型、同步异步设计）、网络（协议栈、拓扑结构、收敛比等），清楚各个部分对实际系统服务的影响，对性能优化和系统扩展有清晰的思路</td>
+</tr>
+<tr>
+<td>专业知识</td>
+<td>业务领域知识</td>
+<td>理解产品核心体验</td>
+<td>对个人负责业务的未来发展（包括产品、技术架构等）有一定了解，并能指导平时工作。深入理解产品核心体验上，在技术方案和产品体验上，能和产品团队一起进行trade off。</td>
+</tr>
+<tr>
+<td>专业技能</td>
+<td>开发能力</td>
+<td>能主导或核心参与中大型项目</td>
+<td>. 精通1~2门主流开发语言；熟悉1-2种常见的软件工程开发模式，领会其要领，并在具体项目中实践过；主导或深入参与过一个中型项目研发工作，或者在一个大型项目中研发其中的核心子项目，担任其中研发负责人能够协同团队完成简单系统的研发工作，包括需求调研，设计，开发，文档，测试，上线等；能够协调系统各模块的研发进度，推动系统的按时交付。</td>
+</tr>
+<tr>
+<td>专业技能</td>
+<td>架构能力</td>
+<td>模块设计</td>
+<td>.能够组织会议，沟通需求，并且在此基础上完成模块的架构设计以及相关文档的输出.能够进行合理的内存、CPU和网络等资源预估.能够根据相关资源的限制设计合理的架构.在架构设计中能够合理的考虑到数据一致性、容灾以及备份的问题.在设计中考虑到系统的可运维性</td>
+</tr>
+<tr>
+<td>专业技能</td>
+<td>业务运维</td>
+<td>主导系统容灾容错设计实施</td>
+<td>· 能够根据系统架构、资源状况进行系统容错容灾设计并主导实施· 能够设计系统的柔性、有损和灰度机制，推动系统监控准确度、覆盖度的完善· 能对问题进行快速定位、分析解决</td>
+</tr>
+<tr>
+<td>通用能力</td>
+<td>技术规划</td>
+<td>单系统模块级别的中短期规划能力</td>
+<td>能够对所负责的事情做中短期的规划</td>
+</tr>
+<tr>
+<td>通用能力</td>
+<td>执行力</td>
+<td>目标级别目标拆解资源协调</td>
+<td>能够承担有挑战性项目或工作任务，并按要求高质量完成；针对给定的问题目标，能够全面分析抓住任务关键因素；善于应变以保证任务的执行，并能不断改进积极寻找办法提高工作成果或工作效率;能协调多方资源确保完成。</td>
+</tr>
+<tr>
+<td>通用能力</td>
+<td>沟通合作</td>
+<td>团队的核心</td>
+<td>能够组织跨BG的合作团队能够从多赢的角度制定团队目标，并合理分工能够有效的化解团队中的矛盾，维持和提升团队的凝聚力创建平等、开放的沟通渠道和环境能够为团队争取充分的资源激励团队对团队的目标达成负责</td>
+</tr>
+<tr>
+<td>专业影响力</td>
+<td>方法论建设</td>
+<td>提炼规律</td>
+<td>能从工作中总结与提炼共性的规律，把岗位的工作心得或案例沉淀总结并输出成果，形成可复制的经验与模式，提升工作效率</td>
+</tr>
+<tr>
+<td>专业影响力</td>
+<td>知识传播</td>
+<td>跨部门或平台内经验与知识的分享</td>
+<td>积极参加部门间或平台内工作相关的交流和研讨，并进行经验与知识的分享及学习</td>
+</tr>
+<tr>
+<td>专业影响力</td>
+<td>人才培养</td>
+<td>辅导初级员工</td>
+<td>能够辅导1-2个初级员工，进行随时辅导，帮助改进工作效率，提升能力发展</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%8A%80%E6%9C%AF%E6%88%90%E9%95%BF/" rel="tag"># 技术成长</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/19/%E6%B4%BB%E5%8A%A8%E6%8A%BD%E5%A5%96%E6%A6%9C%E5%8D%95%E5%AE%9E%E7%8E%B0/" rel="prev" title="活动抽奖榜单实现">
+      <i class="fa fa-chevron-left"></i> 活动抽奖榜单实现
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/19/%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E6%8E%A8%E8%BF%9B%E6%A0%87%E5%87%86/" rel="next" title="后端项目推进标准">
+      后端项目推进标准 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#匹配能力模型精简文字版"><span class="nav-text">匹配能力模型精简文字版</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#匹配能力模型数字版"><span class="nav-text">匹配能力模型数字版</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#匹配能力模型完整文字版"><span class="nav-text">匹配能力模型完整文字版</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="李炳华"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">李炳华</p>
+  <div class="site-description" itemprop="description">博学而笃志,切问而近思。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wind-never-stop" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wind-never-stop" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://wind-never-stop.github.io/" title="https:&#x2F;&#x2F;wind-never-stop.github.io&#x2F;" rel="noopener" target="_blank">风不停息</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李炳华</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='65,105,225' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+  
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+</body>
+</html>

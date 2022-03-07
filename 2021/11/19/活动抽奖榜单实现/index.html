@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+
+
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.tohugo.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="背景 提供给用户的高性能接口 返回活动当天抽中礼物价值总和靠前的 用户排行榜 返回活动当天自己每日抽中的礼物价值总和  流程 查询redis key&#x3D;activityId+day 存在返回 不存在 查询es 排名 + 50预留排名，接口异常、数据异常则抛错结束 正常返回 异步写入redis，key&#x3D;activityId+day 返回数据     查询上榜用户冻结状态，接口异常兜底为非冻结 过滤冻结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="活动抽奖榜单实现">
+<meta property="og:url" content="https://www.tohugo.com/2021/11/19/%E6%B4%BB%E5%8A%A8%E6%8A%BD%E5%A5%96%E6%A6%9C%E5%8D%95%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="风不停息">
+<meta property="og:description" content="背景 提供给用户的高性能接口 返回活动当天抽中礼物价值总和靠前的 用户排行榜 返回活动当天自己每日抽中的礼物价值总和  流程 查询redis key&#x3D;activityId+day 存在返回 不存在 查询es 排名 + 50预留排名，接口异常、数据异常则抛错结束 正常返回 异步写入redis，key&#x3D;activityId+day 返回数据     查询上榜用户冻结状态，接口异常兜底为非冻结 过滤冻结">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-19T13:03:58.000Z">
+<meta property="article:modified_time" content="2021-11-19T13:03:58.000Z">
+<meta property="article:author" content="李炳华">
+<meta property="article:tag" content="redis缓存">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.tohugo.com/2021/11/19/%E6%B4%BB%E5%8A%A8%E6%8A%BD%E5%A5%96%E6%A6%9C%E5%8D%95%E5%AE%9E%E7%8E%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>活动抽奖榜单实现 | 风不停息</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"><a href="https://github.com/tao111222333444" target="_blank" rel="noopener" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">风不停息</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">凡是过往，皆为序章</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">20</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">31</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.tohugo.com/2021/11/19/%E6%B4%BB%E5%8A%A8%E6%8A%BD%E5%A5%96%E6%A6%9C%E5%8D%95%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="李炳华">
+      <meta itemprop="description" content="博学而笃志,切问而近思。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风不停息">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          活动抽奖榜单实现
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-19 21:03:58" itemprop="dateCreated datePublished" datetime="2021-11-19T21:03:58+08:00">2021-11-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><ul>
+<li>提供给用户的高性能接口</li>
+<li>返回活动当天抽中礼物价值总和靠前的 用户排行榜</li>
+<li>返回活动当天自己每日抽中的礼物价值总和</li>
+</ul>
+<h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><ul>
+<li>查询redis key=activityId+day 存在返回</li>
+<li>不存在<ul>
+<li>查询es 排名 + 50预留排名，<code>接口异常、数据异常则抛错结束</code></li>
+<li>正常返回<ul>
+<li>异步写入redis，key=activityId+day</li>
+<li>返回数据</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>查询上榜用户冻结状态，接口异常<code>兜底为非冻结</code></li>
+<li>过滤冻结用户后返回榜单前N</li>
+<li>查询活动自己每日抽中的礼物价值总和</li>
+</ul>
+<h3 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h3><p><code>请求量过大</code>，<code>缓存失效间隙</code>场景会出现<code>耗时尖刺</code>，部分用户体验较差</p>
+<h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3><blockquote>
+<p>提供定时主动刷新缓存机制</p>
+</blockquote>
+<p>使用<code>定时任务</code>获取es数据，定时刷新redis值，保证用户查询时，缓存中的值均为最新榜单，消除<code>耗时尖刺</code></p>
+<a id="more"></a>
+
+<h3 id="20220306补充"><a href="#20220306补充" class="headerlink" title="20220306补充"></a>20220306补充</h3><ul>
+<li><p>一、活动抽奖排行榜展示：</p>
+<ul>
+<li>1、背景：迭代比心app；内部的使用币种是比心币，当时背景是做一个抽奖活动，主要的流程是：在app中消耗比心币进行抽奖。这个抽奖得到的礼物总金额是与原始花费金额不等值的。我们现在要做的就是统计每天抽中礼物价值最高的前5个用户，形成一个排行榜单，进行展示。</li>
+<li>2、我的职责：我的职责就是负责实现一个高性能高并发的排行榜单查询接口，当前是通过redis缓存来实现的，当请求进来时，会先查询缓存，未命中缓存，再查询ES组装数据，返回给客户端，并异步写入redis<br>这个里面使用了redis 的String数据结果，key是活动的id+当天日期，设置过期时间为5秒，value存的是Json String（uid，rank，totalGiftMoney）</li>
+<li>3、问题：<ul>
+<li>1）当redis中没有数据时需要去查es,如果es查询出现异常和写redis异常，需要抛出异常，不能将空的数据更新到redis中，否则会出现一段时间内查询时，榜单都为空的情况  </li>
+<li>2）如果请求量过大，缓存失效的时刻，会出现耗时尖刺。此时可以用定时任务去更新redis中的数据</li>
+<li>3）redis key 为啥要引入时间？引入时间作为key的一部分，是要兼容从第二天的零点开始重新累计榜单，59分存入缓存 04 00重新累计   5秒：可以容忍的不一致的最长时间</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>二、如何实现高并发|数据接口</p>
+<ul>
+<li>1、读接口：通过缓存实现,<ul>
+<li>1）缓存位置：pc web客户端缓存 client -&gt; CDN -&gt; 接入层缓存nginx-&gt; 服务应用缓存 jvm 内存-guava-&gt;分布式缓存（redis）-&gt;原始真实数据 db、es</li>
+<li>2）缓存模式：<ul>
+<li>业务侧缓存<br>  request-&gt;cache-&gt;真实数据源 db\es</li>
+<li>缓存当成独立数据源-组件化<br>  request-&gt;cacheManager<br>  查询缓存未命中是，才更新缓存<pre><code>cache-&gt;真实数据源</code></pre>  写入真实数据时,立即写入缓存<pre><code>真实数据发生变化-&gt;binlog-&gt;变更立即写入cache
+定时任务去更新redis中的数据</code></pre>  异步写缓存</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>2、写接口：队列数<br>  打赏场景，高性能抽奖</li>
+</ul>
+</li>
+<li><p>三、redis基础知识<br>  key<br>  value</p>
+<pre><code>String 
+List
+Hash
+Set
+SortSet</code></pre></li>
+<li><p>四、知识接受路径：形成长期记忆<br>1d -&gt; 2d 回顾下-&gt;7d回顾-&gt;1月</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/redis%E7%BC%93%E5%AD%98/" rel="tag"># redis缓存</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/12/2020-2021%E5%9B%9E%E9%A1%BE%E6%80%BB%E7%BB%93/" rel="prev" title="2020-2021回顾总结">
+      <i class="fa fa-chevron-left"></i> 2020-2021回顾总结
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/19/%E7%A0%94%E5%8F%91%E5%B7%A5%E7%A8%8B%E5%B8%88%E8%83%BD%E5%8A%9B%E5%AE%9A%E7%BA%A7%E6%A8%A1%E5%9E%8B/" rel="next" title="研发工程师能力定级模型">
+      研发工程师能力定级模型 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#流程"><span class="nav-text">流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不足"><span class="nav-text">不足</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化"><span class="nav-text">优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#20220306补充"><span class="nav-text">20220306补充</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="李炳华"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">李炳华</p>
+  <div class="site-description" itemprop="description">博学而笃志,切问而近思。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wind-never-stop" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wind-never-stop" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://wind-never-stop.github.io/" title="https:&#x2F;&#x2F;wind-never-stop.github.io&#x2F;" rel="noopener" target="_blank">风不停息</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李炳华</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='65,105,225' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+  
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+
+
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.tohugo.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前言 本文只是用于速查请求方法和响应码而写的，详细细节请转到 MDN Web Doce 查看。  1.请求方法   方法 作用    GET GET方法请求一个指定资源的表示形式. 使用GET的请求应该只被用于获取数据   POST POST方法用于将实体提交到指定的资源，通常导致在服务器上的状态变化或副作用   PUT PUT方法用请求有效载荷替换目标资源的所有当前表示   HEAD HEAD方">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Http请求方法及响应码">
+<meta property="og:url" content="https://www.tohugo.com/2020/03/01/web/Http%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95%E5%8F%8A%E5%93%8D%E5%BA%94%E7%A0%81/index.html">
+<meta property="og:site_name" content="风不停息">
+<meta property="og:description" content="前言 本文只是用于速查请求方法和响应码而写的，详细细节请转到 MDN Web Doce 查看。  1.请求方法   方法 作用    GET GET方法请求一个指定资源的表示形式. 使用GET的请求应该只被用于获取数据   POST POST方法用于将实体提交到指定的资源，通常导致在服务器上的状态变化或副作用   PUT PUT方法用请求有效载荷替换目标资源的所有当前表示   HEAD HEAD方">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-01T04:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-01T04:00:00.000Z">
+<meta property="article:author" content="李炳华">
+<meta property="article:tag" content="Http">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.tohugo.com/2020/03/01/web/Http%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95%E5%8F%8A%E5%93%8D%E5%BA%94%E7%A0%81/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Http请求方法及响应码 | 风不停息</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"><a href="https://github.com/tao111222333444" target="_blank" rel="noopener" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">风不停息</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">凡是过往，皆为序章</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">20</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">31</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.tohugo.com/2020/03/01/web/Http%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95%E5%8F%8A%E5%93%8D%E5%BA%94%E7%A0%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="李炳华">
+      <meta itemprop="description" content="博学而笃志,切问而近思。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风不停息">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Http请求方法及响应码
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-01 12:00:00" itemprop="dateCreated datePublished" datetime="2020-03-01T12:00:00+08:00">2020-03-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><blockquote>
+<p>本文只是用于速查请求方法和响应码而写的，详细细节请转到 <a href="https://developer.mozilla.org/zh-CN/docs/Web" target="_blank" rel="noopener">MDN Web Doce</a> 查看。</p>
+</blockquote>
+<h3 id="1-请求方法"><a href="#1-请求方法" class="headerlink" title="1.请求方法"></a>1.请求方法</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GET</td>
+<td>GET方法请求一个指定资源的表示形式. 使用GET的请求应该只被用于获取数据</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>POST方法用于将实体提交到指定的资源，通常导致在服务器上的状态变化或副作用</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>PUT方法用请求有效载荷替换目标资源的所有当前表示</td>
+</tr>
+<tr>
+<td>HEAD</td>
+<td>HEAD方法请求一个与GET请求的响应相同的响应，但没有响应体</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>DELETE方法删除指定的资源</td>
+</tr>
+<tr>
+<td>CONNECT</td>
+<td>CONNECT方法建立一个到由目标资源标识的服务器的隧道</td>
+</tr>
+<tr>
+<td>OPTIONS</td>
+<td>OPTIONS方法用于描述目标资源的通信选项</td>
+</tr>
+<tr>
+<td>TRACE</td>
+<td>TRACE方法沿着到目标资源的路径执行一个消息环回测试</td>
+</tr>
+<tr>
+<td>PATCH</td>
+<td>PATCH方法用于对资源应用部分修改</td>
+</tr>
+</tbody></table>
+<a id="more"></a>
+<h3 id="2-响应码"><a href="#2-响应码" class="headerlink" title="2.响应码"></a>2.响应码</h3><table>
+<thead>
+<tr>
+<th>响应码</th>
+<th>状态描述</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>100</td>
+<td><code>Continue</code></td>
+<td>HTTP <strong><code>100 Continue</code></strong> 信息型状态响应码表示目前为止一切正常, 客户端应该继续请求, 如果已完成请求则忽略.</td>
+</tr>
+<tr>
+<td>101</td>
+<td>Switching Protocol</td>
+<td>HTTP  <code>101 Switching Protocol</code>（协议切换）状态码表示服务器应客户端升级协议的请求（<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Upgrade" target="_blank" rel="noopener" title="Currently only available in English (US)">Upgrade (en-US)</a>请求头）正在切换协议。</td>
+</tr>
+<tr>
+<td>103</td>
+<td><code>Early Hints</code></td>
+<td><strong><code>103 Early Hints</code></strong> 信息状态响应码，一般和 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Link" target="_blank" rel="noopener"><code>Link</code></a> header（首部）一起使用，来允许用户在服务器还在准备响应数据的时候预加载一些资源。</td>
+</tr>
+<tr>
+<td>200</td>
+<td><code>OK</code></td>
+<td>状态码 <strong><code>200 OK</code></strong> 表明请求已经成功. 默认情况下状态码为200的响应可以被缓存。<br>不同请求方式对于请求成功的意义如下:<br>- <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/GET" target="_blank" rel="noopener"><code>GET</code></a>: 已经取得资源，并将资源添加到响应的消息体中。<br>- <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/HEAD" target="_blank" rel="noopener"><code>HEAD</code></a>: 响应的消息体为头部信息。<br>- <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/POST" target="_blank" rel="noopener"><code>POST</code></a>: 响应的消息体中包含此次请求的结果。<br>- <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/TRACE" target="_blank" rel="noopener"><code>TRACE</code></a>: 响应的消息体中包含服务器接收到的请求信息。<br><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/PUT" target="_blank" rel="noopener"><code>PUT</code></a> 和 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/DELETE" target="_blank" rel="noopener"><code>DELETE</code></a> 的请求成功通常并不是响应<code>200</code> <code>OK</code>的状态码而是 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/204" target="_blank" rel="noopener"><code>204</code></a> <code>No Content</code> 表示无内容(或者  <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/201" target="_blank" rel="noopener"><code>201</code></a>  <code>Created</code>表示一个资源首次被创建成功)。</td>
+</tr>
+<tr>
+<td>201</td>
+<td><code>Created</code></td>
+<td>在HTTP协议中，<strong><code>201 Created</code></strong> 是一个代表成功的应答状态码，表示请求已经被成功处理，并且创建了新的资源。新的资源在应答返回之前已经被创建。同时新增的资源会在应答消息体中返回，其地址或者是原始请求的路径，或者是 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Location" target="_blank" rel="noopener"><code>Location</code></a> 首部的值。<br>这个状态码的常规使用场景是作为 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/POST" target="_blank" rel="noopener"><code>POST</code></a> 请求的返回值。</td>
+</tr>
+<tr>
+<td>202</td>
+<td>Accepted</td>
+<td>响应状态码 <strong><code>202 Accepted</code></strong>  表示服务器端已经收到请求消息，但是尚未进行处理。但是对于请求的处理确实无保证的，即稍后无法通过 HTTP 协议给客户端发送一个异步请求来告知其请求的处理结果。这个状态码被设计用来将请求交由另外一个进程或者服务器来进行处理，或者是对请求进行批处理的情形。</td>
+</tr>
+<tr>
+<td>203</td>
+<td><code>Non-Authoritative Information</code></td>
+<td>在 HTTP 协议中，响应状态码 <strong><code>203 Non-Authoritative Information</code></strong>  表示请求已经成功被响应，但是获得的负载与源头服务器的状态码为 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/200" target="_blank" rel="noopener"><code>200</code></a> (<code>OK</code>)的响应相比，经过了拥有转换功能的 <a href="https://developer.mozilla.org/zh-CN/docs/Glossary/Proxy_server" target="_blank" rel="noopener">proxy</a> （代理服务器）的修改。<br>The <code>203</code> 状态码有点类似于 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Warning" target="_blank" rel="noopener"><code>Warning</code></a> 首部的 <code>[214](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Warning#warning_codes)</code>（Transformation Applied）警告码，后者的优势在于可以应用于任何状态码的响应之中。</td>
+</tr>
+<tr>
+<td>204</td>
+<td>No Content</td>
+<td>HTTP <strong><code>204 No Content</code></strong>成功状态响应码，表示该请求已经成功了，但是客户端客户不需要离开当前页面。默认情况下 204 响应是可缓存的。一个 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/ETag" target="_blank" rel="noopener"><code>ETag</code></a> 标头包含在此类响应中。 <br>使用惯例是，在 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/PUT" target="_blank" rel="noopener"><code>PUT</code></a> 请求中进行资源更新，但是不需要改变当前展示给用户的页面，那么返回 204 No Content。如果创建了资源，则返回 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/201" target="_blank" rel="noopener"><code>201</code></a> <code>Created</code> 。如果应将页面更改为新更新的页面，则应改用 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/200" target="_blank" rel="noopener"><code>200</code></a> 。</td>
+</tr>
+<tr>
+<td>205</td>
+<td><code>Reset Content</code></td>
+<td>在 HTTP 协议中，响应状态码 <strong><code>205 Reset Content</code></strong> 用来通知客户端重置文档视图，比如清空表单内容、重置 canvas 状态或者刷新用户界面。</td>
+</tr>
+<tr>
+<td>206</td>
+<td><code>Partial Content</code></td>
+<td>HTTP <strong><code>206 Partial Content</code></strong> 成功状态响应代码表示请求已成功，并且主体包含所请求的数据区间，该数据区间是在请求的 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Range" target="_blank" rel="noopener"><code>Range</code></a> 首部指定的。<br>如果只包含一个数据区间，那么整个响应的 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Content-Type" target="_blank" rel="noopener"><code>Content-Type</code></a> 首部的值为所请求的文件的类型，同时包含  <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Content-Range" target="_blank" rel="noopener"><code>Content-Range</code></a> 首部。<br>如果包含多个数据区间，那么整个响应的  <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Content-Type" target="_blank" rel="noopener"><code>Content-Type</code></a>  首部的值为 <code>multipart/byteranges</code> ，其中一个片段对应一个数据区间，并提供  <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Content-Range" target="_blank" rel="noopener"><code>Content-Range</code></a> 和 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Content-Type" target="_blank" rel="noopener"><code>Content-Type</code></a>  描述信息。</td>
+</tr>
+<tr>
+<td>300</td>
+<td>Multiple Choices</td>
+<td><code>300 Multiple Choices</code> 是一个用来表示重定向的响应状态码，表示该请求拥有多种可能的响应。用户代理或者用户自身应该从中选择一个。由于没有如何进行选择的标准方法，这个状态码极少使用。<br>假如服务器可以提供一个优先选择，那么它应该生成一个  <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Location" target="_blank" rel="noopener"><code>Location</code></a> 首部。</td>
+</tr>
+<tr>
+<td>301</td>
+<td><code>Moved Permanently</code></td>
+<td>HTTP <code>301</code><strong><code>永久重定向</code></strong> 说明请求的资源已经被移动到了由 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Location" target="_blank" rel="noopener"><code>Location</code></a> 头部指定的url上，是固定的不会再改变。搜索引擎会根据该响应修正。<br>尽管标准要求浏览器在收到该响应并进行重定向时不应该修改http method和body，但是有一些浏览器可能会有问题。所以最好是在应对<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/GET" target="_blank" rel="noopener"><code>GET</code></a> 或 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/HEAD" target="_blank" rel="noopener"><code>HEAD</code></a> 方法时使用301，其他情况使用<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/308" target="_blank" rel="noopener"><code>308</code></a> 来替代301。</td>
+</tr>
+<tr>
+<td>302</td>
+<td><code>Found</code></td>
+<td>HTTP <code>302</code><strong><code>Found</code></strong> 重定向状态码表明请求的资源被暂时的移动到了由<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Location" target="_blank" rel="noopener"><code>Location</code></a> 头部指定的 URL 上。浏览器会重定向到这个URL， 但是搜索引擎不会对该资源的链接进行更新 (In SEO-speak, it is said that the link-juice is not sent to the new URL)。<br>即使规范要求浏览器在重定向时保证请求方法和请求主体不变，但并不是所有的用户代理都会遵循这一点，你依然可以看到有缺陷的软件的存在。所以推荐仅在响应 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/GET" target="_blank" rel="noopener"><code>GET</code></a> 或 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/HEAD" target="_blank" rel="noopener"><code>HEAD</code></a> 方法时采用 302 状态码，而在其他时候使用 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/307" target="_blank" rel="noopener"><code>307</code></a> Temporary Redirect 来替代，因为在这些场景下方法变换是明确禁止的。<br>在确实需要将重定向请求的方法转换为 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/GET" target="_blank" rel="noopener"><code>GET</code></a>的场景下，可以使用 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/303" target="_blank" rel="noopener"><code>303</code></a> See Other。例如在使用 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/PUT" target="_blank" rel="noopener"><code>PUT</code></a> 方法进行文件上传操作时，需要返回确认信息（例如“你已经成功上传了xyz”）而不是上传的资源本身，就可以使用这个状态码。</td>
+</tr>
+<tr>
+<td>303</td>
+<td>See Other</td>
+<td>HTTP <strong>303 See Other</strong> 重定向状态码，通常作为 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/PUT" target="_blank" rel="noopener"><code>PUT</code></a> 或 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/POST" target="_blank" rel="noopener"><code>POST</code></a> 操作的返回结果，它表示重定向链接指向的不是新上传的资源，而是另外一个页面，比如消息确认页面或上传进度页面。而请求重定向页面的方法要总是使用 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/GET" target="_blank" rel="noopener"><code>GET</code></a>。</td>
+</tr>
+<tr>
+<td>304</td>
+<td><code>Not Modified</code></td>
+<td>HTTP <strong><code>304 Not Modified</code></strong> 说明无需再次传输请求的内容，也就是说可以使用缓存的内容。这通常是在一些安全的方法（<a href="https://developer.mozilla.org/zh-CN/docs/Glossary/safe" target="_blank" rel="noopener">safe</a>），例如<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/GET" target="_blank" rel="noopener"><code>GET</code></a> 或<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/HEAD" target="_blank" rel="noopener"><code>HEAD</code></a> 或在请求中附带了头部信息： <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/If-None-Match" target="_blank" rel="noopener"><code>If-None-Match</code></a> 或<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/If-Modified-Since" target="_blank" rel="noopener"><code>If-Modified-Since</code></a>。<br>如果是 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/200" target="_blank" rel="noopener"><code>200</code></a> <code>OK</code> ，响应会带有头部 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Cache-Control" target="_blank" rel="noopener"><code>Cache-Control</code></a>, <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Content-Location" target="_blank" rel="noopener"><code>Content-Location</code></a>, <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Date" target="_blank" rel="noopener"><code>Date</code></a>, <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/ETag" target="_blank" rel="noopener"><code>ETag</code></a>, <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Expires" target="_blank" rel="noopener"><code>Expires</code></a>，和 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Vary" target="_blank" rel="noopener"><code>Vary</code></a>.</td>
+</tr>
+<tr>
+<td>307</td>
+<td>Temporary Redirect</td>
+<td><a href="https://developer.mozilla.org/zh-CN/docs/Glossary/HTTP" target="_blank" rel="noopener">HTTP</a> <code>307 Temporary Redirect</code>，临时重定向响应状态码，表示请求的资源暂时地被移动到了响应的 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Location" target="_blank" rel="noopener"><code>Location</code></a> 首部所指向的 URL 上。<br>原始请求中的请求方法和消息主体会在重定向请求中被重用。在确实需要将重定向请求的方法转换为 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/GET" target="_blank" rel="noopener"><code>GET</code></a> 的场景下，可以考虑使用 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/303" target="_blank" rel="noopener"><code>303 See Other</code></a> 状态码。例如，在使用 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/PUT" target="_blank" rel="noopener"><code>PUT</code></a> 方法进行文件上传操作时，如果需要返回一条确认信息（例如“你已经成功上传了 XYZ”），而不是返回上传的资源本身，就可以使用这个状态码。<br>状态码 <code>307</code> 与 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/302" target="_blank" rel="noopener"><code>302</code></a> 之间的唯一区别在于，当发送重定向请求的时候，<code>307</code> 状态码可以确保请求方法和消息主体不会发生变化。如果使用 <code>302</code> 响应状态码，一些旧客户端会错误地将请求方法转换为 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/GET" target="_blank" rel="noopener"><code>GET</code></a>：也就是说，在 Web 中，如果使用了 <code>GET</code> 以外的请求方法，且返回了 <code>302</code> 状态码，则重定向后的请求方法是不可预测的；但如果使用 <code>307</code> 状态码，之后的请求方法就是可预测的。对于 <code>GET</code> 请求来说，两种情况没有区别。</td>
+</tr>
+<tr>
+<td>308</td>
+<td>Permanent Redirect</td>
+<td>在 HTTP 协议中， <strong>308 Permanent Redirect</strong>（永久重定向）是表示重定向的响应状态码，说明请求的资源已经被永久的移动到了由 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Location" target="_blank" rel="noopener"><code>Location</code></a> 首部指定的 URL 上。浏览器会进行重定向，同时搜索引擎也会更新其链接（用 SEO 的行话来说，意思是“链接汁”（link juice）被传递到了新的 URL）。<br>在重定向过程中，请求方法和消息主体不会发生改变，然而在返回 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/301" target="_blank" rel="noopener"><code>301</code></a> 状态码的情况下，请求方法有时候会被客户端错误地修改为 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/GET" target="_blank" rel="noopener" title="This is a link to an unwritten page"><code>GET</code></a> 方法。</td>
+</tr>
+<tr>
+<td>400</td>
+<td><code>Bad Request</code></td>
+<td>HTTP <strong>400 <code>Bad Request</code></strong> 响应状态码表示由于语法无效，服务器无法理解该请求。 客户端不应该在未经修改的情况下重复此请求。</td>
+</tr>
+<tr>
+<td>401</td>
+<td><code>Unauthorized</code></td>
+<td>状态码 <strong><code>401 Unauthorized</code></strong> 代表客户端错误，指的是由于缺乏目标资源要求的身份验证凭证，发送的请求未得到满足。<br>这个状态码会与   <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/WWW-Authenticate" target="_blank" rel="noopener"><code>WWW-Authenticate</code></a> 首部一起发送，其中包含有如何进行验证的信息。<br>这个状态类似于 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/403" target="_blank" rel="noopener"><code>403</code></a>， 但是在该情况下，依然可以进行身份验证。</td>
+</tr>
+<tr>
+<td>402</td>
+<td><code>Payment Required</code></td>
+<td><strong><code>402 Payment Required</code></strong> 是一个被保留使用的非标准客户端错误状态响应码。<br>有时， 这个状态码表明直到客户端付费之后请求才会被处理。402状态码被创建最初目的是用于数字现金或微型支付系统， 表明客户端请求的内容只有付费之后才能获取。目前还不存在标准的使用约定， 不同的实体可以在不同的环境下使用。</td>
+</tr>
+<tr>
+<td>403</td>
+<td><code>Forbidden</code></td>
+<td>状态码 <strong><code>403 Forbidden</code></strong> 代表客户端错误，指的是服务器端有能力处理该请求，但是拒绝授权访问。<br>这个状态类似于 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/401" target="_blank" rel="noopener"><code>401</code></a>，但进入该状态后不能再继续进行验证。该访问是长期禁止的，并且与应用逻辑密切相关（例如不正确的密码）。</td>
+</tr>
+<tr>
+<td>404</td>
+<td><code>Not Found</code></td>
+<td>状态码 <code>404</code><strong><code>Not Found</code></strong> 代表客户端错误，指的是服务器端无法找到所请求的资源。返回该响应的链接通常称为坏链（broken link）或死链（dead link），它们会导向链接出错处理(<a href="https://en.wikipedia.org/wiki/Link_rot" target="_blank" rel="noopener">link rot</a>)页面。<br>404 状态码并不能说明请求的资源是临时还是永久丢失。如果服务器知道该资源是永久丢失，那么应该返回 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/410" target="_blank" rel="noopener"><code>410</code></a> (Gone) 而不是 404 。</td>
+</tr>
+<tr>
+<td>405</td>
+<td><code>Method Not Allowed</code></td>
+<td>状态码 <code>405 Method Not Allowed</code> 表明服务器禁止了使用当前 HTTP 方法的请求。</td>
+</tr>
+<tr>
+<td>406</td>
+<td><code>Not Acceptable</code></td>
+<td>HTTP 协议中的 <code>406</code><strong><code>Not Acceptable</code></strong> 状态码表示客户端错误，指代服务器端无法提供与  <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Accept-Charset" target="_blank" rel="noopener"><code>Accept-Charset</code></a> 以及 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Accept-Language" target="_blank" rel="noopener"><code>Accept-Language</code></a> 消息头指定的值相匹配的响应。<br>在实际应用中，这个错误状态码极少使用：不是给用户返回一个晦涩难懂（且难以更正）的错误状态码，而是将相关的消息头忽略，同时给用户提供一个看得见摸得着的页面。这种做法基于这样一个假设：即便是不能达到用户十分满意，也强于返回错误状态码。<br>如果服务器返回了这个错误状态码，那么消息体中应该包含所能提供的资源表现形式的列表，允许用户手动进行选择。</td>
+</tr>
+<tr>
+<td>407</td>
+<td>Proxy Authentication Required</td>
+<td>状态码 <strong><code>407 Proxy Authentication Required</code></strong> 代表客户端错误，指的是由于缺乏位于浏览器与可以访问所请求资源的服务器之间的代理服务器（<a href="https://developer.mozilla.org/zh-CN/docs/Glossary/Proxy_server" target="_blank" rel="noopener">proxy server</a> ）要求的身份验证凭证，发送的请求尚未得到满足。<br>这个状态码会与 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Proxy-Authenticate" target="_blank" rel="noopener"><code>Proxy-Authenticate</code></a> 首部一起发送，其中包含有如何进行验证的信息。</td>
+</tr>
+<tr>
+<td>408</td>
+<td><code>Request Timeout</code></td>
+<td>响应状态码 <strong><code>408 Request Timeout</code></strong> 表示服务器想要将没有在使用的连接关闭。一些服务器会在空闲连接上发送此信息，<strong>即便是在客户端没有发送任何请求的情况下</strong>。<br>服务器应该在此类响应中将 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Connection" target="_blank" rel="noopener"><code>Connection</code></a> 首部的值设置为 “close”，因为  <code>408</code> 意味着服务器已经决定将连接关闭，而不是继续等待。 <br>这类响应出现的比较频繁，源于一些浏览器——例如  Chrome, Firefox 27+, 或者 IE9 等——使用 HTTP 协议中的预连接机制来加速上网体验。同时应该注意到，某些服务器会直接关闭连接，而不发送此类消息。</td>
+</tr>
+<tr>
+<td>409</td>
+<td>Conflict</td>
+<td>响应状态码 <code>409 Conflict</code> 表示请求与服务器端目标资源的当前状态相冲突。<br>冲突最有可能发生在对 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/PUT" target="_blank" rel="noopener"><code>PUT</code></a> 请求的响应中。例如，当上传文件的版本比服务器上已存在的要旧，从而导致版本冲突的时候，那么就有可能收到状态码为 409 的响应。</td>
+</tr>
+<tr>
+<td>410</td>
+<td>Gone</td>
+<td>HTTP <code>410</code><strong><code>丢失</code></strong> 说明请求的目标资源在原服务器上不存在了，并且是永久性的丢失。如果不清楚是否为永久或临时的丢失，应该使用<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/404" target="_blank" rel="noopener"><code>404</code></a></td>
+</tr>
+<tr>
+<td>411</td>
+<td><code>Length Required</code></td>
+<td>响应状态码 <code>411</code><strong><code>Length Required</code></strong>  属于客户端错误，表示由于缺少确定的<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Content-Length" target="_blank" rel="noopener"><code>Content-Length</code></a> 首部字段，服务器拒绝客户端的请求。<br>注意，按照规范，当使用分块模式传输数据的时候， <code>Content-Length</code> 首部是不存在的，但是需要在每一个分块的开始添加该分块的长度，用十六进制数字表示。参见 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Transfer-Encoding" target="_blank" rel="noopener"><code>Transfer-Encoding</code></a> 获取更多细节信息。</td>
+</tr>
+<tr>
+<td>412</td>
+<td>Precondition Failed</td>
+<td>在 HTTP 协议中，响应状态码 <strong>412 Precondition Failed</strong>（先决条件失败）表示客户端错误，意味着对于目标资源的访问请求被拒绝。这通常发生于采用除 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/GET" target="_blank" rel="noopener"><code>GET</code></a> 和 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/HEAD" target="_blank" rel="noopener"><code>HEAD</code></a> 之外的方法进行条件请求时，由首部字段 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/If-Unmodified-Since" target="_blank" rel="noopener"><code>If-Unmodified-Since</code></a> 或 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/If-None-Match" target="_blank" rel="noopener"><code>If-None-Match</code></a> 规定的先决条件不成立的情况下。这时候，请求的操作——通常是上传或修改文件——无法执行，从而返回该错误状态码。</td>
+</tr>
+<tr>
+<td>413</td>
+<td>Payload Too Large</td>
+<td>响应状态码 <code>413 Payload Too Large</code> 表示请求主体的大小超过了服务器愿意或有能力处理的限度，服务器可能会（may）关闭连接以防止客户端继续发送该请求。<br>如果“超出限度”是暂时性的，服务器应该返回  <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Retry-After" target="_blank" rel="noopener"><code>Retry-After</code></a> 首部字段，说明这是暂时性的，以及客户端可以在什么时间（after what time）后重试。</td>
+</tr>
+<tr>
+<td>414</td>
+<td>URI Too Long</td>
+<td>响应码 <code>414 URI Too Long</code> 表示客户端所请求的 URI 超过了服务器允许的范围。<br>以下是造成这种罕见情况的几种可能原因：<br>- 当客户端误将 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/POST" target="_blank" rel="noopener"><code>POST</code></a> 请求当作 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/GET" target="_blank" rel="noopener"><code>GET</code></a> 请求时，会带有一个较长的查询字符串(query)；<br>- 当客户端堕入重定向循环黑洞时，例如，指向自身后缀的重定向URI前缀(a redirected URI prefix that points to a suffix of itself)；<br>- 当客户端对服务器进行攻击，试图寻找潜在的漏洞时。</td>
+</tr>
+<tr>
+<td>415</td>
+<td>Unsupported Media Type</td>
+<td><code>415 Unsupported Media Type</code> 是一种HTTP协议的错误状态代码，表示服务器由于不支持其有效载荷的格式，从而拒绝接受客户端的请求。<br>格式问题的出现有可能源于客户端在 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Content-Type" target="_blank" rel="noopener"><code>Content-Type</code></a> 或 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Content-Encoding" target="_blank" rel="noopener"><code>Content-Encoding</code></a> 首部中指定的格式，也可能源于直接对负载数据进行检测的结果。</td>
+</tr>
+<tr>
+<td>416</td>
+<td><code>Range Not Satisfiable</code></td>
+<td>HTTP <code>416</code><strong><code>Range Not Satisfiable</code></strong> 错误状态码意味着服务器无法处理所请求的数据区间。最常见的情况是所请求的数据区间不在文件范围之内，也就是说，<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Range" target="_blank" rel="noopener"><code>Range</code></a> 首部的值，虽然从语法上来说是没问题的，但是从语义上来说却没有意义。<br><code>416</code> 响应报文包含一个  <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Content-Range" target="_blank" rel="noopener"><code>Content-Range</code></a> 首部，提示无法满足的数据区间（用星号 * 表示），后面紧跟着一个“/”，再后面是当前资源的长度。例如：Content-Range: */12777<br>遇到这一错误状态码时，浏览器一般有两种策略：要么终止操作（例如，一项中断的下载操作被认为是不可恢复的），要么再次请求整个文件。</td>
+</tr>
+<tr>
+<td>417</td>
+<td><code>Expectation Failed</code></td>
+<td>HTTP协议中的  <strong><code>417 Expectation Failed</code></strong> 状态码表示客户端错误，意味着服务器无法满足 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Expect" target="_blank" rel="noopener"><code>Expect</code></a> 请求消息头中的期望条件。<br>参考 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Expect" target="_blank" rel="noopener"><code>Expect</code></a> 消息头获得更多的相关细节信息。</td>
+</tr>
+<tr>
+<td>418</td>
+<td><code>I&#39;m a teapot</code></td>
+<td>HTTP <strong><code>418 I&#39;m a teapot</code></strong> 客户端错误响应代码表示服务器拒绝冲泡咖啡，因为它是个茶壶。<br>该错误是超文本咖啡壶控制协议的参考，和 1998 年愚人节的玩笑。</td>
+</tr>
+<tr>
+<td>422</td>
+<td>Unprocessable Entity</td>
+<td>HTTP 422 状态码表示服务器理解请求实体的内容类型，并且请求实体的语法是正确的，但是服务器无法处理所包含的指令。</td>
+</tr>
+<tr>
+<td>425</td>
+<td>Too Early</td>
+<td>状态码 <code>425 Too Early</code> 代表服务器不愿意冒风险来处理该请求，原因是处理该请求可能会被“重放”，从而造成潜在的<a href="https://zh.wikipedia.org/zh-cn/%E9%87%8D%E6%94%BE%E6%94%BB%E5%87%BB" target="_blank" rel="noopener">重放攻击</a>。</td>
+</tr>
+<tr>
+<td>426</td>
+<td>Upgrade Required</td>
+<td><code>426 Upgrade Required</code> 是一种HTTP协议的错误状态代码，表示服务器拒绝处理客户端使用当前协议发送的请求，但是可以接受其使用升级后的协议发送的请求。<br>服务器会在响应中使用 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Upgrade" target="_blank" rel="noopener" title="Currently only available in English (US)">Upgrade (en-US)</a> 首部来指定要求的协议。</td>
+</tr>
+<tr>
+<td>428</td>
+<td>Precondition Required</td>
+<td>在HTTP协议中，响应状态码  <code>428 Precondition Required</code> 表示服务器端要求发送<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests" target="_blank" rel="noopener">条件</a>请求。<br>一般的，这种情况意味着必要的条件首部——如 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/If-Match" target="_blank" rel="noopener"><code>If-Match</code></a> ——的<strong>缺失。</strong>.<br>当一个条件首部的值<strong>不能匹配</strong>服务器端的状态的时候，应答的状态码应该是 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/412" target="_blank" rel="noopener"><code>412</code></a> <code>Precondition Failed</code>，前置条件验证失败。</td>
+</tr>
+<tr>
+<td>429</td>
+<td>Too Many Requests</td>
+<td>在HTTP协议中，响应状态码  <code>429 Too Many Requests</code> 表示在一定的时间内用户发送了太多的请求，即超出了“频次限制”。<br>在响应中，可以提供一个  <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Retry-After" target="_blank" rel="noopener"><code>Retry-After</code></a> 首部来提示用户需要等待多长时间之后再发送新的请求。</td>
+</tr>
+<tr>
+<td>431</td>
+<td>Request Header Fields Too Large</td>
+<td>响应码 <code>431 Request Header Fields Too Large</code> 表示由于请求中的首部字段的值过大，服务器拒绝接受客户端的请求。客户端可以在缩减首部字段的体积后再次发送请求。<br>该响应码可以用于首部总体体积过大的情况，也可以用于单个首部体积过大的情况。<br>这种错误不应该出现于经过良好测试的投入使用的系统当中，而是更多出现于测试新系统的时候</td>
+</tr>
+<tr>
+<td>451</td>
+<td><code>Unavailable For Legal Reasons</code></td>
+<td><code>451</code><strong><code>Unavailable For Legal Reasons</code></strong> （因法律原因不可用）是一种HTTP协议的错误状态代码，表示服务器由于法律原因，无法提供客户端请求的资源，例如可能会导致法律诉讼的页面。</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal Server Error</td>
+<td>在 HTTP 协议中，<code>500 Internal Server Error</code> 是表示服务器端错误的响应状态码，意味着所请求的服务器遇到意外的情况并阻止其执行请求。<br>这个错误代码是一个通用的“万能”响应代码。有时候，对于类似于 500 这样的错误，服务器管理员会更加详细地记录相关的请求信息来防止以后同样错误的出现。</td>
+</tr>
+<tr>
+<td>501</td>
+<td><code>Not Implemented</code></td>
+<td>HTTP <code>501</code><strong><code>Not Implemented</code></strong> 服务器错误响应码表示请求的方法不被服务器支持，因此无法被处理。服务器必须支持的方法（即不会返回这个状态码的方法）只有 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/GET" target="_blank" rel="noopener"><code>GET</code></a> 和 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/HEAD" target="_blank" rel="noopener"><code>HEAD</code></a>。<br>请注意，你无法修复 501 错误，需要被访问的 web 服务器去修复该问题。</td>
+</tr>
+<tr>
+<td>502</td>
+<td><code>Bad Gateway</code></td>
+<td><code>502</code><strong><code>Bad Gateway</code></strong> 是一种HTTP协议的服务器端错误状态代码，它表示作为网关或代理角色的服务器，从上游服务器（如tomcat、php-fpm）中接收到的响应是无效的。<br><a href="https://zh.wikipedia.org/wiki/Gateway_%28telecommunications%29" target="_blank" rel="noopener" title="Gateway">Gateway</a> （网关）在计算机网络体系中可以指代不同的设备，502 错误通常不是客户端能够修复的，而是需要由途径的Web服务器或者代理服务器对其进行修复。</td>
+</tr>
+<tr>
+<td>503</td>
+<td><code>Service Unavailable</code></td>
+<td><code>503</code><strong><code>Service Unavailable</code></strong> 是一种HTTP协议的服务器端错误状态代码，它表示服务器尚未处于可以接受请求的状态。<br>通常造成这种情况的原因是由于服务器停机维护或者已超载。注意在发送该响应的时候，应该同时发送一个对用户友好的页面来解释问题发生的原因。该种响应应该用于临时状况下，与之同时，在可行的情况下，应该在 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Retry-After" target="_blank" rel="noopener"><code>Retry-After</code></a> 首部字段中包含服务恢复的预期时间。<br>缓存相关的首部在与该响应一同发送时应该小心使用，因为 503 状态码通常应用于临时状况下，而此类响应一般不应该进行缓存。</td>
+</tr>
+<tr>
+<td>504</td>
+<td><code>Gateway Timeout</code></td>
+<td><code>504</code><strong><code>Gateway Timeout</code></strong> 是一种HTTP协议的服务器端错误状态代码，表示扮演网关或者代理的服务器无法在规定的时间内获得想要的响应。<br><a href="https://zh.wikipedia.org/wiki/Gateway_%28telecommunications%29" target="_blank" rel="noopener" title="Gateway">Gateway</a> （网关）在计算机网络体系中可以指代不同的设备，504 错误通常不是在客户端可以修复的，而是需要由途径的Web服务器或者代理服务器对其进行修复。</td>
+</tr>
+<tr>
+<td>505</td>
+<td>HTTP Version Not Supported</td>
+<td><strong><code>505 HTTP Version Not Supported</code></strong> 是一种HTTP协议的服务器端错误状态代码，表示服务器不支持请求所使用的 HTTP 版本。</td>
+</tr>
+<tr>
+<td>506</td>
+<td>Variant Also Negotiates</td>
+<td>HTTP协议的 <code>506 Variant Also Negotiates</code> 响应状态码 可以在TCN（透明内容协商，见RF2295）上下文给出。TCN协议允许客户端取回给定资源的最佳变量/变元，这里服务器支持多个变量/变元。<br>506码表示内部服务器配置错误，其中所选变量/变元自身被配置为参与内容协商，因此并不是合适的协商端点。</td>
+</tr>
+<tr>
+<td>507</td>
+<td>Insufficient Storage</td>
+<td>HTTP协议的  <code>507 Insufficient Storage</code> 响应状态码 可以在WebDAV协议（基于web的分布式创作和版本控制，参见<a href="https://tools.ietf.org/html/rfc4918" target="_blank" rel="noopener">RFC 4918</a>）中给出。<br>507码表示服务器不能存储相关内容。准确地说，一个方法可能没有被执行，因为服务器不能存储其表达形式，这里的表达形式指：方法所附带的数据，而且其请求必需已经发送成功。</td>
+</tr>
+<tr>
+<td>508</td>
+<td>Loop Detected</td>
+<td>HTTP协议的 <code>508 Loop Detected</code> 状态码可以在WebDAV协议（基于Web的分布式创作和版本控制）中给出。<br>508码表示服务器中断一个操作，因为它在处理具有“Depth: infinity”的请求时遇到了一个无限循环。508码表示整个操作失败。</td>
+</tr>
+<tr>
+<td>510</td>
+<td>Not Extended</td>
+<td>HTTP协议的  <code>510 Not Extended</code> 响应状态码在HTTP扩展框架协议（参见<a href="https://tools.ietf.org/html/rfc2774" target="_blank" rel="noopener">RFC 2774</a>）中发送。<br>在HTTP扩展框架协议中 ，一个客户端可以发送一个包含扩展声明的请求，该声明描述了要使用的扩展。如果服务器接收到这样的请求，但是请求不支持任何所描述的扩展，那么服务器将使用510状态码进行响应。</td>
+</tr>
+<tr>
+<td>511</td>
+<td>Network Authentication Required</td>
+<td><code>511 Network Authentication Required</code> 是一种HTTP协议的错误状态代码，表示客户端需要通过验证才能使用该网络。<br>该状态码不是由源头服务器生成的，而是由控制网络访问的拦截代理服务器生成的。<br>网络运营商们有时候会在准许使用网络之前要求用户进行身份验证、接受某些条款，或者进行其他形式的与用户之间的互动（例如在网络咖啡厅或者机场）。他们通常用用户设备的  MAC 地址来进行识别。</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Http/" rel="tag"># Http</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/01/%E5%B7%A5%E5%85%B7%E9%85%8D%E7%BD%AE/Git%20SSH%E7%94%9F%E6%88%90%E5%92%8C%E9%85%8D%E7%BD%AE/" rel="prev" title="Git SSH生成和配置">
+      <i class="fa fa-chevron-left"></i> Git SSH生成和配置
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/01/%E5%B7%A5%E5%85%B7%E9%85%8D%E7%BD%AE/Hexo%E6%B7%BB%E5%8A%A0%E5%88%86%E7%B1%BB%E5%8F%8A%E6%A0%87%E7%AD%BE%EF%BC%88%E5%9C%A8Next%E4%B8%BB%E9%A2%98%E4%B8%8B%EF%BC%89/" rel="next" title="Hexo添加分类及标签（在Next主题下）">
+      Hexo添加分类及标签（在Next主题下） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-请求方法"><span class="nav-text">1.请求方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-响应码"><span class="nav-text">2.响应码</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="李炳华"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">李炳华</p>
+  <div class="site-description" itemprop="description">博学而笃志,切问而近思。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wind-never-stop" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wind-never-stop" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://wind-never-stop.github.io/" title="https:&#x2F;&#x2F;wind-never-stop.github.io&#x2F;" rel="noopener" target="_blank">风不停息</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李炳华</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='65,105,225' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+  
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+</body>
+</html>

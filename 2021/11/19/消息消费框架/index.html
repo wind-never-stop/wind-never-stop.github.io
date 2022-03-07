@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+
+
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.tohugo.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="回顾必要性1.公司系统经过了平台化迁移，一个业务动作的完整逻辑分别在两个topic中完成，增加了代码维护成本，降低了可读性2.很多消费逻辑是切异步在单独线程池中执行，执行失败没有完善的监控，告警机制，存在许多没必要的异步3.梳理消费代码，主要就是转发业务kafka,发app消费，上报风险，执行统计等，而当前消费代码堆叠，可读性差 解决方法 使用模版方法对消费代码进行重构，流量灰度接入">
+<meta property="og:type" content="article">
+<meta property="og:title" content="消息消费框架">
+<meta property="og:url" content="https://www.tohugo.com/2021/11/19/%E6%B6%88%E6%81%AF%E6%B6%88%E8%B4%B9%E6%A1%86%E6%9E%B6/index.html">
+<meta property="og:site_name" content="风不停息">
+<meta property="og:description" content="回顾必要性1.公司系统经过了平台化迁移，一个业务动作的完整逻辑分别在两个topic中完成，增加了代码维护成本，降低了可读性2.很多消费逻辑是切异步在单独线程池中执行，执行失败没有完善的监控，告警机制，存在许多没必要的异步3.梳理消费代码，主要就是转发业务kafka,发app消费，上报风险，执行统计等，而当前消费代码堆叠，可读性差 解决方法 使用模版方法对消费代码进行重构，流量灰度接入">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-19T15:31:38.000Z">
+<meta property="article:modified_time" content="2021-11-19T15:31:38.000Z">
+<meta property="article:author" content="李炳华">
+<meta property="article:tag" content="重构">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.tohugo.com/2021/11/19/%E6%B6%88%E6%81%AF%E6%B6%88%E8%B4%B9%E6%A1%86%E6%9E%B6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>消息消费框架 | 风不停息</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"><a href="https://github.com/tao111222333444" target="_blank" rel="noopener" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">风不停息</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">凡是过往，皆为序章</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">20</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">31</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.tohugo.com/2021/11/19/%E6%B6%88%E6%81%AF%E6%B6%88%E8%B4%B9%E6%A1%86%E6%9E%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="李炳华">
+      <meta itemprop="description" content="博学而笃志,切问而近思。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风不停息">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          消息消费框架
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-19 23:31:38" itemprop="dateCreated datePublished" datetime="2021-11-19T23:31:38+08:00">2021-11-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="回顾"><a href="#回顾" class="headerlink" title="回顾"></a>回顾</h1><h3 id="必要性"><a href="#必要性" class="headerlink" title="必要性"></a>必要性</h3><p>1.公司系统经过了平台化迁移，一个业务动作的完整逻辑分别在两个topic中完成，增加了代码维护成本，降低了可读性<br>2.很多消费逻辑是切异步在单独线程池中执行，执行失败没有完善的监控，告警机制，存在许多没必要的异步<br>3.梳理消费代码，主要就是转发业务kafka,发app消费，上报风险，执行统计等，而当前消费代码堆叠，可读性差</p>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><blockquote>
+<p>使用模版方法对消费代码进行重构，流量灰度接入</p>
+</blockquote>
+<a id="more"></a>
+
+<p>1.通过apollo开关开启状态可使进入重构逻辑消费。如果有问题，可使Apollo开关置灰度，取而代之走老代码<br>2.平台转发业务kafka时，会对其进行着色，业务kafka消费时检查到未着色的kafka才消费，避免重复消费<br>着色的必要性&amp;一次下线的问题<br>只针对发布的时候，发布的时候有多台机器，是分批逐步部署的。如果A机器上已经是新的框架代码了，此时它会发出业务kafka消息，并且没有执行着色操作。此时，B机器上还未部署，还是老代码，此时由于老代码业务逻辑是分两次在两个topic中执行的，而A发出的消息会被B监听到，会造成有些业务逻辑被执行两次（重复消费）。所以，从新代码中转发出来的消息（已完成全部逻辑）如果加上一个着色标记，然后在老代码中，如果有该标记，则不走老代码的后续操作。<br>3.一次下线的问题：有服务发到一半，转化出的业务kafka没有着色，如果被老代码的机器监听到，会出现两次消费<br>所以分两次下线</p>
+<h4 id="删除Apollo开关和着色代码"><a href="#删除Apollo开关和着色代码" class="headerlink" title="删除Apollo开关和着色代码"></a>删除Apollo开关和着色代码</h4><p>为什么不在API中做完所有逻辑？而要使用消息中间件？<br>1.如果在API中完成所有操作，会使接口显得臃肿，而且处理时间变长<br>2.耦合性高。如果放在接口中做，则A调B，A要关联B，知道B的处理逻辑。如果使用发送消息的方式，只管发送就行，不管后续是谁要消费，降低了耦合性。</p>
+<h1 id="订单消息设计"><a href="#订单消息设计" class="headerlink" title="订单消息设计"></a>订单消息设计</h1><ul>
+<li>平台生产Kafka-订单平台</li>
+<li>业务监听消费Kafka-小前台</li>
+<li>发送业务Kafka-小前台</li>
+</ul>
+<h1 id="消息消费框架"><a href="#消息消费框架" class="headerlink" title="消息消费框架"></a>消息消费框架</h1><blockquote>
+<p>模板方法来实现</p>
+</blockquote>
+<ul>
+<li>幂等消费<ul>
+<li>框架层对接</li>
+</ul>
+</li>
+<li>对接Cat监控体系<ul>
+<li>框架层对接</li>
+</ul>
+</li>
+<li>对接钉钉告警体系<ul>
+<li>框架层对接</li>
+</ul>
+</li>
+<li>业务逻辑规范化<ul>
+<li>buildContext</li>
+<li>sendBizKafka</li>
+<li>sendAppMessage</li>
+<li>reportRisk</li>
+<li>executeBussiness</li>
+</ul>
+</li>
+</ul>
+<h1 id="关键问题"><a href="#关键问题" class="headerlink" title="关键问题"></a>关键问题</h1><ul>
+<li>如何简化业务方对Kafka场景的理解成本？</li>
+<li>如何做稳定性保障，以及快速修复手段？</li>
+</ul>
+<h1 id="核心场景三板斧"><a href="#核心场景三板斧" class="headerlink" title="核心场景三板斧"></a>核心场景三板斧</h1><ul>
+<li>可灰度</li>
+<li>可监控观测</li>
+<li>可降级</li>
+</ul>
+<h1 id="框架简介"><a href="#框架简介" class="headerlink" title="框架简介"></a>框架简介</h1><p>消息开发者根据业务，继承实现模板方法即可，降低沟通成本，易于形成团队约定<br>1、kafka处理框架<br>AbstractConsumeProcessor</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * T：kafka消息体</span><br><span class="line"> *</span><br><span class="line"> * @author libinghua</span><br><span class="line"> *&#x2F;</span><br><span class="line">@Slf4j</span><br><span class="line">public abstract class AbstractConsumeProcessor&lt;T&gt; &#123;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 消息处理</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public void processMessage(T kafkaDTO, String topic) &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            process(kafkaDTO, topic);</span><br><span class="line">            Cat.logMetricForCount(getClass().getSimpleName() + &quot;_&quot; + topic + &quot;_CONSUMER_SUCCESS&quot;);</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            log.error(&quot;class: &#123;&#125;, ConsumeProcessor topic: &#123;&#125; 消费失败&quot;, getClass().getSimpleName(), topic, e);</span><br><span class="line">            Cat.logMetricForCount(getClass().getSimpleName() + &quot;_&quot; + topic + &quot;_CONSUMER_ERROR&quot;);</span><br><span class="line">            throw e;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 消息处理</span><br><span class="line">     *&#x2F;</span><br><span class="line">    protected void process(T kafkaDTO, String topic) &#123;</span><br><span class="line">        doProcess(kafkaDTO, topic);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 实时消息处理</span><br><span class="line">     *&#x2F;</span><br><span class="line">    protected abstract void doProcess(T kafkaDTO, String topic);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>AbstractPlayMateConsumeProcessor</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * T：kafka消息体</span><br><span class="line"> * C：处理上下文</span><br><span class="line"> *</span><br><span class="line"> * @author libinghua</span><br><span class="line"> *&#x2F;</span><br><span class="line">@Slf4j</span><br><span class="line">public abstract class AbstractPlayMateConsumeProcessor&lt;T, C&gt; extends AbstractConsumeProcessor&lt;T&gt; &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void doProcess(T kafkaDTO, String topic) &#123;</span><br><span class="line">        OrderTracerContext.getContext().put(OrderTracerConstant.BIZ_ID, getBizId(kafkaDTO));</span><br><span class="line">        try &#123;</span><br><span class="line">            doExecute(kafkaDTO, topic);</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            OrderTracerContext.remove();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private void doExecute(T kafkaDTO, String topic) &#123;</span><br><span class="line">        C context;</span><br><span class="line">        try &#123;</span><br><span class="line">            &#x2F;&#x2F;失败-&gt;orderError-&gt;throw e(fast-fail)</span><br><span class="line">            context &#x3D; buildContext(kafkaDTO);</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            &#x2F;&#x2F; 消费订单平台kafka失败</span><br><span class="line">            OrderErrorFactory.save(getBizId(kafkaDTO), topic, OrderErrorTypeEnum.BIXIN_PLAYMATE_CONSUME_ORDER_CENTER_KAFKA_ERROR, JSON.toJSONString(kafkaDTO));</span><br><span class="line">            throw new OrderCenterKafkaConsumeException(e);</span><br><span class="line">        &#125;</span><br><span class="line">        &#x2F;&#x2F; 下面的动作允许单个动作执行失败，失败后不会重试</span><br><span class="line">        try &#123;</span><br><span class="line">            &#x2F;&#x2F; 转发kafka失败后的重试在底层做，不在这一层。</span><br><span class="line">            sendBizKafka(context, kafkaDTO, topic);</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            log.error(&quot;&#123;&#125; sendBizKafka error, topic&#x3D;&#123;&#125;, kafkaDTO&#x3D;&#123;&#125;&quot;, getClassName(), topic, JSON.toJSON(kafkaDTO), e);</span><br><span class="line">        &#125;</span><br><span class="line">        try &#123;</span><br><span class="line">            sendAppMessage(context, kafkaDTO, topic);</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            log.error(&quot;&#123;&#125; sendAppMessage error, topic&#x3D;&#123;&#125;, kafkaDTO&#x3D;&#123;&#125;&quot;, getClassName(), topic, JSON.toJSON(kafkaDTO), e);</span><br><span class="line">        &#125;</span><br><span class="line">        try &#123;</span><br><span class="line">            reportRisk(context, kafkaDTO, topic);</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            log.error(&quot;&#123;&#125; reportRisk error, topic&#x3D;&#123;&#125;, kafkaDTO&#x3D;&#123;&#125;&quot;, getClassName(), topic, JSON.toJSON(kafkaDTO), e);</span><br><span class="line">        &#125;</span><br><span class="line">        try &#123;</span><br><span class="line">            executeBusiness(context, kafkaDTO, topic);</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            log.error(&quot;&#123;&#125; executeBusiness error, topic&#x3D;&#123;&#125;, kafkaDTO&#x3D;&#123;&#125;&quot;, getClassName(), topic, JSON.toJSON(kafkaDTO), e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 获取业务ID，如orderId</span><br><span class="line">     *&#x2F;</span><br><span class="line">    protected abstract String getBizId(T kafkaDTO);</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 准备上下文</span><br><span class="line">     *&#x2F;</span><br><span class="line">    protected abstract C buildContext(T kafkaDTO);</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 发送业务kafka</span><br><span class="line">     *&#x2F;</span><br><span class="line">    protected abstract void sendBizKafka(C context, T kafkaDTO, String topic);</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 发送APP消息，如IM消息、系统消息、短信</span><br><span class="line">     *&#x2F;</span><br><span class="line">    protected abstract void sendAppMessage(C context, T kafkaDTO, String topic);</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 上报风控</span><br><span class="line">     *&#x2F;</span><br><span class="line">    protected abstract void reportRisk(C context, T kafkaDTO, String topic);</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 其他业务逻辑：如风控、统计、经验值</span><br><span class="line">     *&#x2F;</span><br><span class="line">    protected abstract void executeBusiness(C context, T kafkaDTO, String topic);</span><br><span class="line"></span><br><span class="line">    private String getClassName()&#123;</span><br><span class="line">        return getClass().getSimpleName();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>AbstractPlayMateIdempotentConsumeProcessor</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * kafka消费幂等，基于redis</span><br><span class="line"> *</span><br><span class="line"> * @author libinghua</span><br><span class="line"> *&#x2F;</span><br><span class="line">@Slf4j</span><br><span class="line">@Component</span><br><span class="line">public class KafkaConsumeIdempotentHandler &#123;</span><br><span class="line"></span><br><span class="line">    @RedisAutowired(&quot;middleware.redis.bixin-playmate-service&quot;)</span><br><span class="line">    private RedisService redisService;</span><br><span class="line">    @Resource</span><br><span class="line">    private ApolloKeyConstant apolloKeyConstant;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 获取订单kafka幂等锁</span><br><span class="line">     *&#x2F;</span><br><span class="line">    private RedisService.RedisLocker getLock(String uniqueKey) &#123;</span><br><span class="line">        return redisService.buildLock(KAFKA_CONSUME_IDEMPOTENT + uniqueKey, apolloKeyConstant.getOrderMsgIdempotentExpireTime(), TimeUnit.SECONDS);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 幂等执行</span><br><span class="line">     *</span><br><span class="line">     * @param uniqueKey 幂等唯一键</span><br><span class="line">     * @param callable  待执行的业务逻辑</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public void idempotentExecute(String uniqueKey, String topic, Callable callable) &#123;</span><br><span class="line">        RedisService.RedisLocker redisLocker &#x3D; getLock(uniqueKey);</span><br><span class="line">        if (redisLocker.tryLock()) &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                callable.call();</span><br><span class="line">            &#125; catch (Exception e) &#123;</span><br><span class="line">                log.error(&quot;KafkaConsumeIdempotentHandler idempotentExecute error, topic&#x3D;&#123;&#125;, uniqueKey&#x3D;&#123;&#125;&quot;, topic, uniqueKey, e);</span><br><span class="line">                throw e;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            log.info(&quot;&#123;&#125; 已消费,无需重复消费&quot;, uniqueKey);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 回调函数</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public interface Callable &#123;</span><br><span class="line">        &#x2F;**</span><br><span class="line">         * 执行业务逻辑</span><br><span class="line">         *&#x2F;</span><br><span class="line">        void call();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">&#x2F;**</span><br><span class="line"> * 幂等消费处理器</span><br><span class="line"> *</span><br><span class="line"> * @author libinghua</span><br><span class="line"> * @date 2020-08-03 15:21</span><br><span class="line"> *&#x2F;</span><br><span class="line">@Slf4j</span><br><span class="line">public abstract class AbstractPlayMateIdempotentConsumeProcessor&lt;T, C&gt; extends AbstractPlayMateConsumeProcessor&lt;T, C&gt; &#123;</span><br><span class="line"></span><br><span class="line">    @Resource</span><br><span class="line">    private KafkaConsumeIdempotentHandler kafkaConsumeIdempotentHandler;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void process(T kafkaDTO, String topic) &#123;</span><br><span class="line">        &#x2F;&#x2F;幂等执行</span><br><span class="line">        kafkaConsumeIdempotentHandler.idempotentExecute(getUniqueKey(topic, kafkaDTO), topic, () -&gt; doProcess(kafkaDTO,topic));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 获取幂等唯一key</span><br><span class="line">     *</span><br><span class="line">     * @param kafkaDTO 业务处理对象</span><br><span class="line">     * @return 幂等唯一key</span><br><span class="line">     *&#x2F;</span><br><span class="line">    private String getUniqueKey(String topic, T kafkaDTO) &#123;</span><br><span class="line">        return topic + &quot;_&quot; + getUniqueId(kafkaDTO);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private String getUniqueId(T kafkaDTO) &#123;</span><br><span class="line">        return getBizId(kafkaDTO);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>切流开关</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * kafka消费开关专用</span><br><span class="line"> * @author libinghua</span><br><span class="line"> *&#x2F;</span><br><span class="line">@Slf4j</span><br><span class="line">@Component</span><br><span class="line">public class ApolloKeyConstantForConsume &#123;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 订单中心的总开关</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Value(&quot;$&#123;orderCenterAllSwitch:true&#125;&quot;)</span><br><span class="line">    private Boolean orderCenterAllSwitch;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 陪玩订单下单成功开关</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Value(&quot;$&#123;playMatePlaceApolloSwitch:&#125;&quot;)</span><br><span class="line">    private String playMatePlaceApolloSwitch;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 陪玩订单支付成功开关</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Value(&quot;$&#123;playMatePaySuccessApolloSwitch:&#125;&quot;)</span><br><span class="line">    private String playMatePaySuccessApolloSwitch;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 保证金订单支付成功</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Value(&quot;$&#123;marginCompensationPaySuccessSwitch:&#125;&quot;)</span><br><span class="line">    private String marginCompensationPaySuccessSwitch;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 陪玩订单选择大神开关</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Value(&quot;$&#123;playMateChooseSellerApolloSwitch:&#125;&quot;)</span><br><span class="line">    private String playMateChooseSellerApolloSwitch;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 陪玩订单审核通过开关</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Value(&quot;$&#123;playMateAuditAgreeApolloSwitch:&#125;&quot;)</span><br><span class="line">    private String playMateAuditAgreeApolloSwitch;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 陪玩订单申请提前开始订单开关</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Value(&quot;$&#123;playMateRequireDeliveryAheadApolloSwitch:&#125;&quot;)</span><br><span class="line">    private String playMateRequireDeliveryAheadApolloSwitch;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 陪玩订单审核通过提前开始订单开关</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Value(&quot;$&#123;playMateAuditAgreeRequireDeliveryAheadApolloSwitch:&#125;&quot;)</span><br><span class="line">    private String playMateAuditAgreeRequireDeliveryAheadApolloSwitch;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 陪玩订单审核拒绝提前开始订单开关</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Value(&quot;$&#123;playMateAuditRejectRequireDeliveryAheadApolloSwitch:&#125;&quot;)</span><br><span class="line">    private String playMateAuditRejectRequireDeliveryAheadApolloSwitch;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 陪玩订单部分完成开关</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Value(&quot;$&#123;playMatePartCompleteApolloSwitch:&#125;&quot;)</span><br><span class="line">    private String playMatePartCompleteApolloSwitch;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 陪玩订单完成开关</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Value(&quot;$&#123;playMateCompleteApolloSwitch:&#125;&quot;)</span><br><span class="line">    private String playMateCompleteApolloSwitch;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 采购单关单成功</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Value(&quot;$&#123;purchaseOrderCloseApolloSwitch:&#125;&quot;)</span><br><span class="line">    private String purchaseOrderCloseApolloSwitch;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 陪玩关单成功</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Value(&quot;$&#123;playmateOrderCloseApolloSwitch:&#125;&quot;)</span><br><span class="line">    private String playmateOrderCloseApolloSwitch;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;退款消息&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 完成退款</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Value(&quot;$&#123;playMateCompletedRefundApolloSwitch:&#125;&quot;)</span><br><span class="line">    private String playMateCompletedRefundApolloSwitch;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 处理了退款</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Value(&quot;$&#123;playMateHandledRefundApolloSwitch:&#125;&quot;)</span><br><span class="line">    private String playMateHandledRefundApolloSwitch;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 发起申诉</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Value(&quot;$&#123;playMateApplyAppealApolloSwitch:&#125;&quot;)</span><br><span class="line">    private String playMateApplyAppealApolloSwitch;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 发起申诉</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Value(&quot;$&#123;playMateApplyPostSaleAppealApolloSwitch:&#125;&quot;)</span><br><span class="line">    private String playMateApplyPostSaleAppealApolloSwitch;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 客服处理了申诉</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Value(&quot;$&#123;playMateKefuHandledAppealApolloSwitch:&#125;&quot;)</span><br><span class="line">    private String playMateKefuHandledAppealApolloSwitch;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 客服处理了售后申诉</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Value(&quot;$&#123;playMateKefuHandledPostSaleAppealApolloSwitch:&#125;&quot;)</span><br><span class="line">    private String playMateKefuHandledPostSaleAppealApolloSwitch;</span><br><span class="line"></span><br><span class="line">    public Boolean getPlayMatePlaceSwitch(AbstractOrderBaseKafkaDTO kafkaDTO) &#123;</span><br><span class="line">        return calSwitchValue(kafkaDTO, playMatePlaceApolloSwitch);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Boolean getPlayMatePaySuccessSwitch(AbstractOrderBaseKafkaDTO kafkaDTO) &#123;</span><br><span class="line">        return calSwitchValue(kafkaDTO, playMatePaySuccessApolloSwitch);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Boolean getMarginCompensationPaySuccessSwitch(AbstractOrderBaseKafkaDTO kafkaDTO) &#123;</span><br><span class="line">        return calSwitchValue(kafkaDTO, marginCompensationPaySuccessSwitch);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Boolean getPlayMateChooseSellerApolloSwitch(AbstractOrderBaseKafkaDTO kafkaDTO) &#123;</span><br><span class="line">        return calSwitchValue(kafkaDTO, playMateChooseSellerApolloSwitch);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Boolean getPlayMateAuditAgreeApolloSwitch(AbstractOrderBaseKafkaDTO kafkaDTO) &#123;</span><br><span class="line">        return calSwitchValue(kafkaDTO, playMateAuditAgreeApolloSwitch);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Boolean getPlayMateRequireDeliveryAheadApolloSwitch(AbstractOrderBaseKafkaDTO kafkaDTO) &#123;</span><br><span class="line">        return calSwitchValue(kafkaDTO, playMateRequireDeliveryAheadApolloSwitch);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Boolean getPlayMateAuditAgreeRequireDeliveryAheadApolloSwitch(AbstractOrderBaseKafkaDTO kafkaDTO) &#123;</span><br><span class="line">        return calSwitchValue(kafkaDTO, playMateAuditAgreeRequireDeliveryAheadApolloSwitch);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Boolean getPlayMateAuditRejectRequireDeliveryAheadApolloSwitch(AbstractOrderBaseKafkaDTO kafkaDTO) &#123;</span><br><span class="line">        return calSwitchValue(kafkaDTO, playMateAuditRejectRequireDeliveryAheadApolloSwitch);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Boolean getPlayMatePartCompleteApolloSwitch(AbstractOrderBaseKafkaDTO kafkaDTO) &#123;</span><br><span class="line">        return calSwitchValue(kafkaDTO, playMatePartCompleteApolloSwitch);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Boolean getPlayMateCompleteApolloSwitch(AbstractOrderBaseKafkaDTO kafkaDTO) &#123;</span><br><span class="line">        return calSwitchValue(kafkaDTO, playMateCompleteApolloSwitch);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Boolean getPurchaseOrderCloseApolloSwitch(AbstractOrderBaseKafkaDTO kafkaDTO) &#123;</span><br><span class="line">        return calSwitchValue(kafkaDTO, purchaseOrderCloseApolloSwitch);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Boolean getPlaymateOrderCloseApolloSwitch(AbstractOrderBaseKafkaDTO kafkaDTO) &#123;</span><br><span class="line">        return calSwitchValue(kafkaDTO, playmateOrderCloseApolloSwitch);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Boolean getPlayMateHandledRefundApolloSwitch(AbstractOrderRefundKafkaDTO kafkaDTO) &#123;</span><br><span class="line">        return calSwitchValue(kafkaDTO, playMateHandledRefundApolloSwitch);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Boolean getPlayMateApplyAppealApolloSwitch(AbstractOrderRefundKafkaDTO kafkaDTO) &#123;</span><br><span class="line">        return calSwitchValue(kafkaDTO, playMateApplyAppealApolloSwitch);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Boolean getPlayMateApplyPostSaleAppealApolloSwitch(AbstractOrderRefundKafkaDTO kafkaDTO) &#123;</span><br><span class="line">        return calSwitchValue(kafkaDTO, playMateApplyPostSaleAppealApolloSwitch);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Boolean getPlayMateKefuHandledAppealApolloSwitch(AbstractOrderRefundKafkaDTO kafkaDTO) &#123;</span><br><span class="line">        return calSwitchValue(kafkaDTO, playMateKefuHandledAppealApolloSwitch);</span><br><span class="line">    &#125;</span><br><span class="line">    public Boolean getPlayMateKefuHandledPostSaleAppealApolloSwitch(AbstractOrderRefundKafkaDTO kafkaDTO) &#123;</span><br><span class="line">        return calSwitchValue(kafkaDTO, playMateKefuHandledPostSaleAppealApolloSwitch);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Boolean getPlayMateCompletedRefundApolloSwitch(String orderId) &#123;</span><br><span class="line">        return calSwitchValue(orderId, null, playMateCompletedRefundApolloSwitch);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private Boolean calSwitchValue(AbstractOrderBaseKafkaDTO kafkaDTO, String apolloSwitch) &#123;</span><br><span class="line">        return calSwitchValue(kafkaDTO.getOrderId(), kafkaDTO.getBuyerId(), apolloSwitch);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private Boolean calSwitchValue(AbstractOrderRefundKafkaDTO kafkaDTO, String apolloSwitch) &#123;</span><br><span class="line">        return calSwitchValue(kafkaDTO.getOrderId(), kafkaDTO.getBuyerId(), apolloSwitch);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private Boolean calSwitchValue(String orderId, String buyerId, String apolloSwitch) &#123;</span><br><span class="line">        if (!orderCenterAllSwitch) &#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        SwitchDTO switchDTO &#x3D; convertSwitchDTO(apolloSwitch);</span><br><span class="line">        if (switchDTO &#x3D;&#x3D; null || !Boolean.TRUE.equals(switchDTO.getCurrentSwitch())) &#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        Long uid &#x3D; UidParser.parseLong(buyerId);</span><br><span class="line">        &#x2F;&#x2F; uid切流</span><br><span class="line">        if (CollectionUtils.isNotEmpty(switchDTO.getUidList()) &amp;&amp; uid !&#x3D; null &amp;&amp; switchDTO.getUidList().contains(uid)) &#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">        Integer uidTail &#x3D; getTail(uid);</span><br><span class="line">        if (CollectionUtils.isNotEmpty(switchDTO.getUidTailList()) &amp;&amp; uidTail !&#x3D; null &amp;&amp; switchDTO.getUidTailList().contains(uidTail)) &#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">        &#x2F;&#x2F; orderId 切流</span><br><span class="line">        if (CollectionUtils.isNotEmpty(switchDTO.getOrderIdList()) &amp;&amp; orderId !&#x3D; null &amp;&amp; switchDTO.getOrderIdList().contains(orderId)) &#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">        String orderIdTail &#x3D; getTail(orderId);</span><br><span class="line">        if (CollectionUtils.isNotEmpty(switchDTO.getOrderIdTailList()) &amp;&amp; orderIdTail !&#x3D; null &amp;&amp; switchDTO.getOrderIdTailList().contains(orderIdTail)) &#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static Integer getTail(Long uid) &#123;</span><br><span class="line">        if (uid &#x3D;&#x3D; null) &#123;</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line">        String tail &#x3D; getTail(String.valueOf(uid));</span><br><span class="line">        return StringUtils.isEmpty(tail) ? null : Integer.valueOf(tail);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static String getTail(String str) &#123;</span><br><span class="line">        if (StringUtils.isEmpty(str)) &#123;</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line">        return str.substring(str.length() - 1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Data</span><br><span class="line">    public static final class SwitchDTO &#123;</span><br><span class="line">        &#x2F;**</span><br><span class="line">         * 当前接口的开关</span><br><span class="line">         *&#x2F;</span><br><span class="line">        private Boolean currentSwitch;</span><br><span class="line"></span><br><span class="line">        &#x2F;**</span><br><span class="line">         * 当前接口操作的指定用户uid</span><br><span class="line">         *&#x2F;</span><br><span class="line">        private List&lt;Long&gt; uidList;</span><br><span class="line"></span><br><span class="line">        &#x2F;**</span><br><span class="line">         * 当前接口操作的用户</span><br><span class="line">         *&#x2F;</span><br><span class="line">        private List&lt;Integer&gt; uidTailList;</span><br><span class="line"></span><br><span class="line">        &#x2F;**</span><br><span class="line">         * 指定的订单ID</span><br><span class="line">         *&#x2F;</span><br><span class="line">        private List&lt;String&gt; orderIdList;</span><br><span class="line"></span><br><span class="line">        &#x2F;**</span><br><span class="line">         * 当前接口操作的订单</span><br><span class="line">         *&#x2F;</span><br><span class="line">        private List&lt;String&gt; orderIdTailList;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private SwitchDTO convertSwitchDTO(String str) &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            return JsonUtil.safeParseJson(str, SwitchDTO.class);</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            log.warn(&quot;ApolloKeyConstantForConsume.convertSwitchDTO error,str&#x3D;&#123;&#125;&quot;, str, e);</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%87%8D%E6%9E%84/" rel="tag"># 重构</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/19/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF%E4%BD%93%E7%B3%BB/" rel="prev" title="后端技术体系">
+      <i class="fa fa-chevron-left"></i> 后端技术体系
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/03/07/%E5%89%8D%E7%AB%AF%E4%BA%A4%E6%98%93%E6%80%A7%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/" rel="next" title="前端交易性系统设计原则">
+      前端交易性系统设计原则 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#回顾"><span class="nav-text">回顾</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#必要性"><span class="nav-text">必要性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方法"><span class="nav-text">解决方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#订单消息设计"><span class="nav-text">订单消息设计</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#消息消费框架"><span class="nav-text">消息消费框架</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关键问题"><span class="nav-text">关键问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#核心场景三板斧"><span class="nav-text">核心场景三板斧</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#框架简介"><span class="nav-text">框架简介</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="李炳华"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">李炳华</p>
+  <div class="site-description" itemprop="description">博学而笃志,切问而近思。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wind-never-stop" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wind-never-stop" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://wind-never-stop.github.io/" title="https:&#x2F;&#x2F;wind-never-stop.github.io&#x2F;" rel="noopener" target="_blank">风不停息</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李炳华</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='65,105,225' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+  
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+</body>
+</html>

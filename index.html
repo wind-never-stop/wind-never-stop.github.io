@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+
+
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.tohugo.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="博学而笃志,切问而近思。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="风不停息">
+<meta property="og:url" content="https://www.tohugo.com/index.html">
+<meta property="og:site_name" content="风不停息">
+<meta property="og:description" content="博学而笃志,切问而近思。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="李炳华">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.tohugo.com/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>风不停息</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"><a href="https://github.com/tao111222333444" target="_blank" rel="noopener" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">风不停息</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">凡是过往，皆为序章</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">20</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">31</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.tohugo.com/2022/03/07/2017-2019%E4%B8%80%E6%9D%A1%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="李炳华">
+      <meta itemprop="description" content="博学而笃志,切问而近思。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风不停息">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/07/2017-2019%E4%B8%80%E6%9D%A1%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">2017-2019一条项目总结</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-07 17:23:29" itemprop="dateCreated datePublished" datetime="2022-03-07T17:23:29+08:00">2022-03-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>订单系统-下单流程-技术细节<br>    dubbo配置限流 executes –》 2.6.x ExecuteLimitFilter-&gt;Semaphare 信号量</p>
+<pre><code>业务代码降级：
+    1）同步调用重试
+    2）核心流程返回正常，异步发消息重试、db存储一个死信队列，用quartz重发到消息队列中 
+
+分布式锁做防重复提交订单：
+    1）渲染订单下发submitKey，提交订单传递submitKey --&gt; 表达页面过期
+    2）redis: set(&quot;nx&quot;, &quot;ex&quot;, expireTime)-&gt;&quot;OK&quot; --&gt; 获取分布式锁成功
+    3）zookeeper: 临时目录节点 --&gt; 创建节点
+        判断刚创建的节点是否为第一顺序节点 
+        --&gt; true：加锁成功
+        --&gt; false: 注册一个回调监听前一个节点的释放动作
+            （回调内容，判断自己创建的节点是否为第一顺序节点-&gt; true:加锁成功）
+
+分布式事务实现最终一致性：tcc:try-&gt;confirm-&gt;cancel 
+    1) try方法上提供注解：指定事务完成（confirmMethod）或回滚需要调用的方法(cancelMethod)
+    2) AOP实现：
+        a) 调用try方法后，调用tcc.uploadStatus dubbo接口（状态保存到redis list：lpush lrange lset del scan，根据try是否抛异常来异步流转事务状态）
+        b) 根据主调方 try方法是否抛异常来决定 tcc call confirmMethod or cancelMethod，注意这两方法会要求传入 transId, branchId
+    3）举例：以库存接入tcc事务为例
+        a) 声明并实现 try，注意服务按需自行保存 事务提交 or 回归的必要参数，也就是 transactionLog（一般被调方需要保存）
+        b) 声明并实现 confirm 和 cancel 方法，根据传入的 transId, branchId 从 transactionLog 获取必要参数进行后续逻辑
+        c) spring配置文件声明 AspectBean 启用 tcc aop
+
+高并发扣减库存：库存存放于redis，如何保证最终一致性:记param-log
+    1）try阶段：pipeline.multi()--&gt;submit()
+        save reduceStockParamsLog to redis 
+        reduce redis skuStock
+    2）confirm阶段：delete reduceStockParamsLog
+    3）cancel阶段：pipeline.multi()--&gt;submit()
+        return redis skuStock
+        delete reduceStockParamsLog</code></pre>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/03/07/2017-2019%E4%B8%80%E6%9D%A1%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.tohugo.com/2022/03/07/%E6%89%93%E8%B5%8F%E4%B8%9A%E5%8A%A1%E6%A6%82%E8%BF%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="李炳华">
+      <meta itemprop="description" content="博学而笃志,切问而近思。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风不停息">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/07/%E6%89%93%E8%B5%8F%E4%B8%9A%E5%8A%A1%E6%A6%82%E8%BF%B0/" class="post-title-link" itemprop="url">打赏业务概述</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-07 17:20:17" itemprop="dateCreated datePublished" datetime="2022-03-07T17:20:17+08:00">2022-03-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>常规打赏<ul>
+<li>基本形式：付费买礼物，送给对方<ul>
+<li>对方获得收入 or 权益</li>
+<li>播放伴随IM动效</li>
+<li>打赏人，经验值累积</li>
+</ul>
+</li>
+<li>入口：IM、动态页、游戏页-&gt;礼物面板-&gt;打赏</li>
+<li>受赏礼物墙统计</li>
+</ul>
+</li>
+<li>盲盒打赏，拓展点<ul>
+<li>基本形式：付费买礼物，送给对方<ul>
+<li>对方获得收入 or 权益</li>
+<li>播放伴随IM动效</li>
+<li>打赏人，经验值累积</li>
+<li>打赏人，获得装扮 apollo box.pendant.id.map </li>
+</ul>
+</li>
+<li>入口：IM，第一个礼物坑位，作为活动坑位<ul>
+<li>9.9, 开盲盒，具体礼物</li>
+</ul>
+</li>
+<li>活动方对接：BX_REWARD, activityId</li>
+</ul>
+</li>
+<li>幸运币抽奖，<ul>
+<li>基本形式：付费获得资格-幸运币，消耗幸运币-&gt;抽礼物发背包</li>
+</ul>
+</li>
+<li>背包打赏<ul>
+<li>基本形式：消耗背包库存，对方获得收入<ul>
+<li>播放伴随IM动效</li>
+<li>打赏人，经验值累积</li>
+<li>打赏人，获得装扮 apollo box.pendant.id.map</li>
+</ul>
+</li>
+<li>入口：IM，第一个礼物坑位，作为活动坑位<ul>
+<li>9.9, 开盲盒，具体礼物</li>
+</ul>
+</li>
+<li>活动方对接：BX_REWARD, activityId    </li>
+</ul>
+</li>
+<li>api 层<ul>
+<li>giftlist  giftType -&gt; UI组件化</li>
+<li>rewardGift  giftType giftId</li>
+</ul>
+</li>
+<li>service 打赏框架<ul>
+<li>AbstractTradeRewardManager.process
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/03/07/%E6%89%93%E8%B5%8F%E4%B8%9A%E5%8A%A1%E6%A6%82%E8%BF%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.tohugo.com/2022/03/07/%E5%89%8D%E7%AB%AF%E4%BA%A4%E6%98%93%E6%80%A7%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="李炳华">
+      <meta itemprop="description" content="博学而笃志,切问而近思。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风不停息">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/07/%E5%89%8D%E7%AB%AF%E4%BA%A4%E6%98%93%E6%80%A7%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/" class="post-title-link" itemprop="url">前端交易性系统设计原则</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-07 17:14:33" itemprop="dateCreated datePublished" datetime="2022-03-07T17:14:33+08:00">2022-03-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前端交易型系统设计原则"><a href="#前端交易型系统设计原则" class="headerlink" title="前端交易型系统设计原则"></a>前端交易型系统设计原则</h1><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>思考28法则，在系统设计初期将有限的资源用到刀刃上，我们的目标是系统满足现有需求并能支持未来需求</p>
+<h3 id="拆分"><a href="#拆分" class="headerlink" title="拆分"></a>拆分</h3><ul>
+<li>系统维度</li>
+<li>功能维度</li>
+<li>读写维度</li>
+<li>AOP维度</li>
+<li>模块维度</li>
+</ul>
+<h3 id="服务化"><a href="#服务化" class="headerlink" title="服务化"></a>服务化</h3><h3 id="数据版本化，可回滚"><a href="#数据版本化，可回滚" class="headerlink" title="数据版本化，可回滚"></a>数据版本化，可回滚</h3><h3 id="流程可定义"><a href="#流程可定义" class="headerlink" title="流程可定义"></a>流程可定义</h3><h3 id="状态与状态机"><a href="#状态与状态机" class="headerlink" title="状态与状态机"></a>状态与状态机</h3><h3 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h3><h3 id="大流量缓存持久化"><a href="#大流量缓存持久化" class="headerlink" title="大流量缓存持久化"></a>大流量缓存持久化</h3><h3 id="数据校对"><a href="#数据校对" class="headerlink" title="数据校对"></a>数据校对</h3><h3 id="数据异构化"><a href="#数据异构化" class="headerlink" title="数据异构化"></a>数据异构化</h3><h3 id="后台系统操作可反馈"><a href="#后台系统操作可反馈" class="headerlink" title="后台系统操作可反馈"></a>后台系统操作可反馈</h3><h3 id="后台系统审批化"><a href="#后台系统审批化" class="headerlink" title="后台系统审批化"></a>后台系统审批化</h3><h3 id="防重设计"><a href="#防重设计" class="headerlink" title="防重设计"></a>防重设计</h3><h3 id="幂等设计"><a href="#幂等设计" class="headerlink" title="幂等设计"></a>幂等设计</h3><h3 id="文档-amp-注释"><a href="#文档-amp-注释" class="headerlink" title="文档&amp;注释"></a>文档&amp;注释</h3><p>交易型系统设计大原则</p>
+<ul>
+<li>负载均衡和反向代理实现分流</li>
+<li>限流保护服务免受雪崩之灾</li>
+<li>降级实现部分可用、有损服务</li>
+<li>隔离实现故障隔离</li>
+<li>设置合理超时时与重试机制避免请求造成雪崩</li>
+<li>回滚机制快速修复错误版本</li>
+</ul>
+<p>负载均衡算法<br>round-robin：轮训<br>ip_hash：ip hash后负载均衡<br>hash key [consistent]  一致性哈希<br>哈希算法：uri进行负载</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.tohugo.com/2021/11/19/%E6%B6%88%E6%81%AF%E6%B6%88%E8%B4%B9%E6%A1%86%E6%9E%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="李炳华">
+      <meta itemprop="description" content="博学而笃志,切问而近思。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风不停息">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/11/19/%E6%B6%88%E6%81%AF%E6%B6%88%E8%B4%B9%E6%A1%86%E6%9E%B6/" class="post-title-link" itemprop="url">消息消费框架</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-19 23:31:38" itemprop="dateCreated datePublished" datetime="2021-11-19T23:31:38+08:00">2021-11-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="回顾"><a href="#回顾" class="headerlink" title="回顾"></a>回顾</h1><h3 id="必要性"><a href="#必要性" class="headerlink" title="必要性"></a>必要性</h3><p>1.公司系统经过了平台化迁移，一个业务动作的完整逻辑分别在两个topic中完成，增加了代码维护成本，降低了可读性<br>2.很多消费逻辑是切异步在单独线程池中执行，执行失败没有完善的监控，告警机制，存在许多没必要的异步<br>3.梳理消费代码，主要就是转发业务kafka,发app消费，上报风险，执行统计等，而当前消费代码堆叠，可读性差</p>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><blockquote>
+<p>使用模版方法对消费代码进行重构，流量灰度接入</p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/11/19/%E6%B6%88%E6%81%AF%E6%B6%88%E8%B4%B9%E6%A1%86%E6%9E%B6/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.tohugo.com/2021/11/19/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF%E4%BD%93%E7%B3%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="李炳华">
+      <meta itemprop="description" content="博学而笃志,切问而近思。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风不停息">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/11/19/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF%E4%BD%93%E7%B3%BB/" class="post-title-link" itemprop="url">后端技术体系</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-19 23:29:16" itemprop="dateCreated datePublished" datetime="2021-11-19T23:29:16+08:00">2021-11-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="如何对外提供接口能力"><a href="#如何对外提供接口能力" class="headerlink" title="如何对外提供接口能力"></a>如何对外提供接口能力</h2><p>本质 tomcat容器&amp;netty</p>
+<ul>
+<li>1）spring web接口</li>
+<li>2）网关提供 http-&gt;dubbo(方便流量收口管控)</li>
+</ul>
+<h2 id="接口安全性如何保障"><a href="#接口安全性如何保障" class="headerlink" title="接口安全性如何保障"></a>接口安全性如何保障</h2><p>mapi filter验证、网关验证</p>
+<ul>
+<li>1）accessToken验证：用户登录获取accessToken、发起http请求时accessToken 携带在header</li>
+<li>2）客户端参数加签名、服务端解析验证签名</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/11/19/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF%E4%BD%93%E7%B3%BB/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.tohugo.com/2021/11/19/%E7%BE%8E%E5%9B%A2%E5%85%AB%E5%B9%B4%E5%B7%A5%E4%BD%9C%E5%8E%9F%E5%88%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="李炳华">
+      <meta itemprop="description" content="博学而笃志,切问而近思。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风不停息">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/11/19/%E7%BE%8E%E5%9B%A2%E5%85%AB%E5%B9%B4%E5%B7%A5%E4%BD%9C%E5%8E%9F%E5%88%99/" class="post-title-link" itemprop="url">美团八年工作原则</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-19 23:06:53" itemprop="dateCreated datePublished" datetime="2021-11-19T23:06:53+08:00">2021-11-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%BA%BA%E7%94%9F/" itemprop="url" rel="index"><span itemprop="name">人生</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://mp.weixin.qq.com/s/vNLEvP4dJLOmeprxyhlp3g" target="_blank" rel="noopener">美团八年工作原则</a></p>
+<h3 id="职场原则"><a href="#职场原则" class="headerlink" title="职场原则"></a>职场原则</h3><ul>
+<li>Owner意识</li>
+<li>时间观念</li>
+<li>以终为始</li>
+<li>闭环思维</li>
+<li>保持敬畏</li>
+<li>事不过二</li>
+<li>设计优先</li>
+<li>P/PC平衡-产出和产能平衡</li>
+<li>善于提问</li>
+<li>空杯心态</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.tohugo.com/2021/11/19/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="李炳华">
+      <meta itemprop="description" content="博学而笃志,切问而近思。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风不停息">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/11/19/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" class="post-title-link" itemprop="url">团队管理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-19 22:54:32" itemprop="dateCreated datePublished" datetime="2021-11-19T22:54:32+08:00">2021-11-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%BA%92%E8%81%94%E7%BD%91/" itemprop="url" rel="index"><span itemprop="name">互联网</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="四个方向的自己管理"><a href="#四个方向的自己管理" class="headerlink" title="四个方向的自己管理"></a>四个方向的自己管理</h1><ul>
+<li>向左（客户）要有爱（放下自己）</li>
+<li>向右（协同部门、同事）要有肺（放下”私心”）</li>
+<li>向上（上级）要有胆（放下小心、协助上级打胜仗，事先想过认为正确的问题可以提出，和顶撞是有区分的）</li>
+<li>向下（下级）要有心（放下架子，做良师益友）</li>
+</ul>
+<h1 id="团队管理"><a href="#团队管理" class="headerlink" title="团队管理"></a>团队管理</h1><h2 id="思考一"><a href="#思考一" class="headerlink" title="思考一"></a>思考一</h2><h3 id="1、为什么要“育”"><a href="#1、为什么要“育”" class="headerlink" title="1、为什么要“育”"></a>1、为什么要“育”</h3><p>团队需要：团队在不同阶段为了达到不同的目标，对人员结构会有不同诉求，“育”的目标就是培养团队成员成长为团队需要或超出预期的角色<br>个人诉求：团队大部分都是90后，成长意识强，大部分同学入职最核心的点就是在公司得到成长，帮助员工成长不仅符合公司价值取向，同样是一种激发员工潜力的方式</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/11/19/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.tohugo.com/2021/11/19/%E5%81%9A%E6%88%90%E7%86%9F%E7%94%B7%E4%BA%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="李炳华">
+      <meta itemprop="description" content="博学而笃志,切问而近思。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风不停息">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/11/19/%E5%81%9A%E6%88%90%E7%86%9F%E7%94%B7%E4%BA%BA/" class="post-title-link" itemprop="url">做成熟男人</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-19 22:46:42" itemprop="dateCreated datePublished" datetime="2021-11-19T22:46:42+08:00">2021-11-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%BA%BA%E7%94%9F/" itemprop="url" rel="index"><span itemprop="name">人生</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>做个男人，做个成熟的男人，做个有城府的男人</p>
+<p>突然间觉得，自己已经不是青涩时候的自己了。应该正视家人的叽叽喳喳，领导的唧唧歪歪，同事的稀稀拉拉，同学朋友们的嘻嘻哈哈。<br>看了一篇帖子，讲男人的，觉得说的很好，拿过来，鞭策自己，同时鞭策能看到这篇文章的朋友们，男人们。<br>是谁说过的，一个人的成熟程度，与其的情商是成正比的，一个人成事的概率也与其情商是成正比的。</p>
+<h3 id="一：沉稳"><a href="#一：沉稳" class="headerlink" title="一：沉稳"></a>一：沉稳</h3><p>（1）不要随便显露你的情绪。<br>（2）不要逢人就诉说你的困难和遭遇。<br>（3）在征询别人的意见之前，自己先思考，但不要先讲。<br>（4）不要一有机会就唠叨你的不满。<br>（5）重要的决定尽量有别人商量，最好隔一天再发布。<br>（6）讲话不要有任何的慌张，走路也是。<br>（7）自信是好，但是别忽略任何人的想法。<br>（8）人无高低，不要一副拽拽的样子，对人对事，别忘了礼貌。你没有比任何人优秀。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/11/19/%E5%81%9A%E6%88%90%E7%86%9F%E7%94%B7%E4%BA%BA/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.tohugo.com/2021/11/19/%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E6%8E%A8%E8%BF%9B%E6%A0%87%E5%87%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="李炳华">
+      <meta itemprop="description" content="博学而笃志,切问而近思。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风不停息">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/11/19/%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E6%8E%A8%E8%BF%9B%E6%A0%87%E5%87%86/" class="post-title-link" itemprop="url">后端项目推进标准</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-19 22:24:30" itemprop="dateCreated datePublished" datetime="2021-11-19T22:24:30+08:00">2021-11-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%BD%AF%E5%AE%9E%E5%8A%9B/" itemprop="url" rel="index"><span itemprop="name">软实力</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="项目阶段概要"><a href="#项目阶段概要" class="headerlink" title="项目阶段概要"></a>项目阶段概要</h1><p>项目的阶段包含：项目准备、项目启动（非必须）、项目研发、生产验收</p>
+<p>整体流程如下：<br><img src="/images/proejct_execute_processing.png" alt=""></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/11/19/%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E6%8E%A8%E8%BF%9B%E6%A0%87%E5%87%86/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.tohugo.com/2021/11/19/%E7%A0%94%E5%8F%91%E5%B7%A5%E7%A8%8B%E5%B8%88%E8%83%BD%E5%8A%9B%E5%AE%9A%E7%BA%A7%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="李炳华">
+      <meta itemprop="description" content="博学而笃志,切问而近思。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风不停息">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/11/19/%E7%A0%94%E5%8F%91%E5%B7%A5%E7%A8%8B%E5%B8%88%E8%83%BD%E5%8A%9B%E5%AE%9A%E7%BA%A7%E6%A8%A1%E5%9E%8B/" class="post-title-link" itemprop="url">研发工程师能力定级模型</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-19 22:08:36" itemprop="dateCreated datePublished" datetime="2021-11-19T22:08:36+08:00">2021-11-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="匹配能力模型精简文字版"><a href="#匹配能力模型精简文字版" class="headerlink" title="匹配能力模型精简文字版"></a>匹配能力模型精简文字版</h3><table>
+<thead>
+<tr>
+<th>职级</th>
+<th>后台开发知识</th>
+<th>业务领域知识</th>
+<th>开发能力</th>
+<th>架构能力</th>
+<th>业务运维</th>
+<th>技术规划</th>
+<th>执行力</th>
+<th>沟通合作</th>
+<th>方法论建设</th>
+<th>知识传播</th>
+<th>人才培养</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P1.3</td>
+<td>掌握基础知识</td>
+<td>0</td>
+<td>能开发</td>
+<td>0</td>
+<td>掌握基础运维知识</td>
+<td>0</td>
+<td>按时保质</td>
+<td>团队中的个人贡献</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>P2.1</td>
+<td>掌握基础知识</td>
+<td>体验产品业务和流程</td>
+<td>能开发</td>
+<td>0</td>
+<td>掌握基础运维知识</td>
+<td>了解并执行规划能力</td>
+<td>按时保质</td>
+<td>团队中的个人贡献</td>
+<td>总结归纳</td>
+<td>部门内分享</td>
+<td>0</td>
+</tr>
+<tr>
+<td>P2.2</td>
+<td>精通开发语言熟知基础库</td>
+<td>体验产品业务和流程</td>
+<td>能独立负责复杂模块的研发工作</td>
+<td>记录整理</td>
+<td>具备容错容灾意识</td>
+<td>了解并执行规划能力</td>
+<td>主动思考灵活应变</td>
+<td>团队中的个人贡献</td>
+<td>总结归纳</td>
+<td>部门内分享</td>
+<td>帮助新员工</td>
+</tr>
+<tr>
+<td>P2.3</td>
+<td>精通开发语言熟知基础库</td>
+<td>熟悉对应产品的特性、需求等</td>
+<td>能独立负责复杂模块的研发工作</td>
+<td>记录整理</td>
+<td>具备容错容灾意识</td>
+<td>单模块级别的中短期规划能力</td>
+<td>主动思考灵活应变</td>
+<td>参与团队的组织和分工</td>
+<td>提炼规律</td>
+<td>跨部门或平台内经验与知识的分享</td>
+<td>辅导初级员工</td>
+</tr>
+<tr>
+<td>P3.1</td>
+<td>理解原理</td>
+<td>理解产品核心体验</td>
+<td>能主导或核心参与中大型项目</td>
+<td>模块设计</td>
+<td>主导系统容灾容错设计实施</td>
+<td>单模块级别的中短期规划能力</td>
+<td>目标拆解资源协调</td>
+<td>团队的核心</td>
+<td>提炼规律</td>
+<td>跨部门或平台内经验与知识的分享</td>
+<td>辅导初级员工</td>
+</tr>
+<tr>
+<td>P3.2</td>
+<td>理解原理</td>
+<td>理解产品核心体验</td>
+<td>能主导或核心参与中大型项目</td>
+<td>子系统设计</td>
+<td>主导系统容灾容错设计实施</td>
+<td>单系统级别的中长期规划能力</td>
+<td>目标拆解资源协调</td>
+<td>团队的核心</td>
+<td>方法论沉淀</td>
+<td>主导开发BG级课程</td>
+<td>资深导师，专业辅导</td>
+</tr>
+<tr>
+<td>P3.3</td>
+<td>熟练掌握后台架构设计方法论</td>
+<td>理解产品核心体验</td>
+<td>能担任大型项目的技术负责人</td>
+<td>完整系统设计</td>
+<td>主导系统容灾容错设计实施</td>
+<td>单个领域复杂业务多系统的中长期规划与落地</td>
+<td>确定目标勇于担当</td>
+<td>把握团队的方向</td>
+<td>方法论沉淀</td>
+<td>主导开发公司级课程</td>
+<td>资深导师，专业辅导</td>
+</tr>
+<tr>
+<td>P4.1</td>
+<td>行业领先</td>
+<td>对业界多个业务有深入理解</td>
+<td>能担任大型项目的技术负责人</td>
+<td>完整系统设计</td>
+<td>业务可用性保障</td>
+<td>单个领域复杂业务多系统的中长期规划与落地</td>
+<td>确定目标勇于担当</td>
+<td>把握团队的方向</td>
+<td>创新性方法论与工具的开发</td>
+<td>主导开发公司级课程</td>
+<td>有意识培养骨干人才</td>
+</tr>
+</tbody></table>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/11/19/%E7%A0%94%E5%8F%91%E5%B7%A5%E7%A8%8B%E5%B8%88%E8%83%BD%E5%8A%9B%E5%AE%9A%E7%BA%A7%E6%A8%A1%E5%9E%8B/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="李炳华"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">李炳华</p>
+  <div class="site-description" itemprop="description">博学而笃志,切问而近思。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wind-never-stop" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wind-never-stop" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://wind-never-stop.github.io/" title="https:&#x2F;&#x2F;wind-never-stop.github.io&#x2F;" rel="noopener" target="_blank">风不停息</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李炳华</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='65,105,225' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+  
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+</body>
+</html>
