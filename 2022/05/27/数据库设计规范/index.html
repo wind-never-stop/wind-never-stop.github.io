@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+
+
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.tohugo.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="通用设计规范 【强制】数据库中重要的对象要有注释：  每个表都要有注释； 字段除了常见的自增主键id, create_time, update_time，其他字段必须要有注释； 索引等也建议有注释； 所有注释要保持最新；   【建议】默认使用utf8mb4字符集，无乱码风险。utf8mb4 是 utf8 的超集，可以获得比 utf8 更好的兼容性。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库设计规范">
+<meta property="og:url" content="https://www.tohugo.com/2022/05/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83/index.html">
+<meta property="og:site_name" content="风不停息">
+<meta property="og:description" content="通用设计规范 【强制】数据库中重要的对象要有注释：  每个表都要有注释； 字段除了常见的自增主键id, create_time, update_time，其他字段必须要有注释； 索引等也建议有注释； 所有注释要保持最新；   【建议】默认使用utf8mb4字符集，无乱码风险。utf8mb4 是 utf8 的超集，可以获得比 utf8 更好的兼容性。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-27T14:39:28.000Z">
+<meta property="article:modified_time" content="2022-05-27T14:39:28.000Z">
+<meta property="article:author" content="李炳华">
+<meta property="article:tag" content="数据库设计">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.tohugo.com/2022/05/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>数据库设计规范 | 风不停息</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"><a href="https://github.com/tao111222333444" target="_blank" rel="noopener" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">风不停息</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">凡是过往，皆为序章</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">13</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">40</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.tohugo.com/2022/05/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="李炳华">
+      <meta itemprop="description" content="博学而笃志,切问而近思。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风不停息">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据库设计规范
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-05-27 22:39:28" itemprop="dateCreated datePublished" datetime="2022-05-27T22:39:28+08:00">2022-05-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" itemprop="url" rel="index"><span itemprop="name">最佳实践</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="通用设计规范"><a href="#通用设计规范" class="headerlink" title="通用设计规范"></a>通用设计规范</h1><ul>
+<li><p>【强制】数据库中重要的对象要有注释：</p>
+<ul>
+<li>每个表都要有注释；</li>
+<li>字段除了常见的自增主键id, create_time, update_time，其他字段必须要有注释；</li>
+<li>索引等也建议有注释；</li>
+<li>所有注释要保持最新；</li>
+</ul>
+</li>
+<li><p>【建议】默认使用utf8mb4字符集，无乱码风险。utf8mb4 是 utf8 的超集，可以获得比 utf8 更好的兼容性。</p>
+</li>
+</ul>
+<a id="more"></a>
+
+<ul>
+<li><p>【建议】除非 DBA 建议，存储引擎一律使用 INNODB；</p>
+</li>
+<li><p>【强制】数据库时区设置为UTC时区；</p>
+</li>
+<li><p>【强制】禁止使用数据库的外键特性，在应用层寻求对应的解决方案；</p>
+</li>
+<li><p>【强制】禁止使用数据库的触发器、存储过程 及 数据库的函数，有需要，在应用层做相关处理；</p>
+</li>
+<li><p>【建议】尽可能降低对 Mysql 独有特性的依赖，因为这种特性未来可能带来更大的迁移成本（例如：假如后续从 mysql 迁移至 postgresql）；</p>
+</li>
+<li><p>【建议】数据库表中设置三个字段：id（主键）、create_time（记录创建时间）、update_time（记录更新时间）；</p>
+</li>
+<li><p>【强制】更新数据表记录时，必须同时更新记录对应的 update_time 字段值为当前时间；</p>
+</li>
+<li><p>【强制】id类型没有特殊要求，必须使用bigint unsigned，禁止使用int，即使现在的数据量很小。id如果是数字类型的话，必须是8个字节；</p>
+</li>
+<li><p>【建议】除数据库表主键id之外，建议设置业务数据主键（例如content_id, order_id等），该类型为字符串，对外暴露业务主键，防止从接口遍历数据； </p>
+</li>
+<li><p>【建议】所有的数据库表的字段都应该是 not null 的，并且配置默认值。</p>
+</li>
+<li><p>【建议】字段长度定义应考虑业务场景，满足需求的前提下应尽量短，以提高查询的效率，且降低索引对资源的消耗。</p>
+</li>
+<li><p>【强制】不同表中存储相同数据的列名和列类型必须一致（注：一般作为关联列，如果查询时关联列类型不一致会自动进行数据类型隐式转换，会造成列上的索 引失效，导致查询效率降低）</p>
+</li>
+<li><p>【建议】经常一起使用的列应该放到一个表中，允许适当冗余，避免更多的关联操作。字段允许适当冗余，以提高查询性能，但必须考虑数据一致。冗余字段应遵循：</p>
+<ul>
+<li>不是频繁修改的字段。</li>
+<li>不是唯一索引的字段。</li>
+<li>不是 varchar 超长字段，更不能是 text 字段。</li>
+</ul>
+</li>
+<li><p>【建议】单库表数量建议控制在 50 以内；</p>
+</li>
+<li><p>【建议】表列数量建议控制在30个以内；</p>
+</li>
+<li><p>【建议】单表行数超过 500 万行或者单表容量超过 2GB，才推荐进行分库分表。 说明:如果预计2年后的数据量根本达不到这个级别，请不要在创建表时就分库分表；</p>
+</li>
+<li><p>【建议】尽量做到冷热数据分离，减小表的宽度；</p>
+</li>
+<li><p>【建议】数据行的长度要小于物理页一半的大小（默认情况下，页大小 16 KB，则半页大小是 8 KB，最大行长度不能超过 8000 Byte，具体可以参考 <a href="https://dev.mysql.com/doc/refman/5.6/en/column-count-limit.html" target="_blank" rel="noopener">mysql 官方文档</a>），如果超过这个长度的话在物理页中插入两行数据就会出现行链接从而造成存储碎片，降低查询效率；</p>
+</li>
+<li><p>【建议】数据库链接池的上下限设定遵循此规则：</p>
+<ul>
+<li>下限：服务运行实例的CPU核数+1</li>
+</ul>
+</li>
+<li><p>上限：不高于（真实业务场景QPS上限 * 单请求响应时间(s) / 服务运行实例数）。例如：单请求响应时间全局参考值可取0.05，对业务场景1000QPS，服务运行实例为5的应用，配置连接池上限为：1000*0.05/5=10</p>
+</li>
+<li><p>【强制】禁止在数据库上存储图片、二进制文件等静态资源，应该使用合适的文件系统，数据库仅存储URL对于二进制多媒体数据、超大文本数据也不要放在数据库字段中；</p>
+</li>
+<li><p>【强制】禁⽌在数据库中存储明文密码；</p>
+</li>
+</ul>
+<h1 id="命名规范"><a href="#命名规范" class="headerlink" title="命名规范"></a>命名规范</h1><ul>
+<li><p>【强制】禁止使用拼音来命名，禁止拼音英文混用 </p>
+</li>
+<li><p>【强制】表名、字段名必须使用小写字母或数字，使用下划线分隔单词。不要使用大写字母，禁止出现数字开头，禁止两个下划线中间只出现数字（注：Mysql在Windows下不区分大小写，在Linux下表名字段名等区分大小写，为了避免不必要的麻烦，命名一律使用小写）</p>
+</li>
+<li><p>【强制】表名不使用复数名词，而且要简明扼要，尽量控制在64个字符以内，但不应以缩短表名为由，使用辨识度不高的缩写。</p>
+</li>
+<li><p>【强制】数据库的命名建议：{应用名称}<em>{region}</em>{env}。例如：account_eu_prod</p>
+</li>
+<li><p>【建议】表的命名最好是加上“业务名称_表的作用”</p>
+</li>
+<li><p>【强制】禁用保留字，如 desc、range、match、delayed 等，请参考 <a href="https://dev.mysql.com/doc/refman/5.6/en/keywords.html" target="_blank" rel="noopener">MySQL 官方保留字</a></p>
+</li>
+<li><p>【强制】表达是与否概念的字段，使用 is_xxx 的方式命名，数据类型是 unsigned tinyint(1)（1 表示是，0 表示否），举例：is_deleted</p>
+</li>
+<li><p>【强制】主键索引名添加前缀”pk_”，唯一索引名前缀 “uniq_”，普通索引名前缀 “idx_”</p>
+</li>
+</ul>
+<h1 id="类型规范"><a href="#类型规范" class="headerlink" title="类型规范"></a>类型规范</h1><ul>
+<li><p>【强制】对于tinyint类型，如果表示boolean类型，需要设置为tinyint(1)；如果表示0-255（-128-127）之间的整数，需要设置为tinyint(4)</p>
+</li>
+<li><p>【建议】尽量少使用TEXT、避免BLOB数据类型，最常见的TEXT类型可以存储64k的数据</p>
+</li>
+<li><p>【建议】避免使用ENUM类型，可使用 tinyint (数量比较多的就用 small int 或者 直接用 int)代替。因为修改 ENUM 需要使用 ALTER 语句，需要进行 DDL 操作， ENUM 类型的 ORDER BY 操作效率低，需要额外操作。tinyint 枚举的可能取值在comment里面标明。</p>
+</li>
+<li><p>【强制】禁止使用 float、double 来定义财务类（例如金额）字段，应该使用 decimal 类型或者bigint类型。金额字段使用 decimal 类型，并给予足够的长度及精度。在性能要求比较苛刻的情况下，使用 bigint 类型，单位是分（如果是其他货币，需要定义其他单位）</p>
+</li>
+<li><p>【建议】如果存储的字符串长度几乎相等（如用户名、密码等长度变化不大的字段），使用 char 定长字符串类型，其他不确定长度的字段，统一使用varchar相关的类型</p>
+</li>
+<li><p>【建议】尽量少使用 varchar 类型的大字段，减少行迁移的发生。varchar 长度不要超过 5000，如果存储长度大于此值，定义字段类型为 text，独立出来一张表，用主键来对应，避免影响其它字段索引效率</p>
+</li>
+<li><p>【建议】尽量使用整型字段（明确无符号的数值，使用 unsigned的整型），代替 IP、枚举类型、字符类型、浮点数类型（<strong>ip</strong> 地址的每段可以看成是一个 0-255 的整数，把每段拆分成一个二进制形式组合起来，然后把这个二进制数转变成一个长整数。 组合起来即为：00001010 00000000 00000011 11000001,转换为10进制数就是：167773121，即该 <strong>IP</strong> 地址转换后的数字就是它了。）</p>
+</li>
+<li><p>【强制】时间字段使用时间日期/时间戳类型，不要使用字符串或者bigint类型存储</p>
+</li>
+</ul>
+<h1 id="索引规范"><a href="#索引规范" class="headerlink" title="索引规范"></a>索引规范</h1><ul>
+<li><p>【建议】限制每张表上的索引数量，建议单张表索引不超过5个</p>
+</li>
+<li><p>【禁止】禁止给表中的每一列都建立单独的索引</p>
+</li>
+<li><p>【强制】业务上具有唯一特性的字段，即使是多个字段的组合，也必须建成唯一索引</p>
+</li>
+<li><p>【强制】超过三个表禁止 join。需要 join 的字段，数据类型必须绝对一致; 多表关联查询时， 保证被关联的字段需要有索引</p>
+</li>
+<li><p>【强制】页面搜索严禁左模糊或者全模糊，如果需要请走搜索引擎来解决</p>
+</li>
+<li><p>【建议】建组合索引的时候，字段顺序应该考虑一下三个因素：字段的区分度，字段的使用频繁程度，字段长度大小</p>
+</li>
+<li><p>【建议】禁止在区分度不高的属性上建立索引（此处是广义的区分度，比如进行中状态的订单占比很少，而应用基本只查询进行中的订单，则可以在订单状态上加索引）</p>
+</li>
+<li><p>【建议】建立长字符串字段的前缀索引，保证快速有效过滤数据的同时，节省维护索引的开销。</p>
+</li>
+</ul>
+<h1 id="SQL规范"><a href="#SQL规范" class="headerlink" title="SQL规范"></a>SQL规范</h1><ul>
+<li>【强制】禁止在代码中使用跨库查询；</li>
+<li>【强制】超100万行的批量写（UPDATE、DELETE、INSERT）操作，要分批多次进行操作，缓解主从延迟</li>
+<li>【强制】对于大表使用pt-online-schema-change修改表结构</li>
+<li>【强制】对于程序连接数据库账号，遵循权限最小原则</li>
+<li>【建议】避免物理删除，尽量采用逻辑删除</li>
+<li>【建议】避免删除字段</li>
+<li>【强制】禁止使用存储过程，存储过程难以调试和扩展，更没有移植性</li>
+<li>【强制】禁用select *，必须指定列</li>
+<li>【建议】减少与数据库交互次数，尽量采用批量SQL语句</li>
+<li>【强制】禁止在主库上执⾏后台管理和统计类功能的QUERY，必要时申请统计类从库</li>
+</ul>
+<h1 id="操作行为规范"><a href="#操作行为规范" class="headerlink" title="操作行为规范"></a>操作行为规范</h1><ul>
+<li>【强制】禁止在线上做数据库压力测试；</li>
+<li>【强制】禁止从开发环境，测试环境直接连接生产环境数据库；</li>
+<li>【强制】禁止在数据库事务开启后处理非必要的逻辑，禁止在事务开启后访问非本地资源；</li>
+<li>【建议】如果修改字段含义或对字段表示的状态追加时，需要及时更新字段注释；</li>
+</ul>
+<h1 id="数据库账号规范"><a href="#数据库账号规范" class="headerlink" title="数据库账号规范"></a>数据库账号规范</h1><ul>
+<li>【强制】禁止为程序使用的账号赋予super权限</li>
+<li>【强制】业务程序必须实现读写分离，读写账号以后缀_w命名，只读账号以后缀_r命名</li>
+<li>【强制】程序账号权限只能是SELECT、INSERT、UPDATE、DELETE，除非特殊情况可以授予CREATE和DROP权限</li>
+<li>【强制】不同后端平台以及运维程序，需要使用不同的数据库账号</li>
+<li>【建议】相同数据库账号的权限必须保持一致；主从数据库的账号授权保持一致</li>
+</ul>
+<h1 id="常用字段名建议"><a href="#常用字段名建议" class="headerlink" title="常用字段名建议"></a>常用字段名建议</h1><h3 id="数据库表通用字段命名"><a href="#数据库表通用字段命名" class="headerlink" title="数据库表通用字段命名"></a>数据库表通用字段命名</h3><table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>含义</th>
+<th>推荐类型</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>数据库主键</td>
+<td>BIGINT(20) UNSIGNED</td>
+<td></td>
+</tr>
+<tr>
+<td>create_time</td>
+<td>创建时间</td>
+<td>timestamp</td>
+<td>默认 CURRENT_TIMESTAMP</td>
+</tr>
+<tr>
+<td>update_time</td>
+<td>更新时间</td>
+<td>timestamp</td>
+<td>默认 CURRENT_TIMESTAMP</td>
+</tr>
+<tr>
+<td>country</td>
+<td>国家名称</td>
+<td>varchar(90)</td>
+<td>例如：Norway</td>
+</tr>
+<tr>
+<td>city</td>
+<td>城市名称</td>
+<td>varchar(189)</td>
+<td>例如：Oslo</td>
+</tr>
+<tr>
+<td>zip_code</td>
+<td>Zip Code</td>
+<td>varchar(18)</td>
+<td></td>
+</tr>
+<tr>
+<td>country_code</td>
+<td>国家编码</td>
+<td>char(2)</td>
+<td>ISO 3166-1 alpha-2 (例如 CN, NO)</td>
+</tr>
+<tr>
+<td>region</td>
+<td>地区/区域</td>
+<td>varchar</td>
+<td></td>
+</tr>
+<tr>
+<td>lang</td>
+<td>语言</td>
+<td>varchar()</td>
+<td>LANGUAGE是mysql保留关键字，故使用 lang。此字段取值例如：en_US, zh_CN, …</td>
+</tr>
+<tr>
+<td>email</td>
+<td>邮箱地址</td>
+<td>varchar(254)</td>
+<td>See RFC5321</td>
+</tr>
+<tr>
+<td>address</td>
+<td>地址</td>
+<td>varchar(255)</td>
+<td>海外大部分的地址是分 address1（详细地址）, address2（补充地址）</td>
+</tr>
+<tr>
+<td>account_id</td>
+<td>Nio Account ID</td>
+<td>int unsigned</td>
+<td>绝大部分系统在存储用户相关数据的时候都需要使用account_id。受限于车机系统，目前account_id是32位无符号整形数</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>User id</td>
+<td>varchar(20)</td>
+<td>用户，创建nio account之前的用户标识。只在少数几个场景(e.g. leads)下使用，其他场景都使用 account_id</td>
+</tr>
+<tr>
+<td>first_name</td>
+<td>名</td>
+<td>varchar(50)</td>
+<td></td>
+</tr>
+<tr>
+<td>last_name</td>
+<td>姓</td>
+<td>varchar(50)</td>
+<td></td>
+</tr>
+<tr>
+<td>latitude</td>
+<td>位置 - 纬度</td>
+<td>decimal(10,6)</td>
+<td>-90.000000 ~ 90.000000</td>
+</tr>
+<tr>
+<td>longitude</td>
+<td>位置 - 经度</td>
+<td>decimal(10,6)</td>
+<td>-180.000000 ~ 180.000000</td>
+</tr>
+<tr>
+<td>status</td>
+<td>状态</td>
+<td>tinyint</td>
+<td>根据业务场景设置位数</td>
+</tr>
+</tbody></table>
+<h3 id="其他推荐命名"><a href="#其他推荐命名" class="headerlink" title="其他推荐命名"></a>其他推荐命名</h3><table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>适用场景</th>
+<th>实体描述</th>
+<th>易混淆词</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>vehicle</td>
+<td>通用场景</td>
+<td>用于被服务的车辆，一般用于客户车</td>
+<td>car（一般不使用这个词）</td>
+</tr>
+<tr>
+<td>reservation</td>
+<td>预约了某一特定资源一段固定的时间段的场景</td>
+<td>一般用于描述某一特定资源在某一个特定时间段的占用情况</td>
+<td>booking</td>
+</tr>
+<tr>
+<td>original_XXX_time</td>
+<td>时间强相关的场景</td>
+<td>XXX 的原始（既定）时间</td>
+<td>–</td>
+</tr>
+<tr>
+<td>estimate_XXX_time</td>
+<td>时间强相关的场景</td>
+<td>XXX 的（最新）预估时间</td>
+<td>–</td>
+</tr>
+<tr>
+<td>actual_XXX_time</td>
+<td>时间强相关的场景</td>
+<td>XXX 的实际时间</td>
+<td>–</td>
+</tr>
+<tr>
+<td>staff</td>
+<td>涉及专员管理系统（oathkeeper）提供的服务人员的场景</td>
+<td>专员（俗称小哥）</td>
+<td>–</td>
+</tr>
+<tr>
+<td>dispatch</td>
+<td>派单场景</td>
+<td>分配任务</td>
+<td>assign（dispatch 的客体是任务，assign 的客体是执行任务的人）</td>
+</tr>
+<tr>
+<td>channel</td>
+<td>对接了不同业务方的场景</td>
+<td>一般用于区分对接的不同的上游业务方</td>
+<td>supplier</td>
+</tr>
+<tr>
+<td>supplier</td>
+<td>对接了不同的下游服务供应商</td>
+<td>一般用于区分对接的不同的下游供应商</td>
+<td>channel</td>
+</tr>
+</tbody></table>
+<h4 id=""><a href="#" class="headerlink" title=""></a></h4>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1/" rel="tag"># 数据库设计</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/05/27/%E9%A1%B9%E7%9B%AE%E6%A8%A1%E6%9D%BF%E6%A1%86%E6%9E%B6/" rel="prev" title="项目模板框架">
+      <i class="fa fa-chevron-left"></i> 项目模板框架
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/27/%E6%8E%A5%E5%8F%A3%E8%A7%84%E8%8C%83/" rel="next" title="接口规范">
+      接口规范 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#通用设计规范"><span class="nav-text">通用设计规范</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#命名规范"><span class="nav-text">命名规范</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类型规范"><span class="nav-text">类型规范</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#索引规范"><span class="nav-text">索引规范</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SQL规范"><span class="nav-text">SQL规范</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#操作行为规范"><span class="nav-text">操作行为规范</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据库账号规范"><span class="nav-text">数据库账号规范</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常用字段名建议"><span class="nav-text">常用字段名建议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库表通用字段命名"><span class="nav-text">数据库表通用字段命名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他推荐命名"><span class="nav-text">其他推荐命名</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="李炳华"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">李炳华</p>
+  <div class="site-description" itemprop="description">博学而笃志,切问而近思。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wind-never-stop" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wind-never-stop" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://wind-never-stop.github.io/" title="https:&#x2F;&#x2F;wind-never-stop.github.io&#x2F;" rel="noopener" target="_blank">风不停息</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李炳华</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='65,105,225' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+  
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+
+
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.tohugo.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1.背景团队在搭建的过程中，经常会遇到大家立即不一致，对一些基础的东西产生分歧，沟通对接成本比较大，如何提高沟通效率，为需求迭代增速，并维持敏捷开发，这是一个软件开发部门需要面对的命题 2.结论形成团队最佳时间规范，信息对齐，基本原则对齐，输出项目代码模板，接口规范等等最佳实践的case，以达到软件的敏捷快速迭代并保持稳定性，简单原则。  统一的项目代码模板，项目分层 接口规范（含异常处理规范）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="项目模板框架">
+<meta property="og:url" content="https://www.tohugo.com/2022/05/27/%E9%A1%B9%E7%9B%AE%E6%A8%A1%E6%9D%BF%E6%A1%86%E6%9E%B6/index.html">
+<meta property="og:site_name" content="风不停息">
+<meta property="og:description" content="1.背景团队在搭建的过程中，经常会遇到大家立即不一致，对一些基础的东西产生分歧，沟通对接成本比较大，如何提高沟通效率，为需求迭代增速，并维持敏捷开发，这是一个软件开发部门需要面对的命题 2.结论形成团队最佳时间规范，信息对齐，基本原则对齐，输出项目代码模板，接口规范等等最佳实践的case，以达到软件的敏捷快速迭代并保持稳定性，简单原则。  统一的项目代码模板，项目分层 接口规范（含异常处理规范）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.tohugo.com/images/dubbo_service_structure.jpeg">
+<meta property="og:image" content="https://www.tohugo.com/images/web_service_structure.jpeg">
+<meta property="article:published_time" content="2022-05-27T13:24:15.000Z">
+<meta property="article:modified_time" content="2022-05-27T13:24:15.000Z">
+<meta property="article:author" content="李炳华">
+<meta property="article:tag" content="团队规范">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.tohugo.com/images/dubbo_service_structure.jpeg">
+
+<link rel="canonical" href="https://www.tohugo.com/2022/05/27/%E9%A1%B9%E7%9B%AE%E6%A8%A1%E6%9D%BF%E6%A1%86%E6%9E%B6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>项目模板框架 | 风不停息</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"><a href="https://github.com/tao111222333444" target="_blank" rel="noopener" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">风不停息</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">凡是过往，皆为序章</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">13</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">40</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.tohugo.com/2022/05/27/%E9%A1%B9%E7%9B%AE%E6%A8%A1%E6%9D%BF%E6%A1%86%E6%9E%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="李炳华">
+      <meta itemprop="description" content="博学而笃志,切问而近思。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风不停息">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          项目模板框架
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-05-27 21:24:15" itemprop="dateCreated datePublished" datetime="2022-05-27T21:24:15+08:00">2022-05-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%BA%92%E8%81%94%E7%BD%91/" itemprop="url" rel="index"><span itemprop="name">互联网</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="1-背景"><a href="#1-背景" class="headerlink" title="1.背景"></a>1.背景</h3><p>团队在搭建的过程中，经常会遇到大家立即不一致，对一些基础的东西产生分歧，沟通对接成本比较大，如何提高沟通效率，为需求迭代增速，并维持敏捷开发，这是一个软件开发部门需要面对的命题</p>
+<h3 id="2-结论"><a href="#2-结论" class="headerlink" title="2.结论"></a>2.结论</h3><p>形成团队最佳时间规范，信息对齐，基本原则对齐，输出项目代码模板，接口规范等等最佳实践的case，以达到软件的敏捷快速迭代并保持稳定性，简单原则。</p>
+<ul>
+<li>统一的项目代码模板，项目分层</li>
+<li>接口规范（含异常处理规范）</li>
+<li>数据库规范 mysql</li>
+<li>调度平台规范（含定时调度、延时调度）</li>
+<li>日志查询规范 elk</li>
+<li>消息生产消费框架</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="3-方案"><a href="#3-方案" class="headerlink" title="3.方案"></a>3.方案</h3><h4 id="3-1项目代码模板"><a href="#3-1项目代码模板" class="headerlink" title="3.1项目代码模板"></a>3.1项目代码模板</h4><h5 id="3-1-1模板现有能力介绍"><a href="#3-1-1模板现有能力介绍" class="headerlink" title="3.1.1模板现有能力介绍"></a>3.1.1模板现有能力介绍</h5><ul>
+<li>接入dubbo微服务框架</li>
+<li>接入mybatis-plus</li>
+<li>web模块集成swagger api文档</li>
+<li>接入公共基础包规范</li>
+<li>代码规约强制扫描，通过mvn install 触发</li>
+<li>全局通用异常处理</li>
+<li>参数注解校验</li>
+<li>请求日志打点，业务代码不再需要log.info 出入参数</li>
+</ul>
+<h5 id="3-1-2微服务架构-dubbo"><a href="#3-1-2微服务架构-dubbo" class="headerlink" title="3.1.2微服务架构-dubbo"></a>3.1.2微服务架构-dubbo</h5><p><img src="/images/dubbo_service_structure.jpeg" alt="dubbo_service_structure"></p>
+<p>注释说明：</p>
+<ul>
+<li>api，提供给dubbo调用解析，每个接口必须有对象，以 xxxRequest/xxxResponse结尾，存在接口层复用属性对象以xxxDTO结尾，返回结果用基础包 ado-common-base Response包装</li>
+<li>serviceImpl，很薄的一层，只做dubbo provider暴露，参数组装，请求路由，一个method对应一个Manager</li>
+<li>manager，业务流程组装，流程编排，流程中有公用逻辑抽取出，commonManager来处理，可以调用commonManager处理，尽量避免业务manager之间互相调用；</li>
+<li>handler，最小执行单元，比如，对外api调用，公用算子等，handler之间不允许互相调用；</li>
+<li>repository，是特殊的handler，做数据持久化，事务控制，do作用域终止在这一层，bo(business object)和do(data object)互转，json化字段拆装箱等；</li>
+<li>Mq Producer，是特殊的handler，做消息生产；</li>
+<li>Mq Consumer，很薄的一层，只做消息消费路由，业务流程在manager中完成。</li>
+</ul>
+<h5 id="3-1-3单体项目模板-web"><a href="#3-1-3单体项目模板-web" class="headerlink" title="3.1.3单体项目模板-web"></a>3.1.3单体项目模板-web</h5><p><img src="/images/web_service_structure.jpeg" alt="web_service_structure"></p>
+<p>注释说明：</p>
+<ul>
+<li>web controller，很薄的一层，每个接口必须有对象，以 xxxRequest/xxxVO结尾，存在接口层复用属性对象以xxxVO结尾，返回结果用基础包 ado-common-base Response包装</li>
+<li>adapter，请求响应组装，基本参数校验，设计db查询、接口调用请下沉到service处理</li>
+<li>service，业务逻辑层，考虑到B端存在简单业务逻辑，也可以在service中直接实现，不走manager，一个method对应一个Manager</li>
+<li>manager，业务流程组装，流程编排，流程中有公用逻辑抽取出，commonManager来处理，可以调用commonManager处理，尽量避免业务manager之间互相调用；</li>
+<li>handler，最小执行单元，比如，对外api调用，公用算子等，handler之间不允许互相调用；</li>
+<li>repository，是特殊的handler，做数据持久化，事务控制，do作用域终止在这一层，bo(business object)和do(data object)互转，json化字段拆装箱等；</li>
+<li>Mq Producer，是特殊的handler，做消息生产；</li>
+<li>Mq Consumer，很薄的一层，只做消息消费路由，业务流程在manager中完成。</li>
+</ul>
+<h5 id="3-1-4项目脚手架"><a href="#3-1-4项目脚手架" class="headerlink" title="3.1.4项目脚手架"></a>3.1.4项目脚手架</h5><p>通过模版新建项目，infoq原理解释<a href="https://xie.infoq.cn/article/47a69fc545b7d2d497960a86f" target="_blank" rel="noopener">maven模板插件使用</a></p>
+<p>生成步骤：</p>
+<ol>
+<li>下载解压到本地目录。（注 ：目录名不能包含中文）</li>
+<li>idea中安装插件Maven Archetype Catalogs  （搜索时 用Maven作为关键字。其他关键字无法找到该插件）重启 idea</li>
+<li>打开项目 ，使用私服的 maven settings 文件。</li>
+<li>在模板的项目中运行  mvn archetype:create-from-project，会在target目录下生成一个archetype目录，这其实是一个脚手架的maven项目</li>
+<li>然后切到archetype目录下: cd target/generated-sources/archetype/,然后对将脚手架安装到本地maven仓库中: mvn install</li>
+<li>这时去到maven 仓库中可以看到archetype-catalog.xml 文件中已经添加新的模版。（注意这里是配置的maven 仓库位置。如果本地有多个maven版本和仓库需要自己找到 idea 配置文件中的那个）</li>
+<li>添加模板到IDEA。（第二步安装的 maven archetype catalogs 插件作用）archetype-catalog.xml 添加到插件中。重启idea。</li>
+<li>生成自己的项目，执行以下命令,即可在当前目录生成符合本标准的项目结构代码</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mvn archetype:generate \</span><br><span class="line">-DarchetypeGroupId=com.windneverstop.ado \</span><br><span class="line">-DarchetypeArtifactId=dubbo-demo-archetype \</span><br><span class="line">-DarchetypeVersion=1.0-SNAPSHOT \</span><br><span class="line">-DarchetypeCatalog=local \</span><br><span class="line">-DgroupId=com.windneverstop.ado \</span><br><span class="line">-DartifactId=ado-order-log \</span><br><span class="line">-Dversion=1.0.0-SNAPSHOT \</span><br><span class="line">-Dpackage=com.windneverstop.ado.order.log</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-2接口规范"><a href="#3-2接口规范" class="headerlink" title="3.2接口规范"></a>3.2接口规范</h4><ul>
+<li>接口请求规范</li>
+<li>接口签名规范</li>
+<li>接口响应规范</li>
+</ul>
+<h5 id="3-2-3统一切面处理"><a href="#3-2-3统一切面处理" class="headerlink" title="3.2.3统一切面处理"></a>3.2.3统一切面处理</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServiceAspect</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> Validator validator;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Pointcut</span>(<span class="string">"execution(* com.windneverstop.service..*.*(..))"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">aspectCommonExecutor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Around</span>(<span class="string">"aspectCommonExecutor()"</span>)</span><br><span class="line">    <span class="meta">@Order</span>(<span class="number">1000</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">commonExecutor</span><span class="params">(ProceedingJoinPoint joinPoint)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        Class&lt;?&gt; clazz = joinPoint.getTarget().getClass();</span><br><span class="line">        MethodSignature signature = (MethodSignature) joinPoint.getSignature();</span><br><span class="line">        Method method = signature.getMethod();</span><br><span class="line">        Method realMethod = clazz.getMethod(signature.getName(), method.getParameterTypes());</span><br><span class="line"></span><br><span class="line">        Class&lt;?&gt; returnType = realMethod.getReturnType();</span><br><span class="line">        Object[] args = joinPoint.getArgs();</span><br><span class="line"></span><br><span class="line">        String traceId = getTraceId();</span><br><span class="line">        <span class="comment">//校验参数</span></span><br><span class="line">        TupleTwo&lt;Boolean, String&gt; validateArgs = argsValidate(joinPoint.getTarget(), realMethod, args);</span><br><span class="line">        <span class="keyword">if</span> (!validateArgs.getItem1()) &#123;</span><br><span class="line">            log.warn(<span class="string">"validateError,call=&#123;&#125;.&#123;&#125;,params=&#123;&#125;,errorMsg=&#123;&#125;"</span>, clazz.getSimpleName(), realMethod.getName(), JSONArray.toJSON(args),</span><br><span class="line">                    validateArgs.getItem2());</span><br><span class="line">            <span class="keyword">if</span> (returnType.isAssignableFrom(Response<span class="class">.<span class="keyword">class</span>)) </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> Response.failure(CommonErrors.PARAM_ERROR.getCode(), validateArgs.getItem2());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Object result = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            result = joinPoint.proceed();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (BaseException bex) &#123;</span><br><span class="line">            log.warn(<span class="string">"baseException,code=&#123;&#125;"</span>, bex.getCode());</span><br><span class="line">            <span class="keyword">if</span> (returnType.isAssignableFrom(Response<span class="class">.<span class="keyword">class</span>)) </span>&#123;</span><br><span class="line">                result = Response.failure(bex.getCode());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception ex) &#123;</span><br><span class="line">            log.error(<span class="string">"commonExecutorError occurred at ."</span>, ex);</span><br><span class="line">            <span class="keyword">if</span> (returnType.isAssignableFrom(Response<span class="class">.<span class="keyword">class</span>)) </span>&#123;</span><br><span class="line">                result = Response.failure(CommonErrors.SYSTEM_ERROR);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (result != <span class="keyword">null</span> &amp;&amp; returnType.isAssignableFrom(Response<span class="class">.<span class="keyword">class</span>)) </span>&#123;</span><br><span class="line">                ((Response) result).setTid(traceId);</span><br><span class="line">            &#125;</span><br><span class="line">            CommonExecutor commonExecutor = realMethod.getAnnotation(CommonExecutor<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">            <span class="keyword">if</span> (commonExecutor == <span class="keyword">null</span> || commonExecutor.printLog()) &#123;</span><br><span class="line">                log.info(<span class="string">"commonExecutor,call=&#123;&#125;.&#123;&#125;,params=&#123;&#125;,result=&#123;&#125;,costs=&#123;&#125;"</span>, clazz.getSimpleName(), realMethod.getName(), GsonUtil.safeToJson(args),</span><br><span class="line">                        GsonUtil.safeToJson(result), System.currentTimeMillis() - start);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getTraceId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        String traceId = MDC.get(LogConfig.MDC_TRACE_ID);</span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isEmpty(traceId)) &#123;</span><br><span class="line">            traceId = TraceIDGenerator.generate();</span><br><span class="line">            MDC.put(LogConfig.MDC_TRACE_ID, traceId);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> traceId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> TupleTwo&lt;Boolean, String&gt; <span class="title">argsValidate</span><span class="params">(Object validateParamService, Method method, Object[] args)</span> </span>&#123;</span><br><span class="line">        TupleTwo&lt;Boolean, String&gt; validate1 = methodArgsValidate(validateParamService, method, args);</span><br><span class="line">        <span class="keyword">if</span> (!validate1.getItem1()) &#123;</span><br><span class="line">            <span class="keyword">return</span> validate1;</span><br><span class="line">        &#125;</span><br><span class="line">        TupleTwo&lt;Boolean, String&gt; validate2 = methodArgsFieldValidate(args);</span><br><span class="line">        <span class="keyword">if</span> (!validate2.getItem1()) &#123;</span><br><span class="line">            <span class="keyword">return</span> validate2;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> TupleTwo&lt;&gt;(<span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 方法参数校验</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> validateParamService 拦截的service</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> method               具体拦截的方法</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> args                 方法参数</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> true|false、errorMessage</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> TupleTwo&lt;Boolean, String&gt; <span class="title">methodArgsValidate</span><span class="params">(Object validateParamService, Method method, Object[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (ArrayUtils.isEmpty(args)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> TupleTwo&lt;&gt;(<span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        ExecutableValidator executableValidator = validator.forExecutables();</span><br><span class="line">        Set&lt;ConstraintViolation&lt;Object&gt;&gt; constraintViolationSet = executableValidator.validateParameters(validateParamService, method, args);</span><br><span class="line">        <span class="keyword">if</span> (CollectionUtils.isEmpty(constraintViolationSet)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> TupleTwo&lt;&gt;(<span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 校验快速失败</span></span><br><span class="line">        Optional&lt;ConstraintViolation&lt;Object&gt;&gt; first = constraintViolationSet.stream().findFirst();</span><br><span class="line">        <span class="keyword">if</span> (first.isPresent()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> TupleTwo&lt;&gt;(<span class="keyword">false</span>, first.get().getPropertyPath() + first.get().getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> TupleTwo&lt;&gt;(<span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 方法参数的属性校验</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> args args</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> true | false</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> TupleTwo&lt;Boolean, String&gt; <span class="title">methodArgsFieldValidate</span><span class="params">(Object[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (ArrayUtils.isEmpty(args)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> TupleTwo&lt;&gt;(<span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (Object arg : args) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arg != <span class="keyword">null</span>) &#123;</span><br><span class="line">                Set&lt;ConstraintViolation&lt;Object&gt;&gt; error = validator.validate(arg);</span><br><span class="line">                <span class="comment">// 校验快速失败</span></span><br><span class="line">                Optional&lt;ConstraintViolation&lt;Object&gt;&gt; first = error.stream().findFirst();</span><br><span class="line">                <span class="keyword">if</span> (first.isPresent()) &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">new</span> TupleTwo&lt;&gt;(<span class="keyword">false</span>, first.get().getPropertyPath() + first.get().getMessage());</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> TupleTwo&lt;&gt;(<span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="3-3数据库规范-mysql"><a href="#3-3数据库规范-mysql" class="headerlink" title="3.3数据库规范 mysql"></a>3.3数据库规范 mysql</h4><h4 id="3-4调度平台规范"><a href="#3-4调度平台规范" class="headerlink" title="3.4调度平台规范"></a>3.4调度平台规范</h4><p>项目中会存在各种各样的业务定时任务,但是大部分任务都需要自己写一套业务打点和日志打印的代码，重复代码较多(有的甚至没有写打点)</p>
+<p>针对这种情况，单独定义了几个抽象类，以后大家在写定时任务时按照功能不同直接继承即可。</p>
+<p><strong>抽象类说明</strong></p>
+<table>
+<thead>
+<tr>
+<th>抽象类名称</th>
+<th>场景说明</th>
+<th>举例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AbstractPlainJob</td>
+<td>简单的job,建议场景:1.无须扫描数据库,直接调用业务方的job2.没有任何条件，直接执行的job…</td>
+<td></td>
+</tr>
+<tr>
+<td>AbstractPlainAsyncJob</td>
+<td>简单异步执行的job</td>
+<td></td>
+</tr>
+<tr>
+<td>AbstractDisposableJob</td>
+<td>一次性的job,建议场景:1.修复数据的job;2.只会运行一次的job;…</td>
+<td>TaskCompensateJob</td>
+</tr>
+<tr>
+<td>AbstractComplexJob</td>
+<td>复杂的job,建议场景:1.需要先扫描数据库,然后调用业务方接口(参数是单条数据)的job…</td>
+<td></td>
+</tr>
+<tr>
+<td>AbstractComplexBatchJob</td>
+<td>复杂的批量执行的job,建议场景:1.需要先扫描数据库,然后调用业务方接口(参数是批量数据)的job…</td>
+<td></td>
+</tr>
+<tr>
+<td>AbstractComplexStepJob</td>
+<td>复杂的需要使用步长的单条执行的job,建议场景:扫描一个范围的数据，但范围太大，需要分割成更小的单元后单条执行 …</td>
+<td>TaskJob</td>
+</tr>
+<tr>
+<td>AbstractComplexStepBatchJob</td>
+<td>复杂的需要使用步长的批量执行的job,建议场景:扫描一个范围的数据，但范围太大，需要分割成更小的单元后批量执行 …</td>
+<td></td>
+</tr>
+<tr>
+<td>BatchProcessManager</td>
+<td>工具Bean，大量数据需要按时间窗口移动分批拉取数据，做单条处理的场景</td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="3-5业务日志平台"><a href="#3-5业务日志平台" class="headerlink" title="3.5业务日志平台"></a>3.5业务日志平台</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">LogTypeEnum\ErrorTypeEnum</span><br><span class="line">LogFactory.save()</span><br><span class="line">ErrorFactory.save()</span><br><span class="line">t_log</span><br><span class="line">t_error</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-6消息生产消费框架"><a href="#3-6消息生产消费框架" class="headerlink" title="3.6消息生产消费框架"></a>3.6消息生产消费框架</h4><p>完善的打点，监控，告警</p>
+<h3 id="4-展望"><a href="#4-展望" class="headerlink" title="4.展望"></a>4.展望</h3>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%9B%A2%E9%98%9F%E8%A7%84%E8%8C%83/" rel="tag"># 团队规范</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/05/14/%E8%AE%BA%E5%B7%A5%E4%B8%9A%E7%A4%BE%E4%BC%9A%E5%8F%8A%E5%85%B6%E6%9C%AA%E6%9D%A54/" rel="prev" title="论工业社会及其未来4">
+      <i class="fa fa-chevron-left"></i> 论工业社会及其未来4
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83/" rel="next" title="数据库设计规范">
+      数据库设计规范 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-背景"><span class="nav-text">1.背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-结论"><span class="nav-text">2.结论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-方案"><span class="nav-text">3.方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-展望"><span class="nav-text">4.展望</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="李炳华"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">李炳华</p>
+  <div class="site-description" itemprop="description">博学而笃志,切问而近思。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wind-never-stop" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wind-never-stop" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://wind-never-stop.github.io/" title="https:&#x2F;&#x2F;wind-never-stop.github.io&#x2F;" rel="noopener" target="_blank">风不停息</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李炳华</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='65,105,225' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+  
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+</body>
+</html>

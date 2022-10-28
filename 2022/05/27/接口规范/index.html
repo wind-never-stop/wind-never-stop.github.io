@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+
+
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.tohugo.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="大纲 接口请求规范 接口签名规范 接口响应规范">
+<meta property="og:type" content="article">
+<meta property="og:title" content="接口规范">
+<meta property="og:url" content="https://www.tohugo.com/2022/05/27/%E6%8E%A5%E5%8F%A3%E8%A7%84%E8%8C%83/index.html">
+<meta property="og:site_name" content="风不停息">
+<meta property="og:description" content="大纲 接口请求规范 接口签名规范 接口响应规范">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-27T14:39:43.000Z">
+<meta property="article:modified_time" content="2022-05-27T14:39:43.000Z">
+<meta property="article:author" content="李炳华">
+<meta property="article:tag" content="http请求">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.tohugo.com/2022/05/27/%E6%8E%A5%E5%8F%A3%E8%A7%84%E8%8C%83/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>接口规范 | 风不停息</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"><a href="https://github.com/tao111222333444" target="_blank" rel="noopener" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">风不停息</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">凡是过往，皆为序章</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">13</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">40</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.tohugo.com/2022/05/27/%E6%8E%A5%E5%8F%A3%E8%A7%84%E8%8C%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="李炳华">
+      <meta itemprop="description" content="博学而笃志,切问而近思。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风不停息">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          接口规范
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-05-27 22:39:43" itemprop="dateCreated datePublished" datetime="2022-05-27T22:39:43+08:00">2022-05-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" itemprop="url" rel="index"><span itemprop="name">最佳实践</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="大纲"><a href="#大纲" class="headerlink" title="大纲"></a>大纲</h1><ul>
+<li>接口请求规范</li>
+<li>接口签名规范</li>
+<li>接口响应规范</li>
+</ul>
+<a id="more"></a>
+
+<h1 id="接口请求规范"><a href="#接口请求规范" class="headerlink" title="接口请求规范"></a>接口请求规范</h1><h4 id="接口协议"><a href="#接口协议" class="headerlink" title="接口协议"></a><strong>接口协议</strong></h4><ul>
+<li>接口均采用HTTPS协议。单向HTTPS协议为443端口，双向HTTPS协议为4430端口。</li>
+</ul>
+<h4 id="请求参数"><a href="#请求参数" class="headerlink" title="请求参数"></a><strong>请求参数</strong></h4><p>所有API请求URL里应带上如下公共参数，其中3个为必须项</p>
+<table>
+<thead>
+<tr>
+<th>Field Name</th>
+<th>Required</th>
+<th>Type</th>
+<th>Comment</th>
+<th>Sample</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>app_id</td>
+<td>Yes</td>
+<td>String</td>
+<td>通过 <a href="https://sentry-eu.nioint.com/#/applyRequestService/createClient" target="_blank" rel="noopener">Sentry注册申请app_id</a> 获取的接入方的app_id值</td>
+<td>10000</td>
+</tr>
+<tr>
+<td>sign</td>
+<td>Yes</td>
+<td>String</td>
+<td>根据《<a href="https://nio.feishu.cn/docs/doccnojA1sF6o3ZF0W1ZrYh5Xrc" target="_blank" rel="noopener">接口签名规范</a>》所得到的签名值。注意：签名值全采用小写</td>
+<td>5c9c8ad74ed070d4ef2b06c1abff53d3</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>Yes</td>
+<td>String</td>
+<td>以秒表示的Unix时间戳</td>
+<td>1505468692</td>
+</tr>
+<tr>
+<td>hash_type</td>
+<td>No</td>
+<td>String</td>
+<td>《<a href="https://nio.feishu.cn/docs/doccnojA1sF6o3ZF0W1ZrYh5Xrc" target="_blank" rel="noopener">接口签名规范</a>》中的签名hash算法类型</td>
+<td>sha256</td>
+</tr>
+<tr>
+<td>region</td>
+<td>No(推荐，供服务方做多语言处理使用供服务方判断区域政策、提供区域服务)</td>
+<td>String</td>
+<td>遵循《<a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank" rel="noopener">ISO 3166-1 alpha-2</a>》的两字母地区代码</td>
+<td>cn CN DE NO</td>
+</tr>
+<tr>
+<td>language</td>
+<td>No(推荐，供服务方做多语言处理使用)</td>
+<td>String</td>
+<td>遵循《<a href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank" rel="noopener">ISO 639-1</a>》的两字母语言代码，或者 {ISO-639-1}-{ISO-3166-1 alpha2} 格式，大小写遵循标准，中间用减号（-）分隔；当此参数非空时，忽略 Accept-Language 头</td>
+<td>zh zh-CN zh-HK nb nb-NO nb-SJ de de-DE de-CH en en-US en-GB</td>
+</tr>
+<tr>
+<td>lang</td>
+<td>No(弃用，请使用 language，供服务方做多语言处理使用)</td>
+<td>String</td>
+<td>遵循《<a href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank" rel="noopener">ISO 639-1</a>》的两字母语言代码</td>
+<td>zh nb de en</td>
+</tr>
+</tbody></table>
+<h4 id="HTTP-Header"><a href="#HTTP-Header" class="headerlink" title="HTTP Header"></a><strong>HTTP Header</strong></h4><h5 id="Authorization"><a href="#Authorization" class="headerlink" title="Authorization"></a><strong>Authorization</strong></h5><ul>
+<li>用户相关的API均需要带上<code>Authorization</code> header，用以传递用户对应的有效的Access Token值（参考OAuth标准），如：</li>
+</ul>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Authorization</span>: Bearer &#123;access_token&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="Content-Type"><a href="#Content-Type" class="headerlink" title="Content-Type"></a><strong>Content-Type</strong></h5><ul>
+<li>POST、PUT、PATCH 等有 body 的请求需要带上<code>Content-Type</code> header。目前支持如下三种 <code>Content-Type</code>：</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Content-Type:application/x-www-form-urlencoded</span></span><br><span class="line"><span class="attribute">Content-Type:application/json</span></span><br><span class="line">Content-Type:multipart/form-data （用于图片或者文件的上传）</span><br></pre></td></tr></table></figure>
+
+<h5 id="Accept-Language"><a href="#Accept-Language" class="headerlink" title="Accept-Language"></a>Accept-Language</h5><ul>
+<li>类似于 query 参数 <code>language</code>，用于指定客户方语言，服务方<strong>只需读取其第一个值并忽略权重（以下示例中粗体部分）</strong>。优先级低于 query 参数 <code>language</code>。对于包含区域的语言，大小写遵循标准，中间用减号<code>-</code>分隔。</li>
+</ul>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Accept-Language</span>: de</span><br><span class="line"><span class="attribute">Accept-Language</span>: de-CH</span><br><span class="line"><span class="attribute">Accept-Language</span>: en-US,en;q=0.5</span><br><span class="line"><span class="attribute">Accept-Language</span>: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br></pre></td></tr></table></figure>
+
+<h4 id=""><a href="#" class="headerlink" title=""></a></h4><h4 id="HTTP-Method"><a href="#HTTP-Method" class="headerlink" title="HTTP Method"></a><strong>HTTP Method</strong></h4><ul>
+<li><p>写操作的API通过<code>POST</code>、<code>PUT</code>、<code>PATCH</code>、<code>DELETE</code> 方式请求</p>
+</li>
+<li><p><code>GET</code>方式只用于读操作的API</p>
+</li>
+<li><p>大批量的读取数据接口可以采用<code>POST</code>请求</p>
+</li>
+<li><p>尽量不用<code>HEAD</code>, <code>OPTION</code> 之类不常见的http method</p>
+</li>
+</ul>
+<h1 id="接口签名规范"><a href="#接口签名规范" class="headerlink" title="接口签名规范"></a>接口签名规范</h1><p>接口签名规范</p>
+<h1 id="URL参数"><a href="#URL参数" class="headerlink" title="URL参数"></a><strong>URL参数</strong></h1><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Type</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>app_id</td>
+<td>Yes</td>
+<td>String</td>
+<td>每个application或者service都会有一对app id 和 secret.</td>
+</tr>
+<tr>
+<td>sign</td>
+<td>Yes</td>
+<td>String</td>
+<td>签名值 小写字符串, 校验的时候只使用URL中 Query Parameter的 sign</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>Yes</td>
+<td>String</td>
+<td>Unix 时间戳，检验请求时效性, second</td>
+</tr>
+<tr>
+<td>hash_type</td>
+<td>Yes</td>
+<td>String</td>
+<td>签名hash算法类型(选填hash_type=sha256, 默认为md5，欧洲必须使用sha256)</td>
+</tr>
+</tbody></table>
+<h1 id="签名生成"><a href="#签名生成" class="headerlink" title="签名生成"></a><strong>签名生成</strong></h1><p>签名用的字符串根据如下规则拼接而成: ${httpMethod}+${PATH}+’?’+’${key}=${value}&amp;${key}=${value}&amp;${key}=${value}’+${appSecret}+${access_token}</p>
+<p>其中包括：</p>
+<ul>
+<li><p>${httpMethod}  - Http方法</p>
+</li>
+<li><p>${PATH} - 请求路径</p>
+</li>
+<li><p>${key}=${value} - url参数, Body参数</p>
+</li>
+<li><p>appSecret</p>
+</li>
+<li><p>Header中Access Token 参数（如果存在）</p>
+</li>
+</ul>
+<p>上述包含的内容，对于签名字符串里的URL参数值必须是URL Encoded之前的原始数据，即使请求里的URL参数值需要进行URL Encoded。(除URL参数值外的其他内容请求中经过URL Encoded，签名字符串中的值也必须经过URL Encoded)</p>
+<ul>
+<li><h3 id="HTTP-方法"><a href="#HTTP-方法" class="headerlink" title="HTTP 方法"></a><strong>HTTP 方法</strong></h3></li>
+</ul>
+<p>Http方法必须是大写的GET/POST/PUT/PATCH/DELETE中的一个。</p>
+<ul>
+<li><h3 id="请求路径"><a href="#请求路径" class="headerlink" title="请求路径"></a><strong>请求路径</strong></h3></li>
+</ul>
+<p>参见上述URL定义。例如</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://tsp-dev.nio.com/api/1/infotainment/weather/now?location=beijing</span><br></pre></td></tr></table></figure>
+
+<p>其用于生成签名的PATH是： ‘/api/1/infotainment/weather/now’.</p>
+<ul>
+<li><h3 id="URL参数与Body参数"><a href="#URL参数与Body参数" class="headerlink" title="URL参数与Body参数"></a><strong>URL参数与Body参数</strong></h3></li>
+</ul>
+<p>用于签名的参数包括URL中的参数以及Body中的参数。</p>
+<p>uri 参数格式必须为key＝value，只有一个key没有value的情况是不允许的，例如a=1&amp;b&amp;, 这里不允许此种情况出现。</p>
+<p>请求中数据总长度不超过8K，参数的总数不超过1000</p>
+<h6 id="GET-or-DELETE-Method"><a href="#GET-or-DELETE-Method" class="headerlink" title="GET or DELETE Method"></a><strong>GET or DELETE Method</strong></h6><p>对于GET或者DELETE方法，URL中<strong>除了sign</strong>以外的所有参数都要被用来生成签名。</p>
+<h6 id="POST-or-PUT-or-PATCH-Method"><a href="#POST-or-PUT-or-PATCH-Method" class="headerlink" title="POST or PUT or PATCH Method"></a><strong>POST or PUT or PATCH Method</strong></h6><p>对于POST或者PUT或者PATCH方法，在Content-Encoding未设置或不为gzip的情况下:</p>
+<ul>
+<li><p>如果Content-Type是 application/x-www-form-urlencoded或application/json, URL中除了sign以外的参数以及Body中的除了sign以外参数都需要被用来生成签名.</p>
+<ul>
+<li>如果Content-Type是 application/x-www-form-urlencoded, 那么表单中的所有键值对也都需要被用于生成签名.</li>
+</ul>
+</li>
+<li><p>如果Content-Type是 application/json. 那我们就把整个body看作一个String，其用于生成签名的参数将会是 <em>“jsonBody=[BODY_JSON_STRING]”</em>. 注意，请使用Charset=utf-8,避免编码异常</p>
+</li>
+<li><p>对于其他的Content-type类型，例如 multipart/form-data, 只有URL中除了sign以外的参数需要被用来生成签名(Body中的参数不使用), 同GET或者DELETE方法一样.</p>
+</li>
+</ul>
+<p>对于POST或者PUT或者PATCH方法，在Content-Encoding为gzip的情况下，只有URL中除了sign以外的参数需要被用来生成签名(Body中的参数不使用), 同GET或者DELETE方法一样.</p>
+<p>被签名字符串中的信息需要按照”键值对”做升序排列(a-z升序排序)</p>
+<ul>
+<li>比如说, 请求的参数是 <em>key_1=c&amp;key_1=b&amp;key_2</em>=c body里面的参数是 key_1=a&amp;key_2=d 在排序以后, 顺序应该是key_1=a, key_1=b, key_1=c, key_2=c, key_2=d</li>
+</ul>
+<p>把排序以后的字符串拼接在一起，例如： ‘key1=value&amp;key2=value2&amp;key3=value3…’</p>
+<p>对于值为空的参数，也需要参与排序与拼接 例如：…&amp;key=&amp;…</p>
+<h5 id="请求头"><a href="#请求头" class="headerlink" title="请求头"></a><strong>请求头</strong></h5><p>Access Token统一通过请求的Authorization Header传递（参考OAuth标准）。</p>
+<p>请求头如果包含Authorization: Bearer {access_token}, 那么将 Authorization的值作为access_token，参与sign计算。</p>
+<p><strong>Hash算法</strong></p>
+<p>计算签名字符串的hash值，并把值作为sign的参数加入URL中.</p>
+<ul>
+<li>md5: 默认签名算法，hash为md5值</li>
+<li>sha256: 请求需指定uri参数hash_type=sha256，hash为sha256 hex值</li>
+</ul>
+<p><strong>Hash算法适用范围</strong></p>
+<ul>
+<li>访问部署在国内的服务，hash_type可选择md5、sha256两种，推荐sha256</li>
+<li>访问部署在海外的服务（EU MarcoPolo），hash_type仅支持sha256 (TSP网关eu环境将于2021/03/15开启sha256强制校验)</li>
+</ul>
+<h1 id="返回结果"><a href="#返回结果" class="headerlink" title="返回结果"></a><strong>返回结果</strong></h1><p>如果Sign验证不通过，会返回如下错误信息</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="attr">"request_id"</span>: <span class="string">"0a6f12e8it29dc2q-4"</span>,</span><br><span class="line"><span class="attr">"result_code"</span>: <span class="string">"sign_fail"</span>,</span><br><span class="line"><span class="attr">"server_time"</span>: <span class="number">1505704545</span>,</span><br><span class="line"><span class="attr">"debug_msg"</span>: <span class="string">"invalid sign"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如果Sign验证通过，则会继续进行后续流程并返回。</li>
+</ul>
+<h1 id="Curl请求示例"><a href="#Curl请求示例" class="headerlink" title="Curl请求示例"></a><strong>Curl请求示例</strong></h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 采用md5签名算法</span><br><span class="line">curl -X GET  "http://&lt;host:port&gt;/api/1/test/get?test=&lt;value&gt;&amp;app_id=&lt;app_id&gt;&amp;sign=&lt;sign&gt;&amp;timestamp=&lt;timestamp&gt;"</span><br><span class="line">// 采用sha256签名算法</span><br><span class="line">curl -X GET  "http://&lt;host:port&gt;/api/1/test/get?test=&lt;value&gt;&amp;app_id=&lt;app_id&gt;&amp;sign=&lt;sign&gt;&amp;timestamp=&lt;timestamp&gt;&amp;hash_type=sha256"</span><br><span class="line"></span><br><span class="line">curl -X POST -H "Content-Type: application/x-www-form-urlencoded"  -d "test1=abc&amp;test2=def&amp;test3=xyz" "http://&lt;host:port&gt;/api/1/test/post?test=&lt;value&gt;&amp;app_id=&lt;app_id&gt;&amp;sign=&lt;sign&gt;&amp;timestamp=&lt;timestamp&gt;"</span><br><span class="line">curl -X POST -H "Content-Type: application/json"  -d '&#123;"test1":"hah","test2":"qwe","test3":"111"&#125;' "http://&lt;host:port&gt;/api/1/test/post2?test=&lt;value&gt;&amp;app_id=&lt;app_id&gt;&amp;sign=&lt;sign&gt;&amp;timestamp=&lt;timestamp&gt;"</span><br></pre></td></tr></table></figure>
+
+<h1 id="Postman-Script"><a href="#Postman-Script" class="headerlink" title="Postman Script"></a><strong>Postman Script</strong></h1><ul>
+<li>如果你使用Postman(Postman 请独立下载 <a href="https://www.getpostman.com/" target="_blank" rel="noopener">下载链接</a>，不要在Chrome Store下载) 作为API开发和测试工具，可以使用如下脚本进行Sign的自动计算。</li>
+</ul>
+<p>在需要测试的原url参数中加入环境变量占位符 &amp;timestamp=&amp;sign=，然后将如下代码贴入“Pre-request Script”:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> nowTime = <span class="built_in">Date</span>.parse(<span class="keyword">new</span> <span class="built_in">Date</span>()) / <span class="number">1000</span>;</span><br><span class="line"><span class="keyword">var</span> appSecret = <span class="string">"baf220f646b36d3fe5538E4ce6Ca26B9"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> replaceEnv = <span class="function"><span class="keyword">function</span>(<span class="params">url</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> envs = url.match(<span class="regexp">/&#123;&#123;[1-9A-Za-z_-]+&#125;&#125;/g</span>);</span><br><span class="line">    envs.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">env</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (env !== <span class="string">"&#123;&#123;time&#125;&#125;"</span> &amp;&amp; env !== <span class="string">"&#123;&#123;sign&#125;&#125;"</span>) &#123;</span><br><span class="line">            <span class="keyword">var</span> val = postman.getEnvironmentVariable(env.replace(<span class="string">"&#123;&#123;"</span>, <span class="string">""</span>).replace(<span class="string">"&#125;&#125;"</span>, <span class="string">""</span>));</span><br><span class="line">            url = url.replace(env, val);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> url;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> parseUrl = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> rawUrl = request.url;</span><br><span class="line">    <span class="keyword">var</span> replacedEnvUrl = replaceEnv(rawUrl);</span><br><span class="line">    <span class="keyword">var</span> result = <span class="regexp">/^(?:([A-Za-z]+):)?(\/&#123;0,3&#125;)([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/</span>.exec(replacedEnvUrl);</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> generateParamsArrayForSign = <span class="function"><span class="keyword">function</span>(<span class="params">queryString, time</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> rawParam = (queryString || <span class="string">""</span>).split(<span class="string">"&amp;"</span>);</span><br><span class="line">    <span class="keyword">var</span> modifiedQueryString = <span class="string">""</span>;</span><br><span class="line">    <span class="keyword">var</span> params = [];</span><br><span class="line">    <span class="keyword">var</span> contentType = (request.headers[<span class="string">"Content-Type"</span>] || request.headers[<span class="string">"content-type"</span>] || <span class="string">""</span>).toLowerCase();</span><br><span class="line">    <span class="keyword">var</span> method = request.method.toUpperCase();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i <span class="keyword">in</span> rawParam) &#123;</span><br><span class="line">        <span class="keyword">if</span> (rawParam[i].indexOf(<span class="string">"timestamp=&#123;&#123;time&#125;&#125;"</span>) === <span class="number">0</span>) &#123;</span><br><span class="line">            modifiedQueryString += (<span class="string">"timestamp="</span> + time + <span class="string">"&amp;"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            modifiedQueryString += (rawParam[i] + <span class="string">"&amp;"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    modifiedQueryString = modifiedQueryString.substring(<span class="number">0</span>, modifiedQueryString.length - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    params = (modifiedQueryString || <span class="string">""</span>).split(<span class="string">"&amp;"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (method === <span class="string">"POST"</span> || method === <span class="string">"PUT"</span> || method === <span class="string">"PATCH"</span>) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(contentType.indexOf(<span class="string">"application/json"</span>));</span><br><span class="line">        <span class="built_in">console</span>.log(request.data.length);</span><br><span class="line">        <span class="keyword">if</span> ( request.data.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line"></span><br><span class="line">            params.push(<span class="string">"jsonBody="</span> + request.data);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (contentType.indexOf(<span class="string">"application/x-www-form-urlencoded"</span>) &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">in</span> request.data) &#123;</span><br><span class="line">                <span class="keyword">if</span> (request.data[key].constructor === <span class="built_in">Array</span>) &#123;</span><br><span class="line">                    <span class="keyword">for</span> (<span class="keyword">let</span> a <span class="keyword">in</span> request.data[key]) &#123;</span><br><span class="line">                        params.push(key + <span class="string">"="</span> + request.data[key][a]);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    params.push(key + <span class="string">"="</span> + request.data[key]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> params.sort();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> generateSign = <span class="function"><span class="keyword">function</span>(<span class="params">path, params, appSecret</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> signStr = request.method.toUpperCase()+ path + <span class="string">"?"</span>;</span><br><span class="line">    <span class="keyword">var</span> token = <span class="string">""</span>;</span><br><span class="line">    <span class="keyword">var</span> hash_type = <span class="string">""</span>;</span><br><span class="line">    <span class="keyword">var</span> sign = <span class="string">""</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i <span class="keyword">in</span> params) &#123;</span><br><span class="line">        <span class="keyword">if</span> (params[i].indexOf(<span class="string">"sign="</span>) === <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (params[i].indexOf(<span class="string">"hash_type="</span>) === <span class="number">0</span>) &#123;</span><br><span class="line">                hash_type = params[i];</span><br><span class="line">            &#125;</span><br><span class="line">            signStr += (params[i] + <span class="string">"&amp;"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    signStr = signStr.substring(<span class="number">0</span>, signStr.length - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    signStr += appSecret;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">in</span> request.headers) &#123;</span><br><span class="line">        <span class="keyword">if</span> (key.toLowerCase() === <span class="string">"authorization"</span>) &#123;</span><br><span class="line">            token = request.headers[key];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    signStr += token;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"[String used for sign]:   "</span> + signStr);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (hash_type.match(<span class="string">"sha256"</span>) !== <span class="literal">null</span>) &#123;</span><br><span class="line">        sign = CryptoJS.SHA256(signStr).toString();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        sign = CryptoJS.MD5(signStr).toString();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sign;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">"Raw Request:\n"</span>);</span><br><span class="line"><span class="built_in">console</span>.log(request);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> urlParseObj = parseUrl();</span><br><span class="line"><span class="keyword">var</span> queryParams = generateParamsArrayForSign(urlParseObj[<span class="number">6</span>], nowTime);</span><br><span class="line"><span class="keyword">var</span> sign = generateSign(<span class="string">"/"</span> + urlParseObj[<span class="number">5</span>], queryParams, appSecret);</span><br><span class="line"></span><br><span class="line">postman.setEnvironmentVariable(<span class="string">"time"</span>, nowTime);</span><br><span class="line">postman.setEnvironmentVariable(<span class="string">"sign"</span>, sign);</span><br></pre></td></tr></table></figure>
+
+<h1 id="接口响应规范"><a href="#接口响应规范" class="headerlink" title="接口响应规范"></a>接口响应规范</h1><h2 id="HTTP-状态码-Status-code"><a href="#HTTP-状态码-Status-code" class="headerlink" title="HTTP 状态码  (Status code)"></a>HTTP 状态码  (Status code)</h2><ul>
+<li>在服务可以有响应的情况下，建议以200返回，交给对应的调用方根据result_code来处理 （<strong>待讨论，需不需要用 HTTP 状态码表示一些业务状态？</strong>）</li>
+<li>对于限流，一些前端页面需要通过status code来区分是否被限流。因此，参考 <a href="https://developer.mozilla.org/id/docs/Web/HTTP/Status" target="_blank" rel="noopener">https://developer.mozilla.org/id/docs/Web/HTTP/Status</a> 定义，status code <strong>429</strong> 表示被限流。</li>
+</ul>
+<h2 id="Response-格式"><a href="#Response-格式" class="headerlink" title="Response 格式"></a>Response 格式</h2><ul>
+<li>Response格式统一为 JSON utf-8 格式：</li>
+</ul>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Content</span>-Type: application/json;charset=utf-8</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="字段命名规范"><a href="#字段命名规范" class="headerlink" title="字段命名规范"></a>字段命名规范</h2><ul>
+<li>返回字段命名规范均采用JSON小写下划线方式命名</li>
+</ul>
+<h2 id="Response-数据结构"><a href="#Response-数据结构" class="headerlink" title="Response 数据结构"></a>Response 数据结构</h2><p>结构如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"request_id"</span>: <span class="string">"0a6f12e8it29dc2q-4"</span>,</span><br><span class="line">    <span class="attr">"result_code"</span>: <span class="string">"success"</span>,</span><br><span class="line">    <span class="attr">"server_time"</span>: <span class="number">1505704545</span>,</span><br><span class="line">    <span class="attr">"debug_msg"</span>: <span class="string">"if exist, just for debuging, forbid displaying"</span>,</span><br><span class="line">    <span class="attr">"display_msg"</span>: <span class="string">"if exist, could be used to display"</span>,</span><br><span class="line">    <span class="attr">"data"</span>: Object/Array,</span><br><span class="line">    <span class="attr">"err_data"</span>: Object</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>字段含义如下：</li>
+</ul>
+<p>NameTypeCommentSamplerequest_idstring服务端分配的请求id，用于问题日志定位0a6e0097isl8ycx5-1server_timelong服务器处理该请求时的时间, unix timestamp, 单位是秒1477292223result_codestring必填字段，请求结果代码，success表示成功，其他表示错误，公共错误代码参考下表successdisplay_msgstring可选字段，用于客户端展示文案，对于需要在服务端配置及做国际化的字段，可以填在此处”您的操作已经成功！”debug_msgstring可选字段，可以放置用于debug的一些信息. 注意, 该信息只用于调试, 且可能变化!!! 不能直接或间接用于实际业务!!!invalid access_tokendataobject/array可选字段，请求数据结果，根据API不同，可以是object类型也可以是array类型，也可以没有{“amount”: 5560, “experience”: 5560, “membership_level”: 3 }err_dataobject可选字段，当出错的时候，这个object返回错误相关信息{“msg”: “limitation exceeded”}</p>
+<h3 id="Result-Code"><a href="#Result-Code" class="headerlink" title="Result Code"></a><strong>Result Code</strong></h3><ul>
+<li>通用Result Code如下所示：</li>
+</ul>
+<p>result_code说明success成功resource_not_found请求资源不存在auth_failedaccess_token认证失败, 客户端请斟酌处理, 比如跳到登录界面等等sign_failed请求参数中sign签名错误request_forbidden请求被禁止，可在debug_message字段提供更多debug信息invalid_param请求参数非法，可在debug_message字段提供更多debug信息internal_error服务内部错误，可在debug_message字段提供更多debug信息frequent_operation访问频率过快 (deprecated)，限流时候通过 http status code 429来表示</p>
+<ul>
+<li>Result code尽量本身就是解释；相同业务系统的result code尽量使用共同前缀</li>
+</ul>
+<h1 id="代码实践"><a href="#代码实践" class="headerlink" title="代码实践"></a>代码实践</h1><p><strong>正常和异常都返回统一响应结构</strong></p>
+<h5 id="3-2-1通用响应结构"><a href="#3-2-1通用响应结构" class="headerlink" title="3.2.1通用响应结构"></a>3.2.1通用响应结构</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GatewayResult</span>&lt;<span class="title">T</span>&gt; <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">2746436501422240690L</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 服务端分配的请求id，用于问题日志定位</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String request_id;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 服务器处理该请求时的时间, unix timestamp, 单位是秒</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Long server_time;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 必填字段，请求结果代码，success表示成功，其他表示错误，公共错误代码参考</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@see</span> GatewayCommonErrors#getCode()</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String result_code;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 可选字段，用于客户端展示文案，对于需要在服务端配置及做国际化的字段，可以填在此处</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String display_msg;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 可选字段，可以放置用于debug的一些信息. 注意, 该信息只用于调试, 且可能变化!!! 不能直接或间接用于实际业务!!!</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String debug_msg;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 可选字段，请求数据结果，根据API不同，可以是object类型也可以是array类型，也可以没有</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> T data;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 可选字段，当出错的时候，这个object返回错误相关信息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Object err_data;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> GatewayCommonErrors implements Code &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 成功</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    SUCCESS(<span class="string">"success"</span>, <span class="string">"成功"</span>),</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 通用错误</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    RESOURCE_NOT_FOUND(<span class="string">"resource_not_found"</span>, <span class="string">"请求资源不存在"</span>),</span><br><span class="line">    AUTH_FAILED(<span class="string">"auth_failed"</span>, <span class="string">"access_token认证失败"</span>),</span><br><span class="line">    SIGN_FAILED(<span class="string">"sign_failed"</span>, <span class="string">"请求参数中sign签名错误"</span>),</span><br><span class="line">    REQUEST_FORBIDDEN(<span class="string">"request_forbidden"</span>, <span class="string">"请求被禁止"</span>),</span><br><span class="line">    INVALID_PARAM(<span class="string">"invalid_param"</span>, <span class="string">"请求参数非法"</span>),</span><br><span class="line">    INTERNAL_ERROR(<span class="string">"internal_error"</span>, <span class="string">"服务内部错误"</span>),</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 团队拓展的code,code=&#123;部门&#125;_&#123;业务方&#125;_&#123;结果码&#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    XXX_TOKEN_ERROR(<span class="string">"xxx_token_error"</span>, <span class="string">"token验证失败"</span>),</span><br><span class="line">    ;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String code;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String message;</span><br><span class="line"></span><br><span class="line">    GatewayCommonErrors(String code, String message) &#123;</span><br><span class="line">        <span class="keyword">this</span>.code = code;</span><br><span class="line">        <span class="keyword">this</span>.message = message;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getMessage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.message;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"GatewayCommonErrors&#123;"</span> +</span><br><span class="line">                <span class="string">"code='"</span> + code + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">", message='"</span> + message + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">'&#125;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Response</span>&lt;<span class="title">T</span>&gt; <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 业务code码，0表示业务请求成功，非0表示业务异常</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@see</span> Code#getCode()</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String code;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 业务code描述</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@see</span> Code#getMessage()</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String message;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 请求是成功还是异常 true成功，false异常</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> success;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 返回数据对象</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> T data;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * traceId</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String tid;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 扩展信息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Map&lt;String, Object&gt; ext;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-2-2错误码约定"><a href="#3-2-2错误码约定" class="headerlink" title="3.2.2错误码约定"></a>3.2.2错误码约定</h5><p>code(8位)=系统编码(3位)+业务错误码(5位)</p>
+<p>code(8位)=系统编码(3位)+领域服务编码(1位)+错误码(4位)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Code</span> <span class="keyword">extends</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 业务code码</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function">String <span class="title">getCode</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 业务code描述</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function">String <span class="title">getMessage</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 快捷生成code</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> Code <span class="title">business</span><span class="params">(<span class="keyword">final</span> String code, <span class="keyword">final</span> String msg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Code() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> String <span class="title">getCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> code;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> String <span class="title">getMessage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> msg;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@Description</span>(<span class="string">"公共状态码"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> CommonErrors implements Code &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 成功</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    SUCCESS(<span class="string">"0"</span>, <span class="string">"SUCCESS"</span>),</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 通用错误</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    BIZ_ERROR(<span class="string">"00000001"</span>, <span class="string">"通用错误提示"</span>),</span><br><span class="line">    PARAM_ERROR(<span class="string">"00000002"</span>, <span class="string">"参数不合法"</span>),</span><br><span class="line">    INTERNAL_ERROR(<span class="string">"00000003"</span>, <span class="string">"程序内部错误"</span>),</span><br><span class="line">    UNKNOWN_ERROR(<span class="string">"00000004"</span>, <span class="string">"其它未知错误"</span>),</span><br><span class="line">    EMPTY_DATA(<span class="string">"00000005"</span>, <span class="string">"没有符合条件的数据"</span>),</span><br><span class="line">    OVERLOAD_LIMIT(<span class="string">"00000006"</span>, <span class="string">"超出了调用频率限制"</span>),</span><br><span class="line">    AUTHENTICATION_ERROR(<span class="string">"00000007"</span>, <span class="string">"监管鉴权不通过"</span>),</span><br><span class="line">    SYSTEM_ERROR(<span class="string">"00000008"</span>, <span class="string">"系统异常"</span>),</span><br><span class="line">    DEFAULT_DUBBO_ERROR(<span class="string">"00000009"</span>, <span class="string">"哎呀，服务器开小差了&gt;.&lt;"</span>),</span><br><span class="line">    ;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String code;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String message;</span><br><span class="line"></span><br><span class="line">    CommonErrors(String code, String message) &#123;</span><br><span class="line">        <span class="keyword">this</span>.code = code;</span><br><span class="line">        <span class="keyword">this</span>.message = message;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 错误提示，可覆写message</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Code <span class="title">toast</span><span class="params">(<span class="keyword">final</span> String message)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Code() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> String <span class="title">getCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> BIZ_ERROR.code;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> String <span class="title">getMessage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> message;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getMessage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.message;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"CommonErrors&#123;"</span> +</span><br><span class="line">                <span class="string">"code='"</span> + code + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">", message='"</span> + message + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">'&#125;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseException</span> <span class="keyword">extends</span> <span class="title">RuntimeException</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 错误码</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Code code;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 拓展信息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Map&lt;String, Object&gt; ext;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BaseException</span><span class="params">(Code code)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(code.getMessage());</span><br><span class="line">        <span class="keyword">this</span>.code = code;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BaseException</span><span class="params">(Code code, Map&lt;String, Object&gt; ext)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(code.getMessage());</span><br><span class="line">        <span class="keyword">this</span>.code = code;</span><br><span class="line">        <span class="keyword">this</span>.ext = ext;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BaseException</span><span class="params">(String code, String message)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(message);</span><br><span class="line">        <span class="keyword">this</span>.code = Code.business(code, message);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BaseException</span><span class="params">(String code, String message, Map&lt;String, Object&gt; ext)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(message);</span><br><span class="line">        <span class="keyword">this</span>.code = Code.business(code, message);</span><br><span class="line">        <span class="keyword">this</span>.ext = ext;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BaseException</span><span class="params">(String code, String message, Throwable cause)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(message, cause);</span><br><span class="line">        <span class="keyword">this</span>.code = Code.business(code, message);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Code <span class="title">getCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> code;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="3-2-3统一切面处理"><a href="#3-2-3统一切面处理" class="headerlink" title="3.2.3统一切面处理"></a>3.2.3统一切面处理</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServiceAspect</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> Validator validator;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Pointcut</span>(<span class="string">"execution(* com.windneverstop.service..*.*(..))"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">aspectCommonExecutor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Around</span>(<span class="string">"aspectCommonExecutor()"</span>)</span><br><span class="line">    <span class="meta">@Order</span>(<span class="number">1000</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">commonExecutor</span><span class="params">(ProceedingJoinPoint joinPoint)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        Class&lt;?&gt; clazz = joinPoint.getTarget().getClass();</span><br><span class="line">        MethodSignature signature = (MethodSignature) joinPoint.getSignature();</span><br><span class="line">        Method method = signature.getMethod();</span><br><span class="line">        Method realMethod = clazz.getMethod(signature.getName(), method.getParameterTypes());</span><br><span class="line"></span><br><span class="line">        Class&lt;?&gt; returnType = realMethod.getReturnType();</span><br><span class="line">        Object[] args = joinPoint.getArgs();</span><br><span class="line"></span><br><span class="line">        String traceId = getTraceId();</span><br><span class="line">        <span class="comment">//校验参数</span></span><br><span class="line">        TupleTwo&lt;Boolean, String&gt; validateArgs = argsValidate(joinPoint.getTarget(), realMethod, args);</span><br><span class="line">        <span class="keyword">if</span> (!validateArgs.getItem1()) &#123;</span><br><span class="line">            log.warn(<span class="string">"validateError,call=&#123;&#125;.&#123;&#125;,params=&#123;&#125;,errorMsg=&#123;&#125;"</span>, clazz.getSimpleName(), realMethod.getName(), JSONArray.toJSON(args),</span><br><span class="line">                    validateArgs.getItem2());</span><br><span class="line">            <span class="keyword">if</span> (returnType.isAssignableFrom(Response<span class="class">.<span class="keyword">class</span>)) </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> Response.failure(CommonErrors.PARAM_ERROR.getCode(), validateArgs.getItem2());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Object result = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            result = joinPoint.proceed();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (BaseException bex) &#123;</span><br><span class="line">            log.warn(<span class="string">"baseException,code=&#123;&#125;"</span>, bex.getCode());</span><br><span class="line">            <span class="keyword">if</span> (returnType.isAssignableFrom(Response<span class="class">.<span class="keyword">class</span>)) </span>&#123;</span><br><span class="line">                result = Response.failure(bex.getCode());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception ex) &#123;</span><br><span class="line">            log.error(<span class="string">"commonExecutorError occurred at ."</span>, ex);</span><br><span class="line">            <span class="keyword">if</span> (returnType.isAssignableFrom(Response<span class="class">.<span class="keyword">class</span>)) </span>&#123;</span><br><span class="line">                result = Response.failure(CommonErrors.SYSTEM_ERROR);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (result != <span class="keyword">null</span> &amp;&amp; returnType.isAssignableFrom(Response<span class="class">.<span class="keyword">class</span>)) </span>&#123;</span><br><span class="line">                ((Response) result).setTid(traceId);</span><br><span class="line">            &#125;</span><br><span class="line">            CommonExecutor commonExecutor = realMethod.getAnnotation(CommonExecutor<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">            <span class="keyword">if</span> (commonExecutor == <span class="keyword">null</span> || commonExecutor.printLog()) &#123;</span><br><span class="line">                log.info(<span class="string">"commonExecutor,call=&#123;&#125;.&#123;&#125;,params=&#123;&#125;,result=&#123;&#125;,costs=&#123;&#125;"</span>, clazz.getSimpleName(), realMethod.getName(), GsonUtil.safeToJson(args),</span><br><span class="line">                        GsonUtil.safeToJson(result), System.currentTimeMillis() - start);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getTraceId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        String traceId = MDC.get(LogConfig.MDC_TRACE_ID);</span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isEmpty(traceId)) &#123;</span><br><span class="line">            traceId = TraceIDGenerator.generate();</span><br><span class="line">            MDC.put(LogConfig.MDC_TRACE_ID, traceId);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> traceId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> TupleTwo&lt;Boolean, String&gt; <span class="title">argsValidate</span><span class="params">(Object validateParamService, Method method, Object[] args)</span> </span>&#123;</span><br><span class="line">        TupleTwo&lt;Boolean, String&gt; validate1 = methodArgsValidate(validateParamService, method, args);</span><br><span class="line">        <span class="keyword">if</span> (!validate1.getItem1()) &#123;</span><br><span class="line">            <span class="keyword">return</span> validate1;</span><br><span class="line">        &#125;</span><br><span class="line">        TupleTwo&lt;Boolean, String&gt; validate2 = methodArgsFieldValidate(args);</span><br><span class="line">        <span class="keyword">if</span> (!validate2.getItem1()) &#123;</span><br><span class="line">            <span class="keyword">return</span> validate2;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> TupleTwo&lt;&gt;(<span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 方法参数校验</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> validateParamService 拦截的service</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> method               具体拦截的方法</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> args                 方法参数</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> true|false、errorMessage</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> TupleTwo&lt;Boolean, String&gt; <span class="title">methodArgsValidate</span><span class="params">(Object validateParamService, Method method, Object[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (ArrayUtils.isEmpty(args)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> TupleTwo&lt;&gt;(<span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        ExecutableValidator executableValidator = validator.forExecutables();</span><br><span class="line">        Set&lt;ConstraintViolation&lt;Object&gt;&gt; constraintViolationSet = executableValidator.validateParameters(validateParamService, method, args);</span><br><span class="line">        <span class="keyword">if</span> (CollectionUtils.isEmpty(constraintViolationSet)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> TupleTwo&lt;&gt;(<span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 校验快速失败</span></span><br><span class="line">        Optional&lt;ConstraintViolation&lt;Object&gt;&gt; first = constraintViolationSet.stream().findFirst();</span><br><span class="line">        <span class="keyword">if</span> (first.isPresent()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> TupleTwo&lt;&gt;(<span class="keyword">false</span>, first.get().getPropertyPath() + first.get().getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> TupleTwo&lt;&gt;(<span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 方法参数的属性校验</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> args args</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> true | false</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> TupleTwo&lt;Boolean, String&gt; <span class="title">methodArgsFieldValidate</span><span class="params">(Object[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (ArrayUtils.isEmpty(args)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> TupleTwo&lt;&gt;(<span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (Object arg : args) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arg != <span class="keyword">null</span>) &#123;</span><br><span class="line">                Set&lt;ConstraintViolation&lt;Object&gt;&gt; error = validator.validate(arg);</span><br><span class="line">                <span class="comment">// 校验快速失败</span></span><br><span class="line">                Optional&lt;ConstraintViolation&lt;Object&gt;&gt; first = error.stream().findFirst();</span><br><span class="line">                <span class="keyword">if</span> (first.isPresent()) &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">new</span> TupleTwo&lt;&gt;(<span class="keyword">false</span>, first.get().getPropertyPath() + first.get().getMessage());</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> TupleTwo&lt;&gt;(<span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/http%E8%AF%B7%E6%B1%82/" rel="tag"># http请求</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/05/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83/" rel="prev" title="数据库设计规范">
+      <i class="fa fa-chevron-left"></i> 数据库设计规范
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#大纲"><span class="nav-text">大纲</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#接口请求规范"><span class="nav-text">接口请求规范</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#接口签名规范"><span class="nav-text">接口签名规范</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#URL参数"><span class="nav-text">URL参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#签名生成"><span class="nav-text">签名生成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-方法"><span class="nav-text">HTTP 方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求路径"><span class="nav-text">请求路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#URL参数与Body参数"><span class="nav-text">URL参数与Body参数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#返回结果"><span class="nav-text">返回结果</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Curl请求示例"><span class="nav-text">Curl请求示例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Postman-Script"><span class="nav-text">Postman Script</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#接口响应规范"><span class="nav-text">接口响应规范</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-状态码-Status-code"><span class="nav-text">HTTP 状态码  (Status code)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Response-格式"><span class="nav-text">Response 格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字段命名规范"><span class="nav-text">字段命名规范</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Response-数据结构"><span class="nav-text">Response 数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Result-Code"><span class="nav-text">Result Code</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码实践"><span class="nav-text">代码实践</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="李炳华"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">李炳华</p>
+  <div class="site-description" itemprop="description">博学而笃志,切问而近思。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wind-never-stop" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wind-never-stop" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://wind-never-stop.github.io/" title="https:&#x2F;&#x2F;wind-never-stop.github.io&#x2F;" rel="noopener" target="_blank">风不停息</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李炳华</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='65,105,225' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+  
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+</body>
+</html>
