@@ -23,20 +23,20 @@
     var CONFIG = {"hostname":"www.tohugo.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"manual"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="未完待续。 1.业务背景  从毕业以来，一直在从事订单交易方向的后端研发，历经两家公司，交易体量从小到大，见证了订单架构的演进变化，踩过不少坑，特此反思总结下来，希望未来的路能越走越远。  1.1电商交易订单1.1.1核心流程 用户从PC、小程序、APP、门店收银机等终端设备浏览商品； 加入购物车或者直接购买下单，进入订单购买页，选择优惠券、积分、兑换券等提交订单，进入订单结算页面； 通过微信、支">
+  <meta name="description" content="变更记录   日期 变更内容 作者 版本号 备注    2022-2-8 新建 x x x V1.0           规范级别【强制】 根据产品&#x2F;技术需求，项目的粗略排期大于或等于30人日或项目跨多个系统，需严格执行此设计模板 【参考】根据产品&#x2F;技术需求，项目的粗略排期小于30人日，可参考执行此设计模板 一、系统概述1.1 背景介绍1.2 系统目标">
 <meta property="og:type" content="article">
-<meta property="og:title" content="订单业务及架构介绍">
-<meta property="og:url" content="https://www.tohugo.com/2022/05/04/%E8%AE%A2%E5%8D%95%E4%B8%9A%E5%8A%A1%E5%8F%8A%E6%9E%B6%E6%9E%84%E4%BB%8B%E7%BB%8D/index.html">
+<meta property="og:title" content="技术方案设计规范">
+<meta property="og:url" content="https://www.tohugo.com/2022/05/27/%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83/index.html">
 <meta property="og:site_name" content="风不停息">
-<meta property="og:description" content="未完待续。 1.业务背景  从毕业以来，一直在从事订单交易方向的后端研发，历经两家公司，交易体量从小到大，见证了订单架构的演进变化，踩过不少坑，特此反思总结下来，希望未来的路能越走越远。  1.1电商交易订单1.1.1核心流程 用户从PC、小程序、APP、门店收银机等终端设备浏览商品； 加入购物车或者直接购买下单，进入订单购买页，选择优惠券、积分、兑换券等提交订单，进入订单结算页面； 通过微信、支">
+<meta property="og:description" content="变更记录   日期 变更内容 作者 版本号 备注    2022-2-8 新建 x x x V1.0           规范级别【强制】 根据产品&#x2F;技术需求，项目的粗略排期大于或等于30人日或项目跨多个系统，需严格执行此设计模板 【参考】根据产品&#x2F;技术需求，项目的粗略排期小于30人日，可参考执行此设计模板 一、系统概述1.1 背景介绍1.2 系统目标">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-05-04T12:37:24.000Z">
-<meta property="article:modified_time" content="2022-05-04T12:37:24.000Z">
+<meta property="article:published_time" content="2022-05-27T15:25:18.000Z">
+<meta property="article:modified_time" content="2022-05-27T15:25:18.000Z">
 <meta property="article:author" content="李炳华">
-<meta property="article:tag" content="架构">
+<meta property="article:tag" content="团队规范">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://www.tohugo.com/2022/05/04/%E8%AE%A2%E5%8D%95%E4%B8%9A%E5%8A%A1%E5%8F%8A%E6%9E%B6%E6%9E%84%E4%BB%8B%E7%BB%8D/">
+<link rel="canonical" href="https://www.tohugo.com/2022/05/27/%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83/">
 
 
 <script id="page-configurations">
@@ -49,7 +49,7 @@
   };
 </script>
 
-  <title>订单业务及架构介绍 | 风不停息</title>
+  <title>技术方案设计规范 | 风不停息</title>
   
 
 
@@ -191,7 +191,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://www.tohugo.com/2022/05/04/%E8%AE%A2%E5%8D%95%E4%B8%9A%E5%8A%A1%E5%8F%8A%E6%9E%B6%E6%9E%84%E4%BB%8B%E7%BB%8D/">
+    <link itemprop="mainEntityOfPage" href="https://www.tohugo.com/2022/05/27/%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -204,7 +204,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          订单业务及架构介绍
+          技术方案设计规范
         </h1>
 
         <div class="post-meta">
@@ -214,7 +214,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-05-04 20:37:24" itemprop="dateCreated datePublished" datetime="2022-05-04T20:37:24+08:00">2022-05-04</time>
+              <time title="创建时间：2022-05-27 23:25:18" itemprop="dateCreated datePublished" datetime="2022-05-27T23:25:18+08:00">2022-05-27</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -222,7 +222,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                  <a href="/categories/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" itemprop="url" rel="index"><span itemprop="name">最佳实践</span></a>
                 </span>
             </span>
 
@@ -244,79 +244,80 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><strong>未完待续</strong>。</p>
-<h3 id="1-业务背景"><a href="#1-业务背景" class="headerlink" title="1.业务背景"></a>1.业务背景</h3><blockquote>
-<p> 从毕业以来，一直在从事订单交易方向的后端研发，历经两家公司，交易体量从小到大，见证了订单架构的演进变化，踩过不少坑，特此反思总结下来，希望未来的路能越走越远。</p>
-</blockquote>
-<h4 id="1-1电商交易订单"><a href="#1-1电商交易订单" class="headerlink" title="1.1电商交易订单"></a>1.1电商交易订单</h4><h5 id="1-1-1核心流程"><a href="#1-1-1核心流程" class="headerlink" title="1.1.1核心流程"></a>1.1.1核心流程</h5><ol>
-<li>用户从<code>PC</code>、<code>小程序</code>、<code>APP</code>、<code>门店收银机</code>等终端设备浏览商品；</li>
-<li>加入购物车或者直接购买下单，进入订单购买页，选择优惠券、积分、兑换券等提交订单，进入订单结算页面；</li>
-<li>通过微信、支付宝、银联等第三方服务商完成支付，订单推送到商家订单侧，进入待发货环节；</li>
-<li>商家通过实体物流发货，填写上传物流单号，订单流转到已发货；</li>
-<li>用户在平台中可查看实时物流信息，到货验货，完成订单。</li>
-</ol>
-<h5 id="1-1-2系统指标"><a href="#1-1-2系统指标" class="headerlink" title="1.1.2系统指标"></a>1.1.2系统指标</h5><p>承接、预售、拼团、超级团、营销三宝、闪购、众筹等玩法</p>
-<p>闪购：高峰期TPS每秒在300+</p>
-<p>查询QPS在1000+</p>
-<a id="more"></a>
+        <h1 id="变更记录"><a href="#变更记录" class="headerlink" title="变更记录"></a><strong>变更记录</strong></h1><table>
+<thead>
+<tr>
+<th><strong>日期</strong></th>
+<th><strong>变更内容</strong></th>
+<th><strong>作者</strong></th>
+<th><strong>版本号</strong></th>
+<th><strong>备注</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2022-2-8</td>
+<td>新建</td>
+<td>x x x</td>
+<td>V1.0</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h1 id="规范级别"><a href="#规范级别" class="headerlink" title="规范级别"></a><strong>规范级别</strong></h1><p>【强制】 根据产品/技术需求，项目的粗略排期大于或等于30人日或项目跨多个系统，需严格执行此设计模板</p>
+<p>【参考】根据产品/技术需求，项目的粗略排期小于30人日，可参考执行此设计模板</p>
+<h1 id="一、系统概述"><a href="#一、系统概述" class="headerlink" title="一、系统概述"></a><strong>一、系统概述</strong></h1><h2 id="1-1-背景介绍"><a href="#1-1-背景介绍" class="headerlink" title="1.1 背景介绍"></a><strong>1.1 背景介绍</strong></h2><h2 id="1-2-系统目标"><a href="#1-2-系统目标" class="headerlink" title="1.2 系统目标"></a><strong>1.2 系统目标</strong></h2><a id="more"></a>
 
-<h4 id="1-2娱乐陪练订单"><a href="#1-2娱乐陪练订单" class="headerlink" title="1.2娱乐陪练订单"></a>1.2娱乐陪练订单</h4><h5 id="1-2-1核心流程"><a href="#1-2-1核心流程" class="headerlink" title="1.2.1核心流程"></a>1.2.1核心流程</h5><ol>
-<li>用户从<code>PC</code>、<code>小程序</code>、<code>APP</code>、<code>门店收银机</code>等终端设备浏览大神技能；</li>
-<li>选择技能确认，进入到订单结算页面并唤起支付；</li>
-<li>通过比心币完成订单支付（比心币不足则通过微信、支付宝、银联等第三方完成充值在购买），进入待接单环节</li>
-<li>大神收到下单提醒，确认接单，进入已接单环节；</li>
-<li>大神在线服务完成，上传服务凭证，用户点击完成订单。</li>
-</ol>
-<h5 id="1-2-2系统指标"><a href="#1-2-2系统指标" class="headerlink" title="1.2.2系统指标"></a>1.2.2系统指标</h5><p>下单QPS在10+</p>
-<p>订单查询在100+</p>
-<h3 id="2-如何做-通过架构解决"><a href="#2-如何做-通过架构解决" class="headerlink" title="2.如何做-通过架构解决"></a>2.如何做-通过架构解决</h3><p><strong>这样拆分的原则和边界是怎么得来的</strong>？</p>
-<h4 id="2-1微服务化"><a href="#2-1微服务化" class="headerlink" title="2.1微服务化"></a>2.1微服务化</h4><p>电商架构</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- 网关：api-gateway</span><br><span class="line">- 用户</span><br><span class="line">- 商品：商品：标签</span><br><span class="line">- 价格</span><br><span class="line">- 库存</span><br><span class="line">- 物流</span><br><span class="line">- 活动</span><br><span class="line">- 订单：购物车、计价、订单、订单列表、订单详情</span><br><span class="line">- 支付：对接第三方支付</span><br><span class="line">- 供应商</span><br><span class="line">- 结算</span><br><span class="line">- 消息推送：用户触达</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-2交易平台化"><a href="#2-2交易平台化" class="headerlink" title="2.2交易平台化"></a>2.2交易平台化</h4><blockquote>
-<p> 采用领域设计，形成核心域、计价域、纠纷域、交付域，各自负责边界内的事情。</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- mapi、网关</span><br><span class="line">- 用户</span><br><span class="line">- 大神：商品、价格、活动</span><br><span class="line">- 订单：陪练撮合，计价（结算）、订单、纠纷</span><br><span class="line">- 支付中台</span><br><span class="line">- 消息推送：用户触达</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>1）针对交易动作，采用DDD领域设计，拆分出核心、计价、纠纷、交付域，实现领域动作并发出领域事件</p>
-</li>
-<li><p>2）领域设计中，DB作为存储介质，为了考虑拓展性，往往会预留很多字段json化的拓展字段<br>这导致不能满足各种订单复杂查询搜索需求，采用CQRS，命令查询职责分离原则，搭建订单读中心，设计ES大宽表，</p>
-<pre><code>开发ES同步服务将DB数据实时同步到ES大宽表
-开发ES搜索服务，查询ES大宽表来满足业务需求</code></pre></li>
-<li><p>3）异构数据源同步，服务故障，网络闪断等原因，可能会出现数据不一致，因此开发订单工具维护后台，提供ES搜索，巡检，手动同步等页面，降低维护效率<br>拥有ES后，可以实现订单数据明细查看，数据报表等</p>
-</li>
-<li><p>4）交易动作经过领域拆分后，服务调用链路复杂化，问题定位排查不便，因此开发日志服务，记录订单各个动作节点日志，错误场景记录钉钉告警，并对接到工具后台，加快问题排查效率</p>
-</li>
-<li><p>5）订单的一些通用数据结构，如数据实体，消息实体，领域事件名等上下游系统，如陪练小前端，活动系统，用户系统，统计服务是很关心，将上述通用结构放入订单组件包，交易平台内外使用统一实体，提高了对接沟通效率</p>
-</li>
-<li><p>6）概括</p>
-<pre><code>DDD领域设计写入：base\price\refund\delivery
-CQRS订单读中心：query\sync\search\statistics
-组件包：component
-交易日志告警：log
-工具后台：tool-web</code></pre></li>
+<p>【注】 </p>
+<p>1、尽可能量化业务目标&amp;技术目标；</p>
+<p>2、超30人日项目需进行阶段拆分；</p>
+<h2 id="1-3-术语和缩略语"><a href="#1-3-术语和缩略语" class="headerlink" title="1.3 术语和缩略语"></a><strong>1.3 术语和缩略语</strong></h2><h1 id="二、系统需求"><a href="#二、系统需求" class="headerlink" title="二、系统需求"></a><strong>二、系统需求</strong></h1><h2 id="2-1-主要-用例"><a href="#2-1-主要-用例" class="headerlink" title="2.1 主要**用例**"></a><strong>2.1 主要**</strong>用例**</h2><h1 id="三、总体设计"><a href="#三、总体设计" class="headerlink" title="三、总体设计"></a><strong>三、总体设计</strong></h1><h2 id="3-1-架构总览"><a href="#3-1-架构总览" class="headerlink" title="3.1 架构总览"></a><strong>3.1 架构总览</strong></h2><h2 id="3-2-核心流程"><a href="#3-2-核心流程" class="headerlink" title="3.2 核心流程"></a><strong>3.2 核心流程</strong></h2><h2 id="3-3-详细设计"><a href="#3-3-详细设计" class="headerlink" title="3.3 详细设计"></a><strong>3.3 详细设计</strong></h2><h1 id="四、系统依赖"><a href="#四、系统依赖" class="headerlink" title="四、系统依赖"></a><strong>四、系统依赖</strong></h1><h2 id="4-1-具体依赖"><a href="#4-1-具体依赖" class="headerlink" title="4.1 具体依赖"></a><strong>4.1 具体依赖</strong></h2><h1 id="五、风险"><a href="#五、风险" class="headerlink" title="五、风险"></a><strong>五、风险</strong></h1><h2 id="5-1-风险点详细描述"><a href="#5-1-风险点详细描述" class="headerlink" title="5.1 风险点详细描述"></a><strong>5.1</strong> <strong>风险点详细描述</strong></h2><h2 id="5-2-未解决的问题"><a href="#5-2-未解决的问题" class="headerlink" title="5.2 未解决的问题"></a><strong>5.2 未解决的问题</strong></h2><h1 id="六、运行设计"><a href="#六、运行设计" class="headerlink" title="六、运行设计"></a><strong>六、运行设计</strong></h1><h2 id="6-1-数据存储"><a href="#6-1-数据存储" class="headerlink" title="6.1 数据存储"></a><strong>6.1 数据存储</strong></h2><p>详见数据库表设计文档：</p>
+<h1 id="七、特性设计"><a href="#七、特性设计" class="headerlink" title="七、特性设计"></a><strong>七、特性设计</strong></h1><h2 id="7-1-性能"><a href="#7-1-性能" class="headerlink" title="7.1 性能"></a><strong>7.1 性能</strong></h2><p>参考：</p>
+<h2 id="7-2-安全性"><a href="#7-2-安全性" class="headerlink" title="7.2 安全性"></a><strong>7.2 安全性</strong></h2><ul>
+<li><h2 id="7-3-可靠性"><a href="#7-3-可靠性" class="headerlink" title="7.3 可靠性"></a><strong>7.3 可靠性</strong></h2></li>
 </ul>
-<h4 id="2-3接入层"><a href="#2-3接入层" class="headerlink" title="2.3接入层"></a>2.3接入层</h4><blockquote>
-<p> 小前台、大中台原则，隔离依赖，做业务的适配层</p>
-</blockquote>
-<h5 id="2-3-1陪练小前台"><a href="#2-3-1陪练小前台" class="headerlink" title="2.3.1陪练小前台"></a>2.3.1陪练小前台</h5><p>平台基于拓展性考虑，只会承接核心能力，像比心订单场景下完成各个动作后，需要给比心app用户和大神发订单卡片消息，累计经验值等非常业务化暂时无法沉淀的东西，参考大中台小前台的原则，搭建陪练小前台，通过监听平台领域实践来实现，支持需求的快速迭代，平台保持相对稳定</p>
-<p>之前陪练服务，经过多人迭代，未规范化，出现同一个业务动作，即消费平台消息，又消费转发后的业务消息；针对消息消费场景，采用模板方法抽象出框架，模板统一cat打点，日志处理，陪玩的每个业务动作只需要实现框架的 构建上下文，发app消息，转发业务消息，上报风控，后置业务即可，代码清晰可读性强</p>
-<h5 id="2-3-2客服系统"><a href="#2-3-2客服系统" class="headerlink" title="2.3.2客服系统"></a>2.3.2客服系统</h5><blockquote>
-<p>搭建工单系统，用于处理用户纠纷</p>
-</blockquote>
-<p>客服日常工作分为，IM会话，工单任务，投诉处理，IM是购买的环信云服务，任务依靠jira流转，线下处理投诉打款，不方便在功能上做迭代和拓展，因此搭建客服工单系统，实现工单任务的自动分配流转，投诉处理线上打款走审批，对接交易平台，处理完成订单，部分退款，作废订单，拒绝申诉等动作</p>
-<h5 id="2-3-3打赏系统"><a href="#2-3-3打赏系统" class="headerlink" title="2.3.3打赏系统"></a>2.3.3打赏系统</h5><p>比心定位是游戏娱乐陪玩版块，打赏也是其中一种，在用户聊天页，用户动态页，直播和语言房等场景下，用户可以拉起礼物面板选择礼物，付费打赏给对方，对方获得收入，同时观看礼物动效。为吸引用户，开发如，幸运币、盲盒、连击、批量等打赏玩法，前期支持业务快速上线，在开发测放了大量的配置，活动经常做，开发测试成本比较高，开发沉淀出打赏活动后台，提供活动、礼物概率等一系列配置，交付给运营使用，目前运行1年多，承接10+活动，幸运币抽奖礼物打赏玩法最高单日达到1200万流水</p>
-<p>打赏系统owner，负责需求分析，方案设计，项目跟进</p>
-<h3 id="3-困难阻碍"><a href="#3-困难阻碍" class="headerlink" title="3.困难阻碍"></a>3.困难阻碍</h3><p><strong>遇到的最大的困难阻碍是什么</strong>？</p>
-<ol>
-<li>领导短期看不到价值，不认可这次重构</li>
-<li>需要求产品、测试同学，不了解这个领域模型</li>
-<li>组内同事缺乏，领域设计能力，沟通存在较大隔阂</li>
-<li>为提升性能，用了哪些优化手段？</li>
-<li>为提升可用性，用了哪些优化手段？</li>
-</ol>
-<h3 id="4-个人收获"><a href="#4-个人收获" class="headerlink" title="4.个人收获"></a>4.个人收获</h3><p>了解了订单交易方向的架构演进，可以在以后的工作中，结合业务实际情况，选用不同的架构，在性能达标的情况下，在三到五年内保留一定的拓展性，完成业务既定目标。</p>
+<h2 id="7-4-监控与报警列表"><a href="#7-4-监控与报警列表" class="headerlink" title="7.4 监控与报警列表"></a><strong>7.4 监控与报警列表</strong></h2><h1 id="八、部署方案"><a href="#八、部署方案" class="headerlink" title="八、部署方案"></a><strong>八、部署方案</strong></h1><h2 id="8-1-上线方案"><a href="#8-1-上线方案" class="headerlink" title="8.1 上线方案"></a><strong>8.1 上线方案</strong></h2><h2 id="8-2-回滚-方案"><a href="#8-2-回滚-方案" class="headerlink" title="8.2 回滚**方案**"></a><strong>8.2</strong> <strong>回滚**</strong>方案**</h2><h2 id="8-3-灰度方案"><a href="#8-3-灰度方案" class="headerlink" title="8.3 灰度方案"></a>8.3 灰度方案</h2><h1 id="九、日志设计"><a href="#九、日志设计" class="headerlink" title="九、日志设计"></a>九、日志设计</h1><h2 id="9-1-编程规范"><a href="#9-1-编程规范" class="headerlink" title="9.1 编程规范"></a>9.1 编程规范</h2><p>参考：</p>
+<h2 id="9-2日志设计"><a href="#9-2日志设计" class="headerlink" title="9.2日志设计"></a>9.2日志设计</h2><p>参考：</p>
+<h2 id="9-3-存储设计"><a href="#9-3-存储设计" class="headerlink" title="9.3 存储设计"></a>9.3 存储设计</h2><p>参考：</p>
+<h2 id="9-4-历次沟通意见汇总表"><a href="#9-4-历次沟通意见汇总表" class="headerlink" title="9.4 历次沟通意见汇总表"></a><strong>9.4 历次沟通意见汇总表</strong></h2><table>
+<thead>
+<tr>
+<th>沟通讨论ID</th>
+<th>1</th>
+<th><strong>意见数</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>意见确认人</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>意见1：  <br />提出人： <br />解决办法：</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>意见2：【意见描述】 <br />提出人： 解决办法：</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
 
     </div>
 
@@ -326,7 +327,7 @@ CQRS订单读中心：query\sync\search\statistics
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a>
+              <a href="/tags/%E5%9B%A2%E9%98%9F%E8%A7%84%E8%8C%83/" rel="tag"># 团队规范</a>
           </div>
 
         
@@ -335,13 +336,10 @@ CQRS订单读中心：query\sync\search\statistics
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/03/07/2017-2019%E4%B8%80%E6%9D%A1%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/" rel="prev" title="2017-2019一条项目总结">
-      <i class="fa fa-chevron-left"></i> 2017-2019一条项目总结
+    <a href="/2022/05/27/%E6%8E%A5%E5%8F%A3%E8%A7%84%E8%8C%83/" rel="prev" title="接口规范">
+      <i class="fa fa-chevron-left"></i> 接口规范
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/05/14/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%86%E6%80%9D%E7%BB%B4%E8%A1%A8%E8%BE%BE/" rel="next" title="金字塔原理思维表达">
-      金字塔原理思维表达 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -400,7 +398,7 @@ CQRS订单读中心：query\sync\search\statistics
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-业务背景"><span class="nav-text">1.业务背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-如何做-通过架构解决"><span class="nav-text">2.如何做-通过架构解决</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-困难阻碍"><span class="nav-text">3.困难阻碍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-个人收获"><span class="nav-text">4.个人收获</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#变更记录"><span class="nav-text">变更记录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#规范级别"><span class="nav-text">规范级别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一、系统概述"><span class="nav-text">一、系统概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-背景介绍"><span class="nav-text">1.1 背景介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-系统目标"><span class="nav-text">1.2 系统目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-术语和缩略语"><span class="nav-text">1.3 术语和缩略语</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、系统需求"><span class="nav-text">二、系统需求</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-主要-用例"><span class="nav-text">2.1 主要**用例**</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、总体设计"><span class="nav-text">三、总体设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-架构总览"><span class="nav-text">3.1 架构总览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-核心流程"><span class="nav-text">3.2 核心流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-详细设计"><span class="nav-text">3.3 详细设计</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、系统依赖"><span class="nav-text">四、系统依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-具体依赖"><span class="nav-text">4.1 具体依赖</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#五、风险"><span class="nav-text">五、风险</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-风险点详细描述"><span class="nav-text">5.1 风险点详细描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-未解决的问题"><span class="nav-text">5.2 未解决的问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#六、运行设计"><span class="nav-text">六、运行设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-数据存储"><span class="nav-text">6.1 数据存储</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#七、特性设计"><span class="nav-text">七、特性设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-1-性能"><span class="nav-text">7.1 性能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-2-安全性"><span class="nav-text">7.2 安全性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3-可靠性"><span class="nav-text">7.3 可靠性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-4-监控与报警列表"><span class="nav-text">7.4 监控与报警列表</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#八、部署方案"><span class="nav-text">八、部署方案</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#8-1-上线方案"><span class="nav-text">8.1 上线方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-2-回滚-方案"><span class="nav-text">8.2 回滚**方案**</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-3-灰度方案"><span class="nav-text">8.3 灰度方案</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#九、日志设计"><span class="nav-text">九、日志设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#9-1-编程规范"><span class="nav-text">9.1 编程规范</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-2日志设计"><span class="nav-text">9.2日志设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-3-存储设计"><span class="nav-text">9.3 存储设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-4-历次沟通意见汇总表"><span class="nav-text">9.4 历次沟通意见汇总表</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
